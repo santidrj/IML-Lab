@@ -50,32 +50,3 @@ df_heart_categorical = pd.DataFrame(transformed_features, columns=enc.get_featur
 df_heart_normalized = pd.concat([df_heart_normalized, df_heart_categorical], axis=1)
 print()
 print(df_heart_normalized.head())
-
-# %%
-#############################
-# CONNECT-4 PRE-Processing  #
-#############################
-print('Connect-4 dataset:')
-df_connect = mf.load_arff(os.path.join(root_path, 'connect-4.arff'))
-mf.convert_byte_string_to_string(df_connect)
-print(df_connect.head())
-print(df_connect.dtypes)
-print(df_connect.value_counts())
-
-print('Total number of missing values:\n', df_connect.isnull().sum())
-
-# %%
-##############################
-# HYPOTHYROID PRE-PROCESSING #
-##############################
-print('Hypothyroid dataset:')
-df_hypothyroid = mf.load_arff(os.path.join(root_path, 'hypothyroid.arff'))
-mf.convert_byte_string_to_string(df_hypothyroid)
-print(df_hypothyroid.head())
-print(df_hypothyroid.dtypes)
-categorical_features = mf.get_categorical_features(df_hypothyroid)
-
-for feature in categorical_features:
-    print(df_hypothyroid.value_counts(feature))
-
-print('Total number of missing values:\n', df_hypothyroid.isnull().sum())
