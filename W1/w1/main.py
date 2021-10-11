@@ -2,11 +2,10 @@ import os.path
 
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.preprocessing import OneHotEncoder
 
-import w1.myfunctions as mf
+import utils as mf
 
-root_path = os.path.join('.', 'datasets', 'datasets')
+root_path = os.path.join('..', 'datasets', 'datasets')
 
 # %%
 ###########################
@@ -42,12 +41,13 @@ scaler = MinMaxScaler()
 df_heart_normalized = pd.DataFrame(scaler.fit_transform(df_heart_numerical), columns=df_heart_numerical.columns)
 
 # Transform categorical values to numerical
-enc = OneHotEncoder()
-enc.fit(df_heart[categorical_features])
-print(enc.get_feature_names_out())
-transformed_features = enc.transform(df_heart[categorical_features]).toarray()
-df_heart_categorical = pd.DataFrame(transformed_features, columns=enc.get_feature_names_out())
-df_heart_normalized = pd.concat([df_heart_normalized, df_heart_categorical], axis=1)
+# enc = OneHotEncoder()
+# enc.fit(df_heart[categorical_features])
+# print(enc.get_feature_names_out())
+# transformed_features = enc.transform(df_heart[categorical_features]).toarray()
+# df_heart_categorical = pd.DataFrame(transformed_features, columns=enc.get_feature_names_out())
+df_heart_categorical = mf.categorical_to_numerical(df_heart)
+# df_heart_normalized = pd.concat([df_heart_normalized, df_heart_categorical], axis=1)
 print()
 print(df_heart_normalized.head())
 
