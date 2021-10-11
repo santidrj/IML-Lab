@@ -3,6 +3,7 @@ import os.path
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
+from sklearn.cluster import OPTICS
 from sklearn.preprocessing import RobustScaler
 
 import utils
@@ -55,3 +56,6 @@ for col in df_heart_numerical.columns:
                   alpha=0.5,
                   color='black')
     plt.show()
+
+optics_model = OPTICS(cluster_method='dbscan')
+optics_model.fit(df_heart_normalized)
