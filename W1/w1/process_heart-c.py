@@ -1,8 +1,8 @@
-import os.path
-
 import matplotlib.pyplot as plt
 import numpy as np
+import os.path
 import pandas as pd
+import seaborn as sns
 from matplotlib import gridspec
 from sklearn.cluster import OPTICS, cluster_optics_dbscan
 from sklearn.preprocessing import RobustScaler
@@ -45,20 +45,23 @@ df_heart_normalized = utils.normalize_data(df_heart_numerical, df_heart_numerica
 
 # Transform categorical values to numerical
 df_heart_categorical = utils.categorical_to_numerical(df_heart)
-df_heart_normalized = pd.concat([df_heart_normalized, df_heart_categorical], axis=1)
+df_heart_normalized = pd.concat([df_heart_normalized, df_heart_categorical.drop(columns=df_heart_normalized.columns)],
+                                axis=1)
 print()
 print(df_heart_normalized.head())
 
-# for col in df_heart_numerical.columns:
-#     sns.boxplot(x=df_heart_numerical[col])
-#     sns.stripplot(x=df_heart_numerical[col],
-#                   jitter=True,
-#                   marker='o',
-#                   alpha=0.5,
-#                   color='black')
-#     plt.show()
+figs_folder_path = os.path.join('..', 'figures')
+for col in df_heart_numerical.columns:
+    plt.clf()
+    sns.boxplot(x=df_heart_numerical[col]).set_title(f'{col} data distribution')
+    sns.stripplot(x=df_heart_numerical[col],
+                  jitter=True,
+                  marker='o',
+                  alpha=0.5,
+                  color='black')
+    plt.savefig(os.path.join(figs_folder_path, f'heart-c_{col}_boxplot.png'))
 
-optics_model = OPTICS(metric='euclidean')
+optics_model = OPTICS(min_samples=27)
 optics_model.fit(df_heart_normalized)
 
 # Producing the labels according to the DBSCAN technique
@@ -80,10 +83,9 @@ print(labels)
 
 # Defining the framework of the visualization
 plt.figure(figsize=(10, 7))
-G = gridspec.GridSpec(2, 3)
+G = gridspec.GridSpec(2, 1)
 ax1 = plt.subplot(G[0, :])
 ax2 = plt.subplot(G[1, 0])
-ax3 = plt.subplot(G[1, 1])
 
 # Plotting the Reachability-Distance Plot
 colors = ['c.', 'b.', 'r.', 'y.', 'g.']
@@ -107,17 +109,6 @@ ax2.plot(df_heart_normalized.iloc[optics_model.labels_ == -1, 0],
          df_heart_normalized.iloc[optics_model.labels_ == -1, 1],
          'k+', alpha=0.1)
 ax2.set_title('OPTICS Clustering')
-
-# Plotting the DBSCAN Clustering
-colors = ['c', 'b', 'r', 'y', 'g', 'greenyellow']
-for Class, colour in zip(range(0, 6), colors):
-    Xk = df_heart_normalized[labels1 == Class]
-    ax3.plot(Xk.iloc[:, 0], Xk.iloc[:, 1], colour, alpha=0.3, marker='.')
-
-ax3.plot(df_heart_normalized.iloc[labels1 == -1, 0],
-         df_heart_normalized.iloc[labels1 == -1, 1],
-         'k+', alpha=0.1)
-ax3.set_title('DBSCAN clustering')
 
 plt.tight_layout()
 plt.show()
