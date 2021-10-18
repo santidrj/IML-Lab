@@ -1,6 +1,7 @@
+import os.path
+
 import matplotlib.pyplot as plt
 import numpy as np
-import os.path
 import pandas as pd
 import seaborn as sns
 from matplotlib import gridspec
@@ -9,14 +10,14 @@ from sklearn.preprocessing import RobustScaler
 
 import utils
 
-root_path = os.path.join('..', 'datasets', 'datasets')
+data_root_path = os.path.join('..', 'datasets')
 
 # %%
 ###########################
 # HEART-C PRE-PROCESSING  #
 ###########################
 # Load the Heart-C dataset
-df_heart = utils.load_arff(os.path.join(root_path, 'heart-c.arff'))
+df_heart = utils.load_arff(os.path.join(data_root_path, 'datasets', 'heart-c.arff'))
 df_heart.drop(columns='num', inplace=True)
 utils.convert_byte_string_to_string(df_heart)
 print()
@@ -49,6 +50,9 @@ df_heart_normalized = pd.concat([df_heart_normalized, df_heart_categorical.drop(
                                 axis=1)
 print()
 print(df_heart_normalized.head())
+
+save_path = os.path.join(data_root_path, 'processed', 'processed-heart-c.pkl')
+pd.to_pickle(df_heart_normalized, save_path)
 
 figs_folder_path = os.path.join('..', 'figures')
 for col in df_heart_numerical.columns:

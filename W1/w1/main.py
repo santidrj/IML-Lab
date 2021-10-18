@@ -1,81 +1,34 @@
 import os.path
 
+import numpy as np
 import pandas as pd
-from sklearn.preprocessing import MinMaxScaler
+from matplotlib import pyplot as plt
 
-import utils as mf
+from algorithms.kmeans import Kmeans
 
-root_path = os.path.join('..', 'datasets', 'datasets')
+data_root_path = os.path.join('..', 'datasets')
+df_heart = pd.read_pickle(os.path.join(data_root_path, 'processed', 'processed-heart-c.pkl'))
 
-# %%
-###########################
-# HEART-C PRE-PROCESSING  #
-###########################
-# Load the Heart-C dataset
-df_heart = mf.load_arff(os.path.join(root_path, 'heart-c.arff'))
-df_heart.drop(columns='num', inplace=True)
-mf.convert_byte_string_to_string(df_heart)
-print()
-print('Heart-C dataset:')
-print(df_heart.head())
-print(df_heart.dtypes)
+kmeans = Kmeans(k=5, max_iter=1)
+kmeans.kmeans(df_heart.to_numpy())
 
-# Get all the categorical features of the dataset for later processing
-categorical_features = mf.get_categorical_features(df_heart)
+labels = np.array(kmeans.labels)
+print(set(labels))
 
-for feature in categorical_features:
-    print(f'{df_heart.value_counts(feature)}\n')
+plt.figure(figsize=(12, 12))
+ax = plt.subplot(111)
 
-# Treat missing values
-print('Total number of missing values:\n', df_heart.isnull().sum())
-print()
-print('ca possible values:\n', df_heart['ca'].value_counts())
+colors = ['c.', 'b.', 'r.', 'y.', 'g.', 'm.']
+for Class, colour in zip(range(6), colors):
+    Xk = df_heart[labels == Class]
+    ax.plot(Xk.iloc[:, 0], Xk.iloc[:, 1], colour, alpha=0.3)
 
-df_heart['ca'] = df_heart['ca'].fillna(0.0)
+ax.plot(df_heart.iloc[labels == -1, 0],
+        df_heart.iloc[labels == -1, 1],
+        'k+', alpha=0.1)
 
-print(df_heart.describe())
+centers = np.array(kmeans.centroids)
+ax.scatter(centers[:, 0], centers[:, 1], marker="x", color="k")
+ax.set_title('K-means Clustering')
 
-# Normalize data
-df_heart_numerical = df_heart.drop(columns=categorical_features)
-scaler = MinMaxScaler()
-df_heart_normalized = pd.DataFrame(scaler.fit_transform(df_heart_numerical), columns=df_heart_numerical.columns)
-
-# Transform categorical values to numerical
-# enc = OneHotEncoder()
-# enc.fit(df_heart[categorical_features])
-# print(enc.get_feature_names_out())
-# transformed_features = enc.transform(df_heart[categorical_features]).toarray()
-# df_heart_categorical = pd.DataFrame(transformed_features, columns=enc.get_feature_names_out())
-df_heart_categorical = mf.categorical_to_numerical(df_heart)
-# df_heart_normalized = pd.concat([df_heart_normalized, df_heart_categorical], axis=1)
-print()
-print(df_heart_normalized.head())
-
-# %%
-#############################
-# CONNECT-4 PRE-Processing  #
-#############################
-print('Connect-4 dataset:')
-df_connect = mf.load_arff(os.path.join(root_path, 'connect-4.arff'))
-mf.convert_byte_string_to_string(df_connect)
-print(df_connect.head())
-print(df_connect.dtypes)
-print(df_connect.value_counts())
-
-print('Total number of missing values:\n', df_connect.isnull().sum())
-
-# %%
-##############################
-# HYPOTHYROID PRE-PROCESSING #
-##############################
-print('Hypothyroid dataset:')
-df_hypothyroid = mf.load_arff(os.path.join(root_path, 'hypothyroid.arff'))
-mf.convert_byte_string_to_string(df_hypothyroid)
-print(df_hypothyroid.head())
-print(df_hypothyroid.dtypes)
-categorical_features = mf.get_categorical_features(df_hypothyroid)
-
-for feature in categorical_features:
-    print(df_hypothyroid.value_counts(feature))
-
-print('Total number of missing values:\n', df_hypothyroid.isnull().sum())
+plt.show()
