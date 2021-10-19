@@ -5,7 +5,7 @@ import pandas as pd
 from matplotlib import pyplot as plt, gridspec
 from sklearn.cluster import OPTICS
 
-df_heart = pd.read_pickle(os.path.join('..', 'datasets', 'heart_normalized.pkl'))
+df_heart = pd.read_pickle(os.path.join('..', '..', 'datasets', 'processed', 'processed-heart-c.pkl'))
 optics_model = OPTICS(min_samples=27)
 optics_model.fit(df_heart)
 
@@ -22,10 +22,10 @@ labels = optics_model.labels_[optics_model.ordering_]
 print(labels)
 
 # Defining the framework of the visualization
-plt.figure(figsize=(10, 7))
+plt.figure(figsize=(10, 10))
 G = gridspec.GridSpec(2, 1)
 ax1 = plt.subplot(G[0, :])
-ax2 = plt.subplot(G[1, 0])
+ax2 = plt.subplot(G[1, :])
 
 # Plotting the Reachability-Distance Plot
 colors = ['c.', 'b.', 'r.', 'y.', 'g.']
@@ -52,3 +52,5 @@ ax2.set_title('OPTICS Clustering')
 
 plt.tight_layout()
 plt.show()
+
+plt.savefig(os.path.join('..', '..', 'figures', 'heart-c', 'heart-c_optics.png'))

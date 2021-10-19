@@ -7,7 +7,7 @@ from sklearn.preprocessing import RobustScaler
 
 import utils
 
-data_root_path = os.path.join('..', 'datasets')
+data_root_path = os.path.join('..', '..', 'datasets')
 
 # %%
 ###########################
@@ -51,7 +51,7 @@ print(df_heart_normalized.head())
 save_path = os.path.join(data_root_path, 'processed', 'processed-heart-c.pkl')
 pd.to_pickle(df_heart_normalized, save_path)
 
-figs_folder_path = os.path.join('..', 'figures')
+figs_folder_path = os.path.join('..', '..', 'figures', 'heart-c')
 for col in df_heart_numerical.columns:
     plt.clf()
     sns.boxplot(x=df_heart_numerical[col]).set_title(f'{col} data distribution')
