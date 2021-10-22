@@ -20,14 +20,14 @@ class Kmeans:
         self.max_iter = max_iter
         self.n_init = n_init
         self.labels = []
-        self.square_root_error = None
+        self.square_error = None
 
     def _initialize_centroids(self, data):
         if self.init == 'k-means++':
             # TODO: Implement K-means++ initialization
-            raise NotImplementedError("K-means++ initialization not implemented yet")
+            return self._kmeans_plusplus(data, self.k)
         else:
-            return data[np.random.choice(data.shape[0], self.k, replace=False), :]
+            return data[np.choice(data.shape[0], self.k, replace=False), :]
 
     # noinspection SpellCheckingInspection
     def fit(self, data: DataFrame):
@@ -38,13 +38,13 @@ class Kmeans:
         for _ in range(self.n_init):
             labels, centroids, sse = self.run_kmeans_once(x, self.max_iter)
             if sse <= best_sse:
-                best_sse = best_sse
+                best_sse = sse
                 best_centroids = centroids
                 best_labels = labels
 
         self.centroids = best_centroids
         self.labels = best_labels
-        self.square_root_error = best_sse
+        self.square_error = best_sse
 
     def run_kmeans_once(self, x, max_iter):
         # Initialize the centroids using K random samples of the data
@@ -75,7 +75,7 @@ class Kmeans:
             min_distance = np.inf
             label = -1
             for idx, centroid in enumerate(centroids):
-                distance = euclidean(centroid, elem)
+                distance = euclidean(centroid, elem) ** 2
                 if distance < min_distance:
                     min_distance = distance
                     label = idx
@@ -95,14 +95,39 @@ class Kmeans:
         # cluster_data = [[x[i] for i in range(x.shape[0]) if labels[i] == j] for j, _ in enumerate(self.centroids)]
         new_centers = []
         for cluster in cluster_data:
-            new_centers.append(np.mean(cluster, axis=0, dtype=np.float32))
+            new_centers.append(np.mean(cluster, axis=0, dtype=np.float))
 
         return np.array(new_centers)
 
     def _compute_sse(self, x, labels, centroids):
-        square_root_error = 0
+        sum_squared_error = 0
         for i, centroid in enumerate(centroids):
             indices = np.where(labels == i)
-            square_root_error += np.sum(np.square([euclidean(centroid, point) for point in x[indices]]))
+            sum_squared_error += np.sum([euclidean(centroid, point) ** 2 for point in x[indices]])
 
-        return square_root_error
+        return sum_squared_error
+
+    def _kmeans_plusplus(self, x, k):
+        n_samples, n_features = x.shape
+        n_local_trials = 2 + int(np.log(k))
+        centroids = np.empty((k, n_features), dtype=x.dtype)
+
+        centroid_idx = np.random.randint(n_samples)
+        centroids[0] = x[centroid_idx]
+
+        closest_distances = self._closest_distances(centroids[0], x)
+        weights = closest_distances / closest_distances.sum()
+
+        for centroid in range(1, k):
+            candidates_idx = np.choice(closest_distances, n_local_trials, replace=False, p=weights)
+
+            dist_to_candidates = self._closest_distances(x[candidates_idx], x)
+
+    def _closest_distances(self, x, y):
+        distances = np.empty((x.shape[0], y.shape[0]))
+        for i, elem in enumerate(x):
+            distances[i] = [euclidean(elem, point) ** 2 for point in y]
+        # for i, elem in enumerate(y):
+        #     distances[i] = np.min([euclidean(elem, point)**2 for point in x])
+
+        return distances
