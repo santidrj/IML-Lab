@@ -37,14 +37,15 @@ df_heart['ca'] = df_heart['ca'].fillna(0.0)
 
 print(df_heart.describe())
 
-# Normalize data
-df_heart_numerical = df_heart.select_dtypes(include='number')
-df_heart_normalized = utils.normalize_data(df_heart_numerical, df_heart_numerical.columns, RobustScaler())
-
 # Transform categorical values to numerical
 df_heart_categorical = utils.categorical_to_numerical(df_heart)
-df_heart_normalized = pd.concat([df_heart_normalized, df_heart_categorical.drop(columns=df_heart_normalized.columns)],
-                                axis=1)
+
+# Normalize data
+df_heart_numerical = df_heart.select_dtypes(include='number')
+# df_heart_normalized = utils.normalize_data(df_heart_numerical, df_heart_numerical.columns, RobustScaler())
+df_heart_normalized = utils.normalize_data(df_heart_categorical, df_heart_categorical.columns, RobustScaler())
+# df_heart_normalized = pd.concat([df_heart_normalized, df_heart_categorical.drop(columns=df_heart_normalized.columns)],
+#                                 axis=1)
 print()
 print(df_heart_normalized.head())
 

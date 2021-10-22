@@ -6,11 +6,11 @@ from matplotlib import pyplot as plt
 
 from algorithms.kmeans import Kmeans
 
-data_root_path = os.path.join('..', 'datasets')
+data_root_path = os.path.join('../..', 'datasets')
 df_heart = pd.read_pickle(os.path.join(data_root_path, 'processed', 'processed-heart-c.pkl'))
 
-kmeans = Kmeans(k=5, max_iter=1)
-kmeans.kmeans(df_heart)
+kmeans = Kmeans(k=5, init='random')
+kmeans.fit(df_heart.iloc[:, :2])
 
 labels = np.array(kmeans.labels)
 print(set(labels))
