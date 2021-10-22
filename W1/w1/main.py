@@ -10,7 +10,7 @@ data_root_path = os.path.join('..', 'datasets')
 df_heart = pd.read_pickle(os.path.join(data_root_path, 'processed', 'processed-heart-c.pkl'))
 
 kmeans = Kmeans(k=5, max_iter=1)
-kmeans.kmeans(df_heart.to_numpy())
+kmeans.kmeans(df_heart)
 
 labels = np.array(kmeans.labels)
 print(set(labels))

@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt, gridspec
 from sklearn.cluster import OPTICS
 
 df_heart = pd.read_pickle(os.path.join('..', '..', 'datasets', 'processed', 'processed-heart-c.pkl'))
-optics_model = OPTICS(min_samples=27)
+optics_model = OPTICS(min_samples=10)
 optics_model.fit(df_heart)
 
 # Creating a numpy array with numbers at equal spaces till
