@@ -1,4 +1,5 @@
 import numpy as np
+from numpy import arange
 from numpy.random import random
 from pandas import DataFrame
 from scipy.spatial.distance import euclidean
@@ -10,7 +11,7 @@ class Kmeans:
         K-means clustering algorithm.
 
         :param k: The number of clusters to form.
-        :param init: Method for initialization. Avaliable methods are: 'k-means++' and 'random'.
+        :param init: Method for initialization. Available methods are: 'k-means++' and 'random'.
         :param max_iter: Maximum number of iterations of the K-means algorithm for a single run.
         :param n_init: Number of times the K-means algorithm will be run with different centroid seeds.
         """
@@ -24,10 +25,9 @@ class Kmeans:
 
     def _initialize_centroids(self, data):
         if self.init == 'k-means++':
-            # TODO: Implement K-means++ initialization
             return self._kmeans_plusplus(data, self.k)
         else:
-            return data[np.choice(data.shape[0], self.k, replace=False), :]
+            return data[np.random.choice(data.shape[0], self.k, replace=False), :]
 
     # noinspection SpellCheckingInspection
     def fit(self, data: DataFrame):
@@ -82,20 +82,21 @@ class Kmeans:
 
             labels[i] = label
 
-        new_centroids = self._update_centroids(x, labels)
+        new_centroids = self._update_centroids(x, centroids, labels)
 
         return new_centroids, np.array(labels)
 
-    def _update_centroids(self, x, labels):
+    def _update_centroids(self, x, old_centroids, labels):
         aux = np.ndarray((x.shape[0], x.shape[1] + 1))
         aux[:, :-1] = x
         aux[:, -1] = labels
-        aux = aux[aux[:, -1].argsort()]
-        cluster_data = np.split(aux[:, :-1], np.unique(aux[:, -1], return_index=True)[1][1:])
-        # cluster_data = [[x[i] for i in range(x.shape[0]) if labels[i] == j] for j, _ in enumerate(self.centroids)]
         new_centers = []
-        for cluster in cluster_data:
-            new_centers.append(np.mean(cluster, axis=0, dtype=np.float))
+        for i, c in enumerate(old_centroids):
+            cluster = x[labels == i]
+            if cluster.size == 0:
+                new_centers.append(c)
+            else:
+                new_centers.append(np.mean(cluster, axis=0, dtype=x.dtype))
 
         return np.array(new_centers)
 
@@ -108,26 +109,43 @@ class Kmeans:
         return sum_squared_error
 
     def _kmeans_plusplus(self, x, k):
-        n_samples, n_features = x.shape
+        # Number of local seeding trials based on what
+        # Arthur, David & Vassilvitskii, Sergei said in
+        # K-Means++: The Advantages of Careful Seeding
+        # 10.1145/1283383.1283494
         n_local_trials = 2 + int(np.log(k))
+
+        n_samples, n_features = x.shape
         centroids = np.empty((k, n_features), dtype=x.dtype)
 
         centroid_idx = np.random.randint(n_samples)
         centroids[0] = x[centroid_idx]
 
         closest_distances = self._closest_distances(centroids[0], x)
-        weights = closest_distances / closest_distances.sum()
+        current_pot = closest_distances.sum()
 
         for centroid in range(1, k):
-            candidates_idx = np.choice(closest_distances, n_local_trials, replace=False, p=weights)
+            weights = closest_distances / current_pot
+            candidates_idx = np.random.choice(arange(closest_distances.size), n_local_trials, replace=False, p=weights)
 
             dist_to_candidates = self._closest_distances(x[candidates_idx], x)
 
-    def _closest_distances(self, x, y):
-        distances = np.empty((x.shape[0], y.shape[0]))
-        for i, elem in enumerate(x):
-            distances[i] = [euclidean(elem, point) ** 2 for point in y]
-        # for i, elem in enumerate(y):
-        #     distances[i] = np.min([euclidean(elem, point)**2 for point in x])
+            np.minimum(closest_distances, dist_to_candidates, out=dist_to_candidates)
+            candidates_pot = dist_to_candidates.sum(axis=1)
 
+            best_candidate = np.argmin(candidates_pot)
+            closest_distances = dist_to_candidates[best_candidate]
+            current_pot = candidates_pot[best_candidate]
+
+            centroids[centroid] = x[best_candidate]
+
+        return centroids
+
+    def _closest_distances(self, x, y):
+        if x.ndim == 1:
+            distances = np.array([euclidean(x, point) ** 2 for point in y])
+        else:
+            distances = np.empty((x.shape[0], y.shape[0]), dtype=x.dtype)
+            for i, elem in enumerate(x):
+                distances[i] = [euclidean(elem, point) ** 2 for point in y]
         return distances

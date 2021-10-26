@@ -9,7 +9,7 @@ from algorithms.kmeans import Kmeans
 data_root_path = os.path.join('..', 'datasets')
 df_heart = pd.read_pickle(os.path.join(data_root_path, 'processed', 'processed-heart-c.pkl'))
 
-kmeans = Kmeans(k=5, init='random')
+kmeans = Kmeans(k=5, init='k-means++')
 kmeans.fit(df_heart.iloc[:, :2])
 print(f'Sum of squared error: {kmeans.square_error}')
 
