@@ -91,7 +91,7 @@ class KModes:
             #print(self.df['class'].value_counts())
 
             for k in range(self.k-2):
-                print('hey')
+                #print('hey')
                 classes = KModes(self.df[self.df['class'] == max_class].iloc[:, :-1], k = 2, max_iter=10).run(init='random')
 
                 mod_class = classes.copy()
