@@ -88,18 +88,19 @@ class KModes:
         if method == 'bisecting':
             self.df['class'] = KModes(self.df.iloc[:, :-1], k = 2, max_iter=10).run(init='random')
             max_class = self.df['class'].value_counts().idxmax()
-            #print(self.df['class'].value_counts())
+            print(self.df['class'].value_counts())
 
             for k in range(self.k-2):
-                #print('hey')
-                classes = KModes(self.df[self.df['class'] == max_class].iloc[:, :-1], k = 2, max_iter=10).run(init='random')
+                print('hey')
+                X = self.df[self.df['class'] == max_class].iloc[:, :-1].reset_index(drop=True)
+                classes = KModes(X, k = 2, max_iter=10).run(init='random')
 
                 mod_class = classes.copy()
                 mod_class[classes == 0], mod_class[classes == 1] = max_class, self.df['class'].max() + 1
 
                 self.df['class'][self.df['class'] == max_class] = mod_class
                 print(self.df['class'].value_counts())
-                max_class = self.df['class'].value_counts().idxmax()
+                max_class = self.df['class'].value_counts().idxmax().astype(int)
 
             self.update_centroids()
             #print(self.centroids)
@@ -116,17 +117,10 @@ class KModes:
     def fit(self, dist_metric):
         for k in range(self.k):
             A = self.distance(x=self.df.iloc[:, :-1], y=self.centroids.iloc[k, :], metric=dist_metric)
-            print('NaN values before assigning:')
-            print(A.isnull().sum().sum())
-            print(A.dtype)
-            self.dist.iloc[:, k] = A
-            print('NaN values after assigning:')
-            print(self.dist.iloc[:, k].isnull().sum().sum())
-            print(self.dist.iloc[:, k].dtype)
+            self.dist.iloc[:, k] = A.values
 
-        #print(self.dist.isnull().sum().sum())
-
-        self.df['class'] = self.dist.T.idxmax()
+        #self.df['class'] = self.dist.T.idxmax().astype(int)
+        return self.dist.T.idxmax().astype(int)
 
 
     def update_centroids(self):
@@ -144,7 +138,8 @@ class KModes:
         while iters <= self.max_iter and convergence != 0:
             #last_class = self.df['class'].copy()
 
-            self.fit(dist_metric)
+            self.df['class'] = self.fit(dist_metric)
+            print(self.df['class'].value_counts())
             self.update_centroids()
 
             iters += 1
@@ -155,6 +150,6 @@ class KModes:
         return self.df['class']
 
 
-classes_ = KModes(df_connect_encoded, k=4, max_iter=10).run('bisecting', 'simple')
+classes_ = KModes(df_connect_encoded, k=4, max_iter=10).run('random', 'simple')
 print(classes_.value_counts())
 print(correct_class.value_counts())
