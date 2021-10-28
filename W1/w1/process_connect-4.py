@@ -73,7 +73,7 @@ class KModes:
         self.max_iter = max_iter
         self.df = data
         self.dist = pd.DataFrame(index=range(self.df.shape[0]), columns=range(k), dtype=int)
-        self.centroids = pd.DataFrame(index=range(k), columns=range(self.df.shape[1]), dtype=int)
+        self.centroids = pd.DataFrame(index=range(k), columns=range(self.df.shape[1]))
         self.df['class'] = ''
 
     def init_centroids(self, method):
@@ -101,15 +101,20 @@ class KModes:
             print('K-bisecting has finished.')
 
     def distance(self, x, y, metric):
-        y = y.astype(x.dtypes[0])
+        #y = y.astype(x.dtypes[0])
         if metric == 'simple':
             dist = x.eq(y.values, axis='columns')
             #return dist.sum(axis=1).astype(x.dtypes[0])
             return dist.sum(axis=1)
 
-
         if metric == 'distribution':
-            pass
+            freq = x.iloc[:, :-1].apply(lambda v: v.map(v.value_counts()), axis=0)
+            m_num = x[x['class'] == y.name].iloc[:, :-1].eq(y.values, axis='columns').sum(axis=1)
+            m_den = x[x['class'] == y.name].shape[0]
+            m = m_num/m_den
+            dis = x.iloc[:, :-1].eq(y.values, axis='columns')
+            return ((dis/freq) * m).sum(axis=1)
+
 
     def fit(self, dist_metric):
         for k in range(self.k):
