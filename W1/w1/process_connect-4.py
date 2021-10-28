@@ -93,20 +93,20 @@ class KModes:
                 mod_class = classes.copy()
                 mod_class[classes == 0], mod_class[classes == 1] = max_class, self.df['class'].max() + 1
 
-                self.df['class'][self.df['class'] == max_class] = mod_class
+                self.df['class'][self.df['class'] == max_class] = mod_class.values
                 print(self.df['class'].value_counts())
                 max_class = self.df['class'].value_counts().idxmax().astype(int)
 
             self.update_centroids()
-            # print(self.centroids)
-            # print(self.df['class'].value_counts())
             print('K-bisecting has finished.')
 
     def distance(self, x, y, metric):
         y = y.astype(x.dtypes[0])
         if metric == 'simple':
             dist = x.eq(y.values, axis='columns')
-            return dist.sum(axis=1).astype(x.dtypes[0])
+            #return dist.sum(axis=1).astype(x.dtypes[0])
+            return dist.sum(axis=1)
+
 
         if metric == 'distribution':
             pass
@@ -117,6 +117,7 @@ class KModes:
             self.dist.iloc[:, k] = A.values
 
         # self.df['class'] = self.dist.T.idxmax().astype(int)
+        #print(self.dist)
         return self.dist.T.idxmax().astype(int)
 
     def update_centroids(self):
@@ -134,7 +135,7 @@ class KModes:
             # last_class = self.df['class'].copy()
 
             self.df['class'] = self.fit(dist_metric)
-            print(self.df['class'].value_counts())
+            #print(self.df['class'].value_counts())
             self.update_centroids()
 
             iters += 1
@@ -145,6 +146,6 @@ class KModes:
         return self.df['class']
 
 
-classes_ = KModes(df_connect_encoded, k=4, max_iter=10).run('bisecting', 'simple')
+classes_ = KModes(df_connect, k=3, max_iter=10).run('bisecting', 'simple')
 print(classes_.value_counts())
 print(correct_class.value_counts())
