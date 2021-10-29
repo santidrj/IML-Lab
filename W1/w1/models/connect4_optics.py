@@ -16,7 +16,7 @@ df_connect4_encoded = pd.read_pickle(os.path.join('..', '..', 'datasets', 'proce
 df_connect4_encoded_subset = df_connect4_encoded.sample(n=3000)
 
 
-min_pts = 10
+min_pts = 70
 start = time.time()
 optics_clusters = OPTICS(min_samples = min_pts).fit(df_connect4_encoded_subset.iloc[:, :-1])
 end = time.time()
@@ -48,8 +48,8 @@ def optics_plots(df, models):
 unique, counts = np.unique(optics_clusters.labels_, return_counts=True)
 
 path = os.path.join('..', '..', 'validation', 'connect4_val.txt')
-with open(path, 'w') as f:
-    f.write(f'\n*OPTICS: min_pts = {min_pts}, unique = {unique}, counts = {counts}')
+with open(path, 'a') as f:
+    f.write(f'\n \n*OPTICS: min_pts = {min_pts}, unique = {unique}, counts = {counts}')
 
 utils.print_metrics(df_connect4_encoded_subset.iloc[:, :-1], df_connect4_encoded_subset['class'], optics_clusters.labels_, file_path=path, isOPTICS=True )
 

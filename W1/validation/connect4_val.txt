@@ -1,0 +1,130 @@
+-no-
+*OPTICS: min_pts = 5, unique = [-1  0  1  2  3  4  5  6  7  8], counts = [2941    8    9    7    5    7    7    5    6    5]
+Internal validation
+Calinski-Harabasz score: 31.245578848086417
+Davies-Bouldin score: 1.0320621975557844
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0069184979978920555
+Fowlkes-Mallows score (from 0 to 1): 0.6929202716356738
+
+-no-
+*OPTICS: min_pts = 10, unique = [-1  0  1  2  3], counts = [1099 1853   11   11   26]
+Internal validation
+Calinski-Harabasz score: 14.204475608351409
+Davies-Bouldin score: 1.625380139543964
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.00018358828622674908
+Fowlkes-Mallows score (from 0 to 1): 0.5065682534287504
+
+ -no-
+*OPTICS: min_pts = 15, unique = [-1  0  1  2  3  4  5  6  7], counts = [2443  269   15   38   96   19   31   72   17]
+Internal validation
+Calinski-Harabasz score: 45.26273613118528
+Davies-Bouldin score: 1.7395340414442597
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.001373969667185104
+Fowlkes-Mallows score (from 0 to 1): 0.5860141616259124
+
+-no-
+*OPTICS: min_pts = 20, unique = [-1  0  1], counts = [2940   25   35]
+Internal validation
+Calinski-Harabasz score: 36.552519659765686
+Davies-Bouldin score: 1.221586507772146
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0015348713131679108
+Fowlkes-Mallows score (from 0 to 1): 0.6921993217468997
+
+ -no-
+*OPTICS: min_pts = 25, unique = [-1  0], counts = [ 442 2558]
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.001450929116601014
+Fowlkes-Mallows score (from 0 to 1): 0.6170788196535479
+
+ -no-
+*OPTICS: min_pts = 30, unique = [-1  0], counts = [ 674 2326]
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0034528418769001327
+Fowlkes-Mallows score (from 0 to 1): 0.5603903113753907
+
+ -no-
+*OPTICS: min_pts = 35, unique = [-1  0], counts = [1204 1796]
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0031219778209589646
+Fowlkes-Mallows score (from 0 to 1): 0.510617249389476
+
+-no-
+*OPTICS: min_pts = 40, unique = [-1  0], counts = [1664 1336]
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0005952496749589011
+Fowlkes-Mallows score (from 0 to 1): 0.505080357333739
+
+-no-
+*OPTICS: min_pts = 45, unique = [-1  0], counts = [1852 1148]
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0009839518686867211
+Fowlkes-Mallows score (from 0 to 1): 0.5265303756152035
+ 
+*OPTICS: min_pts = 50, unique = [-1  0  1], counts = [2356  228  416]
+Internal validation
+Calinski-Harabasz score: 76.78020558308364
+Davies-Bouldin score: 2.7287411400594177
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0068515893937003995
+Fowlkes-Mallows score (from 0 to 1): 0.5817395312778935
+
+
+*OPTICS: min_pts = 8, unique = [-1  0  1  2  3], counts = [ 635 2331   11   15    8]
+Internal validation
+Calinski-Harabasz score: 10.961785057800833
+Davies-Bouldin score: 1.5298516065948096
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.004932341110893201
+Fowlkes-Mallows score (from 0 to 1): 0.5733323011819792
+
+-no-
+*OPTICS: min_pts = 12, unique = [-1  0  1  2  3  4  5  6  7], counts = [1784 1020   17   47   55   12   29   19   17]
+Internal validation
+Calinski-Harabasz score: 24.831891416380348
+Davies-Bouldin score: 1.881453634587528
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.005612903523817652
+Fowlkes-Mallows score (from 0 to 1): 0.4996464093631545
+
+-no-
+*OPTICS: min_pts = 52, unique = [-1  0  1], counts = [2870   70   60]
+Internal validation
+Calinski-Harabasz score: 36.00638135534438
+Davies-Bouldin score: 1.866184797400974
+External validation
+Adjusted Mutual Information score (from 0 to 1): -0.0004549361747392435
+Fowlkes-Mallows score (from 0 to 1): 0.6906985088323374
+
+-no-
+*OPTICS: min_pts = 55, unique = [-1  0  1], counts = [2782  152   66]
+Internal validation
+Calinski-Harabasz score: 44.63323827008224
+Davies-Bouldin score: 1.974695798023337
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.00043717120276102274
+Fowlkes-Mallows score (from 0 to 1): 0.6648644247211469
+
+-no-
+*OPTICS: min_pts = 60, unique = [-1  0  1], counts = [2733  171   96]
+Internal validation
+Calinski-Harabasz score: 39.02699782914536
+Davies-Bouldin score: 2.3873110817044787
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.007935003978787552
+Fowlkes-Mallows score (from 0 to 1): 0.6625352099657064
+
+-no-
+*OPTICS: min_pts = 65, unique = [-1  0], counts = [ 308 2692]
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.001052587638445051
+Fowlkes-Mallows score (from 0 to 1): 0.6305966919594992
+
+-no-
+*OPTICS: min_pts = 70, unique = [-1  0], counts = [2903   97]
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0016186290498109053
+Fowlkes-Mallows score (from 0 to 1): 0.6828665091203996
