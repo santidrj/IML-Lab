@@ -10,7 +10,7 @@ df_heart = pd.read_pickle(os.path.join('..', '..', 'datasets', 'processed', 'pro
 # Use OPTICS with euclidean distance and auto algorithm for approximation to the nearest neighbour
 metrics = ['euclidean', 'l1', 'chebyshev']
 algorithms = ['kd_tree', 'brute']
-minPts = 30
+minPts = 28
 
 optics_clusterings = []
 optics_clusterings.append(OPTICS(min_samples=minPts, metric='euclidean', algorithm='kd_tree').fit(df_heart))
