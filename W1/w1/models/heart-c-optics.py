@@ -70,3 +70,5 @@ for i, m in enumerate(metrics):
         plt.savefig(os.path.join('..', '..', 'figures', 'heart-c', f'heart-c_optics-{m}-{a}.png'))
 
         utils.print_metrics(df_heart, df_gs, optics_model.labels_, isOPTICS=True)
+
+        utils.print_metrics(df_heart, df_gs, optics_model.labels_, isOPTICS=True)

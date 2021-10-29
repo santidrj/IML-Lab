@@ -49,19 +49,19 @@ def print_metrics(data, true_labels, pred_labels, file_path, isOPTICS=False):
             in_data = data
             in_labels = pred_labels
 
-        if len(set(pred_labels)) > 1:
-            print('\nInternal validation')
+        if len(set(in_labels)) > 1:
+            file.write('\nInternal validation')
 
             ch_score = metrics.calinski_harabasz_score(in_data, in_labels)
-            print(f'Calinski-Harabasz score: {ch_score}')
+            file.write(f'\nCalinski-Harabasz score: {ch_score}')
 
             db_score = metrics.davies_bouldin_score(in_data, in_labels)
-            print(f'Davies-Bouldin score: {db_score}')
+            file.write(f'\nDavies-Bouldin score: {db_score}')
 
             # s_score = metrics.silhouette_score(data, pred_labels)
             # print(f'Silhouette score (from -1 to 1): {s_score}')
 
-        print('\nExternal validation')
+        file.write('\nExternal validation')
 
         # hcv_score = metrics.homogeneity_completeness_v_measure(true_labels, pred_labels)
         # print(f'Homogeneity, completeness and V-measure (form 0 to 1): {hcv_score}')
@@ -73,10 +73,10 @@ def print_metrics(data, true_labels, pred_labels, file_path, isOPTICS=False):
         # print(f'Adjusted Rand index (from -1 to 1): {adj_rand_sc}')
 
         adj_mutual_info_sc = metrics.adjusted_mutual_info_score(true_labels, pred_labels)
-        print(f'Adjusted Mutual Information score (from 0 to 1): {adj_mutual_info_sc}')
+        file.write(f'\nAdjusted Mutual Information score (from 0 to 1): {adj_mutual_info_sc}')
 
         fm_score = metrics.fowlkes_mallows_score(true_labels, pred_labels)
-        print(f'Fowlkes-Mallows score (from 0 to 1): {fm_score}')
+        file.write(f'\nFowlkes-Mallows score (from 0 to 1): {fm_score}')
 
         # contingency_mat = metrics.cluster.contingency_matrix(true_labels, pred_labels)
         # fig = plt.figure(num=None, figsize=(8, 6), dpi=80, facecolor='w', edgecolor='k')
