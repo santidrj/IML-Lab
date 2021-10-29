@@ -1,12 +1,12 @@
-import time
 import os
 import pickle
+import time
 
+import matplotlib.cm as cm
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from sklearn.cluster import OPTICS
-import matplotlib.pyplot as plt
-import matplotlib.cm as cm
 
 ## OPTICS
 df_connect4 = pd.read_pickle(os.path.join('..', '..', 'datasets', 'processed', 'processed_connect4.pkl'))
@@ -46,7 +46,7 @@ def optics_plots(df, models):
 
 
 optics_plots(df_connect4_encoded_subset, optics_clusters)
-utils.print_metrics(df_connect4_encoded, true_class, classes, 3)
+utils.print_metrics(df_connect4_encoded, true_class, classes, isOPTICS=True)
 
 """
 

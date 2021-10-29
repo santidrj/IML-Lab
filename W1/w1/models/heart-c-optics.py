@@ -5,16 +5,20 @@ import pandas as pd
 from matplotlib import pyplot as plt, gridspec
 from sklearn.cluster import OPTICS
 
-df_heart = pd.read_pickle(os.path.join('..', '..', 'datasets', 'processed', 'processed_heart-c.pkl'))
+import utils
+
+data_root_path = os.path.join('..', '..', 'datasets')
+df_heart = pd.read_pickle(os.path.join(data_root_path, 'processed', 'processed_heart-c.pkl'))
+df_gs = pd.read_pickle(os.path.join(data_root_path, 'processed', 'heart-c_gs.pkl'))
 
 # Use OPTICS with euclidean distance and auto algorithm for approximation to the nearest neighbour
 metrics = ['euclidean', 'l1', 'chebyshev']
 algorithms = ['kd_tree', 'brute']
-minPts = 28
+minPts = 9
 
 optics_clusterings = []
-optics_clusterings.append(OPTICS(min_samples=minPts, metric='euclidean', algorithm='kd_tree').fit(df_heart))
-optics_clusterings.append(OPTICS(min_samples=minPts, metric='euclidean', algorithm='brute').fit(df_heart))
+optics_clusterings.append(OPTICS(min_samples=minPts, metric='l2', algorithm='kd_tree').fit(df_heart))
+optics_clusterings.append(OPTICS(min_samples=minPts, metric='l2', algorithm='brute').fit(df_heart))
 optics_clusterings.append(OPTICS(min_samples=minPts, metric='l1', algorithm='kd_tree').fit(df_heart))
 optics_clusterings.append(OPTICS(min_samples=minPts, metric='l1', algorithm='brute').fit(df_heart))
 optics_clusterings.append(OPTICS(min_samples=minPts, metric='chebyshev', algorithm='kd_tree').fit(df_heart))
@@ -64,3 +68,5 @@ for i, m in enumerate(metrics):
         plt.show()
 
         plt.savefig(os.path.join('..', '..', 'figures', 'heart-c', f'heart-c_optics-{m}-{a}.png'))
+
+        utils.print_metrics(df_heart, df_gs, optics_model.labels_, isOPTICS=True)

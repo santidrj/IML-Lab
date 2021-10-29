@@ -43,10 +43,10 @@ df_heart_categorical = utils.categorical_to_numerical(df_heart)
 
 # Normalize data
 df_heart_numerical = df_heart.select_dtypes(include='number')
-# df_heart_normalized = utils.normalize_data(df_heart_numerical, df_heart_numerical.columns, RobustScaler())
-df_heart_normalized = utils.normalize_data(df_heart_categorical, df_heart_categorical.columns, RobustScaler())
-# df_heart_normalized = pd.concat([df_heart_normalized, df_heart_categorical.drop(columns=df_heart_normalized.columns)],
-#                                 axis=1)
+df_heart_normalized = utils.normalize_data(df_heart_numerical, df_heart_numerical.columns, RobustScaler())
+# df_heart_normalized = utils.normalize_data(df_heart_categorical, df_heart_categorical.columns, RobustScaler())
+df_heart_normalized = pd.concat([df_heart_normalized, df_heart_categorical.drop(columns=df_heart_normalized.columns)],
+                                axis=1)
 print()
 print(df_heart_normalized.head())
 
