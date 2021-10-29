@@ -41,4 +41,4 @@ maj_class = counts.argmax()
 min_class = counts.argmin()
 df_gs.replace({'<50': maj_class, '>50_1': min_class}, inplace=True)
 
-utils.run_numerical_validations(df_heart, df_gs, labels, K)
+utils.validate_kmeans(df_heart, df_gs, labels, K)
