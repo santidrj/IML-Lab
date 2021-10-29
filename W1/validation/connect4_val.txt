@@ -128,3 +128,11 @@ Fowlkes-Mallows score (from 0 to 1): 0.6305966919594992
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.0016186290498109053
 Fowlkes-Mallows score (from 0 to 1): 0.6828665091203996
+ 
+*OPTICS: min_pts = 10, unique = [-1  0  1  2], counts = [1119 1849   22   10]
+Internal validation
+Calinski-Harabasz score: 1.1182470743058315
+Davies-Bouldin score: 8.649656340557504
+External validation
+Adjusted Mutual Information score (from 0 to 1): -0.0003877241132427127
+Fowlkes-Mallows score (from 0 to 1): 0.5093796072632315
