@@ -61,7 +61,7 @@ def print_metrics(data, true_labels, pred_labels, file_path, isOPTICS=False):
             # s_score = metrics.silhouette_score(data, pred_labels)
             # print(f'Silhouette score (from -1 to 1): {s_score}')
 
-        file.write('\nExternal validation')
+        file.write('\n\nExternal validation')
 
         # hcv_score = metrics.homogeneity_completeness_v_measure(true_labels, pred_labels)
         # print(f'Homogeneity, completeness and V-measure (form 0 to 1): {hcv_score}')

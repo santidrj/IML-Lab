@@ -69,6 +69,8 @@ for i, m in enumerate(metrics):
 
         plt.savefig(os.path.join('..', '..', 'figures', 'heart-c', f'heart-c_optics-{m}-{a}.png'))
 
-        utils.print_metrics(df_heart, df_gs, optics_model.labels_, isOPTICS=True)
+        file_path = os.path.join('..', '..', 'validation', 'heart-c_optics_val.txt')
+        with open(file_path, 'a') as f:
+            f.write(f'\n \nOPTICS: min_pts = {minPts}, metric = {m}, algorithm = {a}')
 
-        utils.print_metrics(df_heart, df_gs, optics_model.labels_, isOPTICS=True)
+        utils.print_metrics(df_heart, df_gs, optics_model.labels_, file_path, isOPTICS=True)

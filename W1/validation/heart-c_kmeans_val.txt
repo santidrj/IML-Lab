@@ -1,0 +1,18 @@
+K-means: K = 2, init = random, max_inter = 300, n_init = 10
+Internal validation
+Calinski-Harabasz score: 65.06403031382244
+Davies-Bouldin score: 2.12119180700052
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.3149936157672686
+Fowlkes-Mallows score (from 0 to 1): 0.7023556540128196
+
+ 
+K-means: K = 2, init = random, metric = l1 max_inter = 300, n_init = 10
+Internal validation
+Calinski-Harabasz score: 64.50914320538462
+Davies-Bouldin score: 2.126349825279664
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.3277634155584219
+Fowlkes-Mallows score (from 0 to 1): 0.7112921116564247

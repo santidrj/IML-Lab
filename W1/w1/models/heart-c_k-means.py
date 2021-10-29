@@ -7,13 +7,16 @@ from matplotlib import pyplot as plt
 import utils
 from algorithms.kmeans import Kmeans
 
-K = 2
-
 data_root_path = os.path.join('..', '..', 'datasets')
 df_heart = pd.read_pickle(os.path.join(data_root_path, 'processed', 'processed_heart-c.pkl'))
 df_gs = pd.read_pickle(os.path.join(data_root_path, 'processed', 'heart-c_gs.pkl'))
 
-kmeans = Kmeans(k=K, init='random')
+K = 2
+init_method = 'random'
+metric = 'l1'
+n_iter = 300
+init = 10
+kmeans = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
 kmeans.fit(df_heart)
 print(f'Sum of squared error: {kmeans.square_error}')
 
@@ -32,13 +35,19 @@ ax.plot(df_heart.iloc[labels == -1, 0],
 
 centers = np.array(kmeans.centroids)
 ax.scatter(centers[:, 0], centers[:, 1], marker="x", color="k")
-ax.set_title('K-means Clustering')
+ax.set_title(f'K-means Clustering with K={K}, init={init_method} and metric={metric}')
 
 plt.show()
+
+plt.savefig(os.path.join('..', '..', 'figures', 'heart-c', f'heart-c_k-means-{K}-{init_method}.png'))
 
 counts = np.bincount(labels.astype(int))
 maj_class = counts.argmax()
 min_class = counts.argmin()
 df_gs.replace({'<50': maj_class, '>50_1': min_class}, inplace=True)
 
-utils.print_metrics(df_heart, df_gs, labels)
+file_path = os.path.join('..', '..', 'validation', 'heart-c_kmeans_val.txt')
+with open(file_path, 'a') as f:
+    f.write(f'\n \nK-means: K = {K}, init = {init_method}, metric = {metric} max_inter = {n_iter}, n_init = {init}')
+
+utils.print_metrics(df_heart, df_gs, labels, file_path)

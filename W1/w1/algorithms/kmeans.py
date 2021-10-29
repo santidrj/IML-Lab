@@ -2,22 +2,25 @@ import numpy as np
 from numpy import arange
 from numpy.random import random
 from pandas import DataFrame
-from scipy.spatial.distance import euclidean
+from scipy.spatial.distance import euclidean, minkowski
 
 
 class Kmeans:
-    def __init__(self, k=8, init='k-means++', max_iter=300, n_init=10):
+    def __init__(self, k=8, init='k-means++', metric='euclidean', max_iter=300, n_init=10):
         """
         K-means clustering algorithm.
 
+        :param metric:
         :param k: The number of clusters to form.
         :param init: Method for initialization. Available methods are: 'k-means++' and 'random'.
+        :param metric: Metric to compute the distances. Available metrics are: 'euclidean', and 'l1'.
         :param max_iter: Maximum number of iterations of the K-means algorithm for a single run.
         :param n_init: Number of times the K-means algorithm will be run with different centroid seeds.
         """
         self.k = k
         self.init = init
         self.centroids = []
+        self.metric = metric
         self.max_iter = max_iter
         self.n_init = n_init
         self.labels = []
@@ -28,6 +31,12 @@ class Kmeans:
             return self._kmeans_plusplus(data, self.k)
         else:
             return data[np.random.choice(data.shape[0], self.k, replace=False), :]
+
+    def _compute_distance(self, a, b):
+        if self.metric == 'euclidean':
+            return euclidean(a, b) ** 2
+        elif self.metric == 'l1':
+            return minkowski(a, b, p=1)
 
     # noinspection SpellCheckingInspection
     def fit(self, data: DataFrame):
@@ -75,7 +84,7 @@ class Kmeans:
             min_distance = np.inf
             label = -1
             for idx, centroid in enumerate(centroids):
-                distance = euclidean(centroid, elem) ** 2
+                distance = self._compute_distance(centroid, elem)
                 if distance < min_distance:
                     min_distance = distance
                     label = idx
@@ -104,7 +113,7 @@ class Kmeans:
         sum_squared_error = 0
         for i, centroid in enumerate(centroids):
             indices = np.where(labels == i)
-            sum_squared_error += np.sum([euclidean(centroid, point) ** 2 for point in x[indices]])
+            sum_squared_error += np.sum([self._compute_distance(centroid, point) for point in x[indices]])
 
         return sum_squared_error
 
@@ -143,9 +152,9 @@ class Kmeans:
 
     def _closest_distances(self, x, y):
         if x.ndim == 1:
-            distances = np.array([euclidean(x, point) ** 2 for point in y])
+            distances = np.array([self._compute_distance(x, point) for point in y])
         else:
             distances = np.empty((x.shape[0], y.shape[0]), dtype=x.dtype)
             for i, elem in enumerate(x):
-                distances[i] = [euclidean(elem, point) ** 2 for point in y]
+                distances[i] = [self._compute_distance(elem, point) for point in y]
         return distances
