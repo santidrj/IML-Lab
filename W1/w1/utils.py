@@ -39,56 +39,58 @@ def normalize_data(dataframe: DataFrame, numerical_columns, scaler):
     return df
 
 
-def print_metrics(data, true_labels, pred_labels, isOPTICS=False):
-    if isOPTICS:
-        in_data = data[pred_labels != -1]
-        in_labels = pred_labels[pred_labels != -1]
-    else:
-        in_data = data
-        in_labels = pred_labels
+def print_metrics(data, true_labels, pred_labels, file_path, isOPTICS=False):
+    with open(file_path, 'a') as file:
 
-    if len(set(pred_labels)) > 1:
-        print('\nInternal validation')
+        if isOPTICS:
+            in_data = data[pred_labels != -1]
+            in_labels = pred_labels[pred_labels != -1]
+        else:
+            in_data = data
+            in_labels = pred_labels
 
-        ch_score = metrics.calinski_harabasz_score(in_data, in_labels)
-        print(f'Calinski-Harabasz score: {ch_score}')
+        if len(set(pred_labels)) > 1:
+            print('\nInternal validation')
 
-        db_score = metrics.davies_bouldin_score(in_data, in_labels)
-        print(f'Davies-Bouldin score: {db_score}')
+            ch_score = metrics.calinski_harabasz_score(in_data, in_labels)
+            print(f'Calinski-Harabasz score: {ch_score}')
 
-        # s_score = metrics.silhouette_score(data, pred_labels)
-        # print(f'Silhouette score (from -1 to 1): {s_score}')
+            db_score = metrics.davies_bouldin_score(in_data, in_labels)
+            print(f'Davies-Bouldin score: {db_score}')
 
-    print('\nExternal validation')
+            # s_score = metrics.silhouette_score(data, pred_labels)
+            # print(f'Silhouette score (from -1 to 1): {s_score}')
 
-    # hcv_score = metrics.homogeneity_completeness_v_measure(true_labels, pred_labels)
-    # print(f'Homogeneity, completeness and V-measure (form 0 to 1): {hcv_score}')
+        print('\nExternal validation')
 
-    # rand_sc = metrics.rand_score(true_labels, pred_labels)
-    # print(f'Rand index (form 0 to 1): {rand_sc}')
+        # hcv_score = metrics.homogeneity_completeness_v_measure(true_labels, pred_labels)
+        # print(f'Homogeneity, completeness and V-measure (form 0 to 1): {hcv_score}')
 
-    # adj_rand_sc = metrics.adjusted_rand_score(true_labels, pred_labels)
-    # print(f'Adjusted Rand index (from -1 to 1): {adj_rand_sc}')
+        # rand_sc = metrics.rand_score(true_labels, pred_labels)
+        # print(f'Rand index (form 0 to 1): {rand_sc}')
 
-    adj_mutual_info_sc = metrics.adjusted_mutual_info_score(true_labels, pred_labels)
-    print(f'Adjusted Mutual Information score (from 0 to 1): {adj_mutual_info_sc}')
+        # adj_rand_sc = metrics.adjusted_rand_score(true_labels, pred_labels)
+        # print(f'Adjusted Rand index (from -1 to 1): {adj_rand_sc}')
 
-    fm_score = metrics.fowlkes_mallows_score(true_labels, pred_labels)
-    print(f'Fowlkes-Mallows score (from 0 to 1): {fm_score}')
+        adj_mutual_info_sc = metrics.adjusted_mutual_info_score(true_labels, pred_labels)
+        print(f'Adjusted Mutual Information score (from 0 to 1): {adj_mutual_info_sc}')
 
-    # contingency_mat = metrics.cluster.contingency_matrix(true_labels, pred_labels)
-    # fig = plt.figure(num=None, figsize=(8, 6), dpi=80, facecolor='w', edgecolor='k')
+        fm_score = metrics.fowlkes_mallows_score(true_labels, pred_labels)
+        print(f'Fowlkes-Mallows score (from 0 to 1): {fm_score}')
 
-    # plt.clf()
+        # contingency_mat = metrics.cluster.contingency_matrix(true_labels, pred_labels)
+        # fig = plt.figure(num=None, figsize=(8, 6), dpi=80, facecolor='w', edgecolor='k')
 
-    # ax = fig.add_subplot(111)
+        # plt.clf()
 
-    # ax.set_aspect(1)
+        # ax = fig.add_subplot(111)
 
-    # res = sns.heatmap(contingency_mat, annot=True, fmt='d', cmap="YlGnBu", vmin=0.0, vmax=contingency_mat.max())
+        # ax.set_aspect(1)
 
-    # plt.title(f'Contingency Matrix for K={k}', fontsize=12)
+        # res = sns.heatmap(contingency_mat, annot=True, fmt='d', cmap="YlGnBu", vmin=0.0, vmax=contingency_mat.max())
 
-    # plt.savefig(figure_path, bbox_inches='tight', dpi=100)
+        # plt.title(f'Contingency Matrix for K={k}', fontsize=12)
 
-    # plt.show()
+        # plt.savefig(figure_path, bbox_inches='tight', dpi=100)
+
+        # plt.show()
