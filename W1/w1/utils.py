@@ -46,12 +46,17 @@ def validate_kmeans(data, true_labels, pred_labels, k):
 
     ch_score = metrics.calinski_harabasz_score(data, pred_labels)
     print(f'Calinski-Harabasz score: {ch_score}')
+
     db_score = metrics.davies_bouldin_score(data, pred_labels)
     print(f'Davies-Bouldin score: {db_score}')
+
     s_score = metrics.silhouette_score(data, pred_labels)
     print(f'Silhouette score (from -1 to 1): {s_score}')
 
     print('\nExternal validation')
+
+    hcv_score = metrics.homogeneity_completeness_v_measure(true_labels, pred_labels)
+    print(f'Homogeneity, completeness and V-measure: {hcv_score}')
 
     rand_sc = metrics.rand_score(true_labels, pred_labels)
     print(f'Rand index (form 0 to 1): {rand_sc}')

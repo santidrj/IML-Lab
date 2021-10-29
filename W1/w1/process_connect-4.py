@@ -1,9 +1,12 @@
 import os.path
 import warnings
 
+import numpy as np
 import pandas as pd
 from pandas.core.common import SettingWithCopyWarning
 from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import adjusted_rand_score, adjusted_mutual_info_score, homogeneity_completeness_v_measure, fowlkes_mallows_score, silhouette_score, calinski_harabasz_score, davies_bouldin_score
+from sklearn.metrics.cluster import contingency_matrix
 
 import utils
 
@@ -27,7 +30,7 @@ def column_values(df):
 # column_values(df_connect)
 # print(df_connect.head())
 
-correct_class = df_connect['class']
+true_class = df_connect['class']
 df_connect.drop(columns='class', inplace=True)
 
 
@@ -65,7 +68,7 @@ connect_pca = PCA(2).fit_transform(df_connect_encoded)
 df_connect_encoded_pca = pd.DataFrame(connect_pca, columns=['a1', 'a2'])
 print(df_connect_encoded_pca.head())
 """
-
+"""
 
 class KModes:
     def __init__(self, data, k, max_iter=30):
@@ -151,6 +154,32 @@ class KModes:
         return self.df['class']
 
 
-classes_ = KModes(df_connect, k=3, max_iter=10).run('bisecting', 'simple')
-print(classes_.value_counts())
+classes = KModes(df_connect, k=4, max_iter=10).run('bisecting', 'simple')
+print(classes.value_counts())
 print(correct_class.value_counts())
+np.save('predicted_classes_k_modes.npy', classes)
+"""
+classes = np.load('predicted_classes_k_modes.npy')
+
+def print_metrics(labels_true, labels_pred):
+
+    ext_val_metrics_names = ['Adjusted Rand Index', 'Mutual information based scores', 'Homogeneity, completeness and V-measure', 'Fowlkes-Mallows scores', 'Contingency Matrix']
+    int_val_metrics_names = ['Silhoutte Coefficient', 'Calinski-Harabaz Index', 'Davies-Bouldin Index']
+    ext_val_metrics = [adjusted_rand_score, adjusted_mutual_info_score, homogeneity_completeness_v_measure, fowlkes_mallows_score, contingency_matrix]
+    #int_val_metrics = [silhouette_score, calinski_harabasz_score, davies_bouldin_score]
+    int_val_metrics = [calinski_harabasz_score]
+
+    print('External validation indexes:')
+
+    for e in range(len(ext_val_metrics)):
+        print(f'{ext_val_metrics_names[e]}: {ext_val_metrics[e](labels_true, labels_pred)}')
+
+    for i in range(len(int_val_metrics)):
+        print(f'{int_val_metrics_names[i]}: {int_val_metrics[i](df_connect, labels_pred)}')
+
+
+print_metrics(true_class, classes)
+
+
+
+
