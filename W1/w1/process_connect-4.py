@@ -161,6 +161,8 @@ np.save('predicted_classes_k_modes.npy', classes)
 """
 classes = np.load('predicted_classes_k_modes.npy')
 
+
+"""
 def print_metrics(labels_true, labels_pred):
 
     ext_val_metrics_names = ['Adjusted Rand Index', 'Mutual information based scores', 'Homogeneity, completeness and V-measure', 'Fowlkes-Mallows scores', 'Contingency Matrix']
@@ -179,7 +181,7 @@ def print_metrics(labels_true, labels_pred):
 
 
 print_metrics(true_class, classes)
-
+"""
 
 
 

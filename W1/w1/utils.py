@@ -41,7 +41,7 @@ def normalize_data(dataframe: DataFrame, numerical_columns, scaler):
     return df
 
 
-def validate_kmeans(data, true_labels, pred_labels, k):
+def print_metrics(data, true_labels, pred_labels, k):
     print('\nInternal validation')
 
     ch_score = metrics.calinski_harabasz_score(data, pred_labels)
