@@ -50,13 +50,13 @@ def print_metrics(data, true_labels, pred_labels, k):
     db_score = metrics.davies_bouldin_score(data, pred_labels)
     print(f'Davies-Bouldin score: {db_score}')
 
-    s_score = metrics.silhouette_score(data, pred_labels)
-    print(f'Silhouette score (from -1 to 1): {s_score}')
+    #s_score = metrics.silhouette_score(data, pred_labels)
+    #print(f'Silhouette score (from -1 to 1): {s_score}')
 
     print('\nExternal validation')
 
     hcv_score = metrics.homogeneity_completeness_v_measure(true_labels, pred_labels)
-    print(f'Homogeneity, completeness and V-measure: {hcv_score}')
+    print(f'Homogeneity, completeness and V-measure (form 0 to 1): {hcv_score}')
 
     rand_sc = metrics.rand_score(true_labels, pred_labels)
     print(f'Rand index (form 0 to 1): {rand_sc}')
@@ -79,7 +79,7 @@ def print_metrics(data, true_labels, pred_labels, k):
 
     ax.set_aspect(1)
 
-    res = sns.heatmap(contingency_mat, annot=True, fmt='.2f', cmap="YlGnBu", vmin=0.0, vmax=100.0)
+    res = sns.heatmap(contingency_mat, annot=True, fmt='d', cmap="YlGnBu", vmin=0.0, vmax=contingency_mat.max())
 
     plt.title(f'Contingency Matrix for K={k}', fontsize=12)
 
