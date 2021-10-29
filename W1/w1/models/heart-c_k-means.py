@@ -10,7 +10,7 @@ from algorithms.kmeans import Kmeans
 K = 2
 
 data_root_path = os.path.join('..', 'datasets')
-df_heart = pd.read_pickle(os.path.join(data_root_path, 'processed', 'processed-heart-c.pkl'))
+df_heart = pd.read_pickle(os.path.join(data_root_path, 'processed', 'processed_heart-c.pkl'))
 df_gs = pd.read_pickle(os.path.join(data_root_path, 'processed', 'heart-c_gs.pkl'))
 
 kmeans = Kmeans(k=K, init='k-means++')
@@ -41,4 +41,4 @@ maj_class = counts.argmax()
 min_class = counts.argmin()
 df_gs.replace({'<50': maj_class, '>50_1': min_class}, inplace=True)
 
-utils.validate_kmeans(df_heart, df_gs, labels, K)
+utils.print_metrics(df_heart, df_gs, labels, K)

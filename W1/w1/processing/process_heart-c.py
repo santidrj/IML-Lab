@@ -51,7 +51,7 @@ print()
 print(df_heart_normalized.head())
 
 save_path = os.path.join(data_root_path, 'processed')
-pd.to_pickle(df_heart_normalized, os.path.join(save_path, 'process_heart-c.pkl'))
+pd.to_pickle(df_heart_normalized, os.path.join(save_path, 'processed_heart-c.pkl'))
 pd.to_pickle(df_gs, os.path.join(save_path, 'heart-c_gs.pkl'))
 
 figs_folder_path = os.path.join('..', '..', 'figures', 'heart-c')
