@@ -9,15 +9,15 @@ from algorithms.kmeans import Kmeans
 data_root_path = os.path.join('..', '..', 'datasets')
 df = utils.load_arff(os.path.join(data_root_path, 'datasets', 'pen-based.arff'))
 
-# TODO: get all rows
 df_gs = df[df.columns[-1]]
 df = df.drop(columns=df.columns[-1])
 
 K = 10
 init_method = 'random'
+metric = 'euclidean'
 n_iter = 300
 init = 10
-kmeans = Kmeans(k=K, init=init_method, max_iter=n_iter, n_init=init)
+kmeans = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
 kmeans.fit(df)
 print(f'Sum of squared error: {kmeans.square_error}')
 
@@ -36,7 +36,7 @@ ax.plot(df.iloc[labels == -1, 0],
 
 centers = np.array(kmeans.centroids)
 ax.scatter(centers[:, 0], centers[:, 1], marker="x", color="k")
-ax.set_title(f'K-means Clustering with K={K} and init={init_method}')
+ax.set_title(f'K-means Clustering with K={K}, init={init_method} and metric={metric}')
 
 plt.show()
 
@@ -52,6 +52,6 @@ for i in range(len(true_labels)):
 
 file_path = os.path.join('..', '..', 'validation', 'pen-based_kmeans_val.txt')
 with open(file_path, 'a') as f:
-    f.write(f'\n \nK-means: K = {K}, init = {init_method}, max_inter = {n_iter}, n_init = {init}')
+    f.write(f'\n \nK-means: K = {K}, init = {init_method}, metric = {metric}, max_inter = {n_iter}, n_init = {init}')
 
 utils.print_metrics(df, true_labels, labels, file_path)
