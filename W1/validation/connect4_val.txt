@@ -136,3 +136,9 @@ Davies-Bouldin score: 8.649656340557504
 External validation
 Adjusted Mutual Information score (from 0 to 1): -0.0003877241132427127
 Fowlkes-Mallows score (from 0 to 1): 0.5093796072632315
+ 
+*OPTICS: min_pts = 180, unique = [-1  0], counts = [ 9392 58165]
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0008277282357837694
+Fowlkes-Mallows score (from 0 to 1): 0.614164861677138

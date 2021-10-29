@@ -1,19 +1,20 @@
 import os
 
 import numpy as np
+import pandas as pd
 from matplotlib import pyplot as plt
 
 import utils
 from algorithms.kmeans import Kmeans
 
 data_root_path = os.path.join('..', '..', 'datasets')
-df = utils.load_arff(os.path.join(data_root_path, 'datasets', 'pen-based.arff'))
+df = pd.read_pickle(os.path.join(data_root_path, 'processed', 'encoded_connect4.pkl'))
 
 df_gs = df[df.columns[-1]]
 df = df.drop(columns=df.columns[-1])
 
-K = 10
-init_method = 'random'
+K = 3
+init_method = 'k-means++'
 metric = 'euclidean'
 n_iter = 300
 init = 10
@@ -40,12 +41,10 @@ ax.set_title(f'K-means Clustering with K={K}, init={init_method} and metric={met
 
 plt.show()
 
-plt.savefig(os.path.join('..', '..', 'figures', 'pen-based', f'pen-based_k-means-{K}-{init_method}.png'))
+plt.savefig(os.path.join('..', '..', 'figures', 'pen-based', f'connect-4_k-means-{K}-{init_method}.png'))
 
-true_labels = df_gs.to_numpy(dtype='int32')
-
-file_path = os.path.join('..', '..', 'validation', 'pen-based_k-means_val.txt')
+file_path = os.path.join('..', '..', 'validation', 'connect-4_k-means_val.txt')
 with open(file_path, 'a') as f:
     f.write(f'\n \nK-means: K = {K}, init = {init_method}, metric = {metric}, max_inter = {n_iter}, n_init = {init}')
 
-utils.print_metrics(df, true_labels, labels, file_path)
+utils.print_metrics(df, df_gs, labels, file_path)

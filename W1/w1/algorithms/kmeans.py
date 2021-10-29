@@ -40,7 +40,7 @@ class Kmeans:
 
     # noinspection SpellCheckingInspection
     def fit(self, data: DataFrame):
-        x = data.to_numpy()
+        x = data.to_numpy(dtype='float64')
         best_sse = np.inf
         best_centroids = []
         best_labels = []
