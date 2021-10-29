@@ -179,4 +179,15 @@ def fuzzy_c_means(m=2, epsilon=0.001, max_iterations=12):
             clusters_centers = clusters_centers_new
     return u_matrix, clusters_centers
 
+#VALIDATION METRIC
+#PARTITION COEFFICIENT
+"""
+Measure the amount of overlap among clusters
+the range of values is [1/c , 1] -> 
+the closer to 1 =  the smaller the sharing of the vectors in data
+the closer to 1/c =  X possesses no clustering structure or the algorithms fails to unravel it.
+ """
+def partition_coefficient(u, n):
+  return (np.power(u, 2).sum())/n
 
+partition_coefficient(uuu, n)
