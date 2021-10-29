@@ -55,34 +55,34 @@ def print_metrics(data, true_labels, pred_labels, k):
 
     print('\nExternal validation')
 
-    hcv_score = metrics.homogeneity_completeness_v_measure(true_labels, pred_labels)
-    print(f'Homogeneity, completeness and V-measure (form 0 to 1): {hcv_score}')
+    #hcv_score = metrics.homogeneity_completeness_v_measure(true_labels, pred_labels)
+    #print(f'Homogeneity, completeness and V-measure (form 0 to 1): {hcv_score}')
 
-    rand_sc = metrics.rand_score(true_labels, pred_labels)
-    print(f'Rand index (form 0 to 1): {rand_sc}')
+    #rand_sc = metrics.rand_score(true_labels, pred_labels)
+    #print(f'Rand index (form 0 to 1): {rand_sc}')
 
-    adj_rand_sc = metrics.adjusted_rand_score(true_labels, pred_labels)
-    print(f'Adjusted Rand index (from -1 to 1): {adj_rand_sc}')
+    #adj_rand_sc = metrics.adjusted_rand_score(true_labels, pred_labels)
+    #print(f'Adjusted Rand index (from -1 to 1): {adj_rand_sc}')
 
     adj_mutual_info_sc = metrics.adjusted_mutual_info_score(true_labels, pred_labels)
     print(f'Adjusted Mutual Information score (from 0 to 1): {adj_mutual_info_sc}')
 
-    fm_score = metrics.fowlkes_mallows_score(true_labels, pred_labels)
-    print(f'Fowlkes-Mallows score (from 0 to 1): {fm_score}')
+    #fm_score = metrics.fowlkes_mallows_score(true_labels, pred_labels)
+    #print(f'Fowlkes-Mallows score (from 0 to 1): {fm_score}')
 
-    contingency_mat = metrics.cluster.contingency_matrix(true_labels, pred_labels)
-    fig = plt.figure(num=None, figsize=(8, 6), dpi=80, facecolor='w', edgecolor='k')
+    #contingency_mat = metrics.cluster.contingency_matrix(true_labels, pred_labels)
+    #fig = plt.figure(num=None, figsize=(8, 6), dpi=80, facecolor='w', edgecolor='k')
 
-    plt.clf()
+    #plt.clf()
 
-    ax = fig.add_subplot(111)
+    #ax = fig.add_subplot(111)
 
-    ax.set_aspect(1)
+    #ax.set_aspect(1)
 
-    res = sns.heatmap(contingency_mat, annot=True, fmt='d', cmap="YlGnBu", vmin=0.0, vmax=contingency_mat.max())
+    #res = sns.heatmap(contingency_mat, annot=True, fmt='d', cmap="YlGnBu", vmin=0.0, vmax=contingency_mat.max())
 
-    plt.title(f'Contingency Matrix for K={k}', fontsize=12)
+    #plt.title(f'Contingency Matrix for K={k}', fontsize=12)
 
     # plt.savefig("plot_contingency_table_seaborn_matplotlib_01.png", bbox_inches='tight', dpi=100)
 
-    plt.show()
+    #plt.show()

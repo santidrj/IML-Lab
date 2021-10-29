@@ -4,7 +4,7 @@ from sklearn.preprocessing import LabelEncoder
 
 import utils
 
-data_root_path = os.path.join('..', 'datasets')
+data_root_path = os.path.join('..', '..', 'datasets')
 
 print('Connect-4 dataset:')
 df_connect4 = utils.load_arff(os.path.join(data_root_path, 'datasets', 'connect-4.arff'))

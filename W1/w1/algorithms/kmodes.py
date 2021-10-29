@@ -20,7 +20,6 @@ class KModes:
             print(self.df['class'].value_counts())
 
             for k in range(self.k - 2):
-                print('hey')
                 X = self.df[self.df['class'] == max_class].iloc[:, :-1].reset_index(drop=True)
                 classes = KModes(X, k=2, max_iter=10).run(init='random')
 
@@ -28,13 +27,12 @@ class KModes:
                 mod_class[classes == 0], mod_class[classes == 1] = max_class, self.df['class'].max() + 1
 
                 self.df['class'][self.df['class'] == max_class] = mod_class.values
-                print(self.df['class'].value_counts())
                 max_class = self.df['class'].value_counts().idxmax().astype(int)
 
             self.update_centroids()
             print('K-bisecting has finished.')
 
-    def distance(self, x, y, metric):
+    def distance(self, x, y):
         return x.eq(y.values, axis='columns').sum(axis=1)
 
     def fit(self):
@@ -54,15 +52,13 @@ class KModes:
         iters = 0
         convergence = 1
         while iters <= self.max_iter and convergence != 0:
-            # last_class = self.df['class'].copy()
+            last_class = self.df['class'].copy()
 
             self.df['class'] = self.fit()
             self.update_centroids()
 
             iters += 1
-
-            # convergence = (last_class != self.df['class']).sum()
-            # print(f'Convergence: {convergence}')
+            convergence = (last_class != self.df['class']).sum()
 
         return self.df['class']
 
