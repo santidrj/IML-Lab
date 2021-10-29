@@ -15,8 +15,9 @@ data_root_path = os.path.join('..', '..', 'datasets')
 ###########################
 # Load the Heart-C dataset
 df_heart = utils.load_arff(os.path.join(data_root_path, 'datasets', 'heart-c.arff'))
-df_heart.drop(columns='num', inplace=True)
 utils.convert_byte_string_to_string(df_heart)
+df_gs = df_heart['num']
+df_heart.drop(columns='num', inplace=True)
 print()
 print('Heart-C dataset:')
 print(df_heart.head())
@@ -49,8 +50,9 @@ df_heart_normalized = utils.normalize_data(df_heart_categorical, df_heart_catego
 print()
 print(df_heart_normalized.head())
 
-save_path = os.path.join(data_root_path, 'processed', 'processed-heart-c.pkl')
-pd.to_pickle(df_heart_normalized, save_path)
+save_path = os.path.join(data_root_path, 'processed')
+pd.to_pickle(df_heart_normalized, os.path.join(save_path, 'process_heart-c.pkl'))
+pd.to_pickle(df_gs, os.path.join(save_path, 'heart-c_gs.pkl'))
 
 figs_folder_path = os.path.join('..', '..', 'figures', 'heart-c')
 for col in df_heart_numerical.columns:

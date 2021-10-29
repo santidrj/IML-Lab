@@ -1,6 +1,9 @@
 import pandas as pd
+import seaborn as sns
+from matplotlib import pyplot as plt
 from pandas import DataFrame
 from scipy.io import arff
+from sklearn import metrics
 from sklearn.preprocessing import OneHotEncoder, StandardScaler, RobustScaler, normalize
 
 
@@ -36,3 +39,45 @@ def normalize_data(dataframe: DataFrame, numerical_columns, scaler):
 
     df[numerical_columns] = pd.DataFrame(scaled_data, columns=numerical_columns)
     return df
+
+
+def run_numerical_validations(data, true_labels, pred_labels, k):
+    print('\nInternal validation')
+
+    ch_score = metrics.calinski_harabasz_score(data, pred_labels)
+    print(f'Calinski-Harabasz score: {ch_score}')
+    db_score = metrics.davies_bouldin_score(data, pred_labels)
+    print(f'Davies-Bouldin score: {db_score}')
+    s_score = metrics.silhouette_score(data, pred_labels)
+    print(f'Silhouette score (from -1 to 1): {s_score}')
+
+    print('\nExternal validation')
+
+    rand_sc = metrics.rand_score(true_labels, pred_labels)
+    print(f'Rand index (form 0 to 1): {rand_sc}')
+
+    adj_rand_sc = metrics.adjusted_rand_score(true_labels, pred_labels)
+    print(f'Adjusted Rand index (from -1 to 1): {adj_rand_sc}')
+
+    adj_mutual_info_sc = metrics.adjusted_mutual_info_score(true_labels, pred_labels)
+    print(f'Adjusted Mutual Information score (from 0 to 1): {adj_mutual_info_sc}')
+
+    fm_score = metrics.fowlkes_mallows_score(true_labels, pred_labels)
+    print(f'Fowlkes-Mallows score (from 0 to 1): {fm_score}')
+
+    contingency_mat = metrics.cluster.contingency_matrix(true_labels, pred_labels)
+    fig = plt.figure(num=None, figsize=(8, 6), dpi=80, facecolor='w', edgecolor='k')
+
+    plt.clf()
+
+    ax = fig.add_subplot(111)
+
+    ax.set_aspect(1)
+
+    res = sns.heatmap(contingency_mat, annot=True, fmt='.2f', cmap="YlGnBu", vmin=0.0, vmax=100.0)
+
+    plt.title(f'Contingency Matrix for K={k}', fontsize=12)
+
+    # plt.savefig("plot_contingency_table_seaborn_matplotlib_01.png", bbox_inches='tight', dpi=100)
+
+    plt.show()
