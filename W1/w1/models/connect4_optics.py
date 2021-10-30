@@ -15,34 +15,33 @@ df_connect4_encoded = pd.read_pickle(os.path.join('..', '..', 'datasets', 'proce
 df_connect4_encoded_subset = pd.read_pickle(
     os.path.join('..', '..', 'datasets', 'processed', 'encoded_subset_connect4.pkl'))
 
-min_pts = 200
-max_eps = 84
-cluster_mth = 'xi'
+min_pts= 50
 
-# metrics = ['l2', 'l1', 'chebyshev']
 metrics = ['l2']
-# algorithms = ['kd_tree', 'brute']
 algorithms = ['kd_tree']
+
+#metrics = ['l2', 'l1', 'chebyshev']
+#algorithms = ['kd_tree', 'brute']
 
 start = time.time()
 optics_clusterings = []
 optics_clusterings.append(
-    OPTICS(min_samples=min_pts, metric='l2', algorithm='kd_tree').fit(df_connect4_encoded_subset.iloc[:, :-1]))
+    OPTICS(min_samples=min_pts, metric='l2', algorithm='kd_tree').fit(df_connect4_encoded.iloc[:, :-1]))
 """
 optics_clusterings.append(
-    OPTICS(min_samples=min_pts, metric='l2', algorithm='brute').fit(df_connect4_encoded.iloc[:, :-1]))
+    OPTICS(min_samples=min_pts, metric='l2', algorithm='brute').fit(df_connect4_encoded_subset.iloc[:, :-1]))
 optics_clusterings.append(
-    OPTICS(min_samples=min_pts, metric='l1', algorithm='kd_tree').fit(df_connect4_encoded.iloc[:, :-1]))
+    OPTICS(min_samples=min_pts, metric='l1', algorithm='kd_tree').fit(df_connect4_encoded_subset.iloc[:, :-1]))
 optics_clusterings.append(
-    OPTICS(min_samples=min_pts, metric='l1', algorithm='brute').fit(df_connect4_encoded.iloc[:, :-1]))
+    OPTICS(min_samples=min_pts, metric='l1', algorithm='brute').fit(df_connect4_encoded_subset.iloc[:, :-1]))
 optics_clusterings.append(
-    OPTICS(min_samples=min_pts, metric='chebyshev', algorithm='kd_tree').fit(df_connect4_encoded.iloc[:, :-1]))
+    OPTICS(min_samples=min_pts, metric='chebyshev', algorithm='kd_tree').fit(df_connect4_encoded_subset.iloc[:, :-1]))
 optics_clusterings.append(
-    OPTICS(min_samples=min_pts, metric='chebyshev', algorithm='brute').fit(df_connect4_encoded.iloc[:, :-1]))
+    OPTICS(min_samples=min_pts, metric='chebyshev', algorithm='brute').fit(df_connect4_encoded_subset.iloc[:, :-1]))
 """
 end = time.time()
 
-with open('connect4_optics_metrics', 'wb') as file:
+with open('connect4_optics', 'wb') as file:
     pickle.dump(optics_clusterings, file)
 
 comp_time = end - start
@@ -50,7 +49,7 @@ print(f'OPTICS computation time: {comp_time / 60.} minutes')
 with open('info.txt', 'w') as f:
     f.write('*OPTICS computation time: \n' + str(comp_time))
 
-with open('connect4_optics_metrics', 'rb') as file:
+with open('connect4_optics', 'rb') as file:
     optics_clusterings = pickle.load(file)
 
 
@@ -65,17 +64,19 @@ def optics_plots(df, models):
     plt.figure(figsize=(10, 10))
     g = gridspec.GridSpec(2, 1)
     ax1 = plt.subplot(g[0, :])
-    ax2 = plt.subplot(g[1, :])
+    ax2 = plt.subplot(g[1, :], projection='3d')
 
     for l, c in zip(label_set, colors):
         if l == -1:
             ax1.plot(reachability[labels == l], color='k', marker='.', ls='', alpha=0.3)
-            x, y = df['a3'][labels == l], df['a4'][labels == l]
-            ax2.scatter(x, y, color='k', alpha=0.3)
-            ax2.text(x * (1 + 0.01), y * (1 + 0.01), counts[unique == l], fontsize=12)
+            x, y, z = df['a3'][labels == l], df['a4'][labels == l], df['a5'][labels == l]
+            ax2.scatter(x, y, z, color='k', alpha=0.3)
+            ax2.text(x * (1 + 0.01), y * (1 + 0.01), z * (1 + 0.01), counts[unique == l], fontsize=12)
         else:
             ax1.plot(reachability[labels == l], color=c, marker='.', ls='', alpha=0.3)
-            ax2.scatter(df['a3'][labels == l], df['a4'][labels == l], color=c, alpha=0.3)
+            x, y, z = df['a3'][labels == l], df['a4'][labels == l], df['a5'][labels == l]
+            ax2.scatter(x, y, z, color=c, alpha=0.3)
+            ax2.text(x * (1 + 0.01), y * (1 + 0.01), z * (1 + 0.01), counts[unique == l], fontsize=12)
 
     plt.show()
 
@@ -90,9 +91,9 @@ for i, m in enumerate(metrics):
 
         with open(path_val, 'a') as f:
             f.write(
-                f'\n \n*OPTICS: min_pts = {min_pts}, eps = {max_eps}, method =, {cluster_mth}, unique = {unique}, counts = {counts}  metric = {m}, algorithm = {a}')
+                f'\n \n*OPTICS: min_pts = {min_pts}, unique = {unique}, counts = {counts}  metric = {m}, algorithm = {a}')
 
-        utils.print_metrics(df_connect4_encoded_subset.iloc[:, :-1], df_connect4_encoded_subset['class'],
+        utils.print_metrics(df_connect4_encoded.iloc[:, :-1], df_connect4_encoded['class'],
                             optics_model.labels_,
                             file_path=path_val, isOPTICS=True)
 

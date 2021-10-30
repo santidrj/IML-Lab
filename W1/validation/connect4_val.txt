@@ -379,3 +379,203 @@ Fowlkes-Mallows score (from 0 to 1): 0.5132585503965743
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.0003018904082258655
 Fowlkes-Mallows score (from 0 to 1): 0.6830615101513566
+ 
+*OPTICS: min_pts = 45, eps = 84, method =, xi, unique = [-1  0], counts = [ 3728 11272]  metric = l2, algorithm = kd_tree
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0029330915202691035
+Fowlkes-Mallows score (from 0 to 1): 0.5502120058007006
+ 
+*OPTICS: min_pts = 60, eps = 84, method =, xi, unique = [-1  0], counts = [9243 5757]  metric = l2, algorithm = kd_tree
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.005452967950016257
+Fowlkes-Mallows score (from 0 to 1): 0.5241543423416786
+ 
+*OPTICS: min_pts = 70, eps = 84, method =, xi, unique = [-1  0], counts = [12785  2215]  metric = l2, algorithm = kd_tree
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.006129887075786625
+Fowlkes-Mallows score (from 0 to 1): 0.6267192078364527
+ 
+*OPTICS: min_pts = 80, eps = 84, method =, xi, unique = [-1  0], counts = [14728   272]  metric = l2, algorithm = kd_tree
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.001439023312166916
+Fowlkes-Mallows score (from 0 to 1): 0.697371294065744
+ 
+*OPTICS: min_pts = 90, eps = 84, method =, xi, unique = [-1  0], counts = [  403 14597]  metric = l2, algorithm = kd_tree
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0005401986381227161
+Fowlkes-Mallows score (from 0 to 1): 0.6866438094415678
+ 
+*OPTICS: min_pts = 100, eps = 84, method =, xi, unique = [-1  0], counts = [  561 14439]  metric = l2, algorithm = kd_tree
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.00013941574917792192
+Fowlkes-Mallows score (from 0 to 1): 0.6796570987133561
+ 
+*OPTICS: min_pts = 200, eps = 84, method =, xi, unique = [-1  0], counts = [6028 8972]  metric = l2, algorithm = kd_tree
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.005477557764258553
+Fowlkes-Mallows score (from 0 to 1): 0.505510244499738
+ 
+*OPTICS: min_pts = 50, eps = default, method =, xi, unique = [-1  0  1  2], counts = [9240  486  142  132]  metric = l2, algorithm = kd_tree
+Internal validation
+Calinski-Harabasz score: 137.9949145996197
+Davies-Bouldin score: 1.722918717866639
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.005571621569346916
+Fowlkes-Mallows score (from 0 to 1): 0.6650667634427315
+ 
+*OPTICS: min_pts = 45, eps = default, method =, xi, unique = [-1  0  1], counts = [7989 1954   57]  metric = l2, algorithm = kd_tree
+Internal validation
+Calinski-Harabasz score: 45.21880406583176
+Davies-Bouldin score: 1.791161134965265
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.005841038289909539
+Fowlkes-Mallows score (from 0 to 1): 0.5989654333897458
+ 
+*OPTICS: min_pts = 60, eps = default, method =, xi, unique = [-1  0], counts = [ 338 9662]  metric = l2, algorithm = kd_tree
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.00016860714327180973
+Fowlkes-Mallows score (from 0 to 1): 0.6839097795177175
+ 
+*OPTICS: min_pts = 70, eps = default, method =, xi, unique = [-1  0], counts = [ 622 9378]  metric = l2, algorithm = kd_tree
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.00035664660079232004
+Fowlkes-Mallows score (from 0 to 1): 0.6634913806825666
+ 
+*OPTICS: min_pts = 80, eps = default, method =, xi, unique = [-1  0], counts = [ 997 9003]  metric = l2, algorithm = kd_tree
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0005270416996364466
+Fowlkes-Mallows score (from 0 to 1): 0.6380370861969039
+ 
+*OPTICS: min_pts = 90, eps = default, method =, xi, unique = [-1  0], counts = [1384 8616]  metric = l2, algorithm = kd_tree
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0013036773196868387
+Fowlkes-Mallows score (from 0 to 1): 0.6118794564277601
+ 
+*OPTICS: min_pts = 100, eps = default, method =, xi, unique = [-1  0], counts = [2041 7959]  metric = l2, algorithm = kd_tree
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0020960258906855167
+Fowlkes-Mallows score (from 0 to 1): 0.5736118599037213
+ 
+*OPTICS: min_pts = 200, eps = default, method =, xi, unique = [-1  0], counts = [9683  317]  metric = l2, algorithm = kd_tree
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0007127053647789466
+Fowlkes-Mallows score (from 0 to 1): 0.6879151531442428
+ 
+*OPTICS: min_pts = 50, eps = default, method =, xi, unique = [-1  0  1  2], counts = [9240  486  142  132]  metric = l2, algorithm = kd_tree
+Internal validation
+Calinski-Harabasz score: 137.9949145996197
+Davies-Bouldin score: 1.722918717866639
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.005571621569346916
+Fowlkes-Mallows score (from 0 to 1): 0.6650667634427315
+ 
+*OPTICS: min_pts = 50, eps = default, method =, xi, unique = [-1  0  1  2], counts = [9240  486  142  132]  metric = l2, algorithm = brute
+Internal validation
+Calinski-Harabasz score: 137.9949145996197
+Davies-Bouldin score: 1.722918717866639
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.005571621569346916
+Fowlkes-Mallows score (from 0 to 1): 0.6650667634427315
+ 
+*OPTICS: min_pts = 50, eps = default, method =, xi, unique = [-1  0  1  2], counts = [9240  486  142  132]  metric = l1, algorithm = kd_tree
+Internal validation
+Calinski-Harabasz score: 137.9949145996197
+Davies-Bouldin score: 1.722918717866639
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.005571621569346916
+Fowlkes-Mallows score (from 0 to 1): 0.6650667634427315
+ 
+*OPTICS: min_pts = 50, eps = default, method =, xi, unique = [-1  0], counts = [5097 4903]  metric = l1, algorithm = brute
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.00896731724576791
+Fowlkes-Mallows score (from 0 to 1): 0.506637019756387
+ 
+*OPTICS: min_pts = 50, eps = default, method =, xi, unique = [-1  0], counts = [5097 4903]  metric = chebyshev, algorithm = kd_tree
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.00896731724576791
+Fowlkes-Mallows score (from 0 to 1): 0.506637019756387
+ 
+*OPTICS: min_pts = 50, eps = default, method =, xi, unique = [-1  0], counts = [5097 4903]  metric = chebyshev, algorithm = brute
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.00896731724576791
+Fowlkes-Mallows score (from 0 to 1): 0.506637019756387
+Internal validation
+Calinski-Harabasz score: 2343.6816296183097
+Davies-Bouldin score: 4.684832140255405
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.004267777493820867
+Fowlkes-Mallows score (from 0 to 1): 0.5638344743417099
+ 
+
+Internal validation
+Calinski-Harabasz score: 2343.6816296183097
+Davies-Bouldin score: 4.684832140255405
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.004267777493820867
+Fowlkes-Mallows score (from 0 to 1): 0.5638344743417099
+
+ 
+*K-MODES: k = 2
+Internal validation
+Calinski-Harabasz score: 2343.6816296183097
+Davies-Bouldin score: 4.684832140255405
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.004267777493820867
+Fowlkes-Mallows score (from 0 to 1): 0.5638344743417099
+ 
+*K-MODES: k = 3
+Internal validation
+Calinski-Harabasz score: 2437.354591315681
+Davies-Bouldin score: 4.776271192825935
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0025094005495512705
+Fowlkes-Mallows score (from 0 to 1): 0.44364349136818343
+ 
+*K-MODES: k = 4
+Internal validation
+Calinski-Harabasz score: 2677.2782555114154
+Davies-Bouldin score: 3.7661616715158583
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0041787705679629875
+Fowlkes-Mallows score (from 0 to 1): 0.36858260843145624
+ 
+*K-MODES: k = 5
+Internal validation
+Calinski-Harabasz score: 1985.436361956638
+Davies-Bouldin score: 4.758485601942435
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.008765276569655912
+Fowlkes-Mallows score (from 0 to 1): 0.3441647711235715
+ 
+*OPTICS: min_pts = 50, unique = [-1  0], counts = [   60 67497]  metric = l2, algorithm = kd_tree
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): -2.9990696562127537e-05
+Fowlkes-Mallows score (from 0 to 1): 0.7087001852325178

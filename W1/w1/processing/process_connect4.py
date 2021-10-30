@@ -25,7 +25,7 @@ df_connect4_encoded = label_encoder(df_connect4)
 save_path = os.path.join(data_root_path, 'processed')
 pd.to_pickle(df_connect4, os.path.join(save_path, 'processed_connect4.pkl'))
 pd.to_pickle(df_connect4_encoded, os.path.join(save_path, 'encoded_connect4.pkl'))
-pd.to_pickle(df_connect4_encoded.sample(n=30000), os.path.join(save_path, 'encoded_subset_connect4.pkl'))
+pd.to_pickle(df_connect4_encoded.sample(n=10000), os.path.join(save_path, 'encoded_subset_connect4.pkl'))
 
 pos_values = set(df_connect4_encoded['a1'])
 # print(f'Possible values after encoding: {pos_values}')

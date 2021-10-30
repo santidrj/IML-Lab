@@ -1,5 +1,7 @@
 import pandas as pd
-
+import warnings
+from pandas.core.common import SettingWithCopyWarning
+warnings.simplefilter(action="ignore", category=SettingWithCopyWarning)
 
 class KModes:
     def __init__(self, data, k, max_iter=30):
@@ -29,7 +31,6 @@ class KModes:
                 max_class = self.df['class'].value_counts().idxmax().astype(int)
 
             self.update_centroids()
-            print('K-bisecting has finished.')
 
     def distance(self, x, y):
         return x.eq(y.values, axis='columns').sum(axis=1)
