@@ -51,3 +51,58 @@ Davies-Bouldin score: 0.7639373815285778
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.12338826582811857
 Fowlkes-Mallows score (from 0 to 1): 0.6099411035714108
+
+ 
+OPTICS: min_pts = 9, metric = euclidean, algorithm = kd_tree
+Internal validation
+Calinski-Harabasz score: 75.81496738646148
+Davies-Bouldin score: 0.9687124799111388
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.1132231212533604
+Fowlkes-Mallows score (from 0 to 1): 0.6060777147518953
+ 
+OPTICS: min_pts = 9, metric = euclidean, algorithm = brute
+Internal validation
+Calinski-Harabasz score: 75.81496738646148
+Davies-Bouldin score: 0.9687124799111388
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.1132231212533604
+Fowlkes-Mallows score (from 0 to 1): 0.6060777147518953
+ 
+OPTICS: min_pts = 9, metric = l1, algorithm = kd_tree
+Internal validation
+Calinski-Harabasz score: 75.81496738646148
+Davies-Bouldin score: 0.9687124799111388
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.1132231212533604
+Fowlkes-Mallows score (from 0 to 1): 0.6060777147518953
+ 
+OPTICS: min_pts = 9, metric = l1, algorithm = brute
+Internal validation
+Calinski-Harabasz score: 70.09162258335603
+Davies-Bouldin score: 0.7639373815285778
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.12338826582811842
+Fowlkes-Mallows score (from 0 to 1): 0.6099411035714108
+ 
+OPTICS: min_pts = 9, metric = chebyshev, algorithm = kd_tree
+Internal validation
+Calinski-Harabasz score: 70.09162258335603
+Davies-Bouldin score: 0.7639373815285778
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.12338826582811842
+Fowlkes-Mallows score (from 0 to 1): 0.6099411035714108
+ 
+OPTICS: min_pts = 9, metric = chebyshev, algorithm = brute
+Internal validation
+Calinski-Harabasz score: 70.09162258335603
+Davies-Bouldin score: 0.7639373815285778
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.12338826582811842
+Fowlkes-Mallows score (from 0 to 1): 0.6099411035714108

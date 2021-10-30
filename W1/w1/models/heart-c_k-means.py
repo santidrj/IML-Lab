@@ -12,7 +12,7 @@ df_heart = pd.read_pickle(os.path.join(data_root_path, 'processed', 'processed_h
 df_gs = pd.read_pickle(os.path.join(data_root_path, 'processed', 'heart-c_gs.pkl'))
 
 K = 2
-init_method = 'random'
+init_method = 'k-means++'
 metric = 'l1'
 n_iter = 300
 init = 10
@@ -37,9 +37,9 @@ centers = np.array(kmeans.centroids)
 ax.scatter(centers[:, 0], centers[:, 1], marker="x", color="k")
 ax.set_title(f'K-means Clustering with K={K}, init={init_method} and metric={metric}')
 
+plt.savefig(os.path.join('..', '..', 'figures', 'heart-c', f'heart-c_k-means-{K}-{init_method}-{metric}.png'))
 plt.show()
 
-plt.savefig(os.path.join('..', '..', 'figures', 'heart-c', f'heart-c_k-means-{K}-{init_method}.png'))
 
 counts = np.bincount(labels.astype(int))
 maj_class = counts.argmax()

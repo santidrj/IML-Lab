@@ -14,7 +14,7 @@ df = df.drop(columns=df.columns[-1])
 
 K = 10
 init_method = 'random'
-metric = 'euclidean'
+metric = 'l1'
 n_iter = 300
 init = 10
 kmeans = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
@@ -35,12 +35,12 @@ ax.plot(df.iloc[labels == -1, 0],
         'k+', alpha=0.1)
 
 centers = np.array(kmeans.centroids)
-ax.scatter(centers[:, 0], centers[:, 1], marker="x", color="k")
+ax.scatter(centers[:, 0], centers[:, 1], marker="x", color="k", s=4)
 ax.set_title(f'K-means Clustering with K={K}, init={init_method} and metric={metric}')
 
+plt.savefig(os.path.join('..', '..', 'figures', 'pen-based', f'pen-based_k-means-{K}-{init_method}-{metric}.png'))
 plt.show()
 
-plt.savefig(os.path.join('..', '..', 'figures', 'pen-based', f'pen-based_k-means-{K}-{init_method}.png'))
 
 true_labels = df_gs.to_numpy(dtype='int32')
 

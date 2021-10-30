@@ -6,3 +6,58 @@ Davies-Bouldin score: 2.12417247971687
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.3207845894934127
 Fowlkes-Mallows score (from 0 to 1): 0.7068942148702961
+
+ 
+K-means: K = 2, init = random, metric = l1 max_inter = 300, n_init = 10
+Internal validation
+Calinski-Harabasz score: 64.62755745183068
+Davies-Bouldin score: 2.1229507276197817
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.320060258154447
+Fowlkes-Mallows score (from 0 to 1): 0.707161321794165
+ 
+K-means: K = 2, init = random, metric = l1 max_inter = 300, n_init = 10
+Internal validation
+Calinski-Harabasz score: 64.70621538500423
+Davies-Bouldin score: 2.12417247971687
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.3207845894934127
+Fowlkes-Mallows score (from 0 to 1): 0.7068942148702961
+ 
+K-means: K = 2, init = random, metric = l1 max_inter = 300, n_init = 10
+Internal validation
+Calinski-Harabasz score: 64.64835181205575
+Davies-Bouldin score: 2.120942325162909
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.3271433974618114
+Fowlkes-Mallows score (from 0 to 1): 0.7115804361209945
+ 
+K-means: K = 2, init = random, metric = euclidean max_inter = 300, n_init = 10
+Internal validation
+Calinski-Harabasz score: 65.06403031382244
+Davies-Bouldin score: 2.12119180700052
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.3149936157672686
+Fowlkes-Mallows score (from 0 to 1): 0.7023556540128196
+ 
+K-means: K = 2, init = k-means++, metric = euclidean max_inter = 300, n_init = 10
+Internal validation
+Calinski-Harabasz score: 65.06403031382244
+Davies-Bouldin score: 2.12119180700052
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.3149936157672686
+Fowlkes-Mallows score (from 0 to 1): 0.7023556540128196
+ 
+K-means: K = 2, init = k-means++, metric = l1 max_inter = 300, n_init = 10
+Internal validation
+Calinski-Harabasz score: 64.64835181205575
+Davies-Bouldin score: 2.120942325162909
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.3271433974618114
+Fowlkes-Mallows score (from 0 to 1): 0.7115804361209945

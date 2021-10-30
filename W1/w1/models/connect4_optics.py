@@ -4,9 +4,8 @@ import time
 
 import numpy as np
 import pandas as pd
-from sklearn.cluster import OPTICS
 from matplotlib import pyplot as plt, gridspec
-import matplotlib.cm as cm
+from sklearn.cluster import OPTICS
 
 import utils
 
@@ -16,12 +15,14 @@ df_connect4_encoded = pd.read_pickle(os.path.join('..', '..', 'datasets', 'proce
 df_connect4_encoded_subset = pd.read_pickle(
     os.path.join('..', '..', 'datasets', 'processed', 'encoded_subset_connect4.pkl'))
 
-min_pts = 50
+min_pts = 200
 max_eps = 84
 cluster_mth = 'xi'
 
-metrics = ['euclidean', 'l1', 'chebyshev']
-algorithms = ['kd_tree', 'brute']
+# metrics = ['l2', 'l1', 'chebyshev']
+metrics = ['l2']
+# algorithms = ['kd_tree', 'brute']
+algorithms = ['kd_tree']
 
 start = time.time()
 optics_clusterings = []
@@ -79,7 +80,7 @@ def optics_plots(df, models):
     plt.show()
 
 
-#optics_plots(df_connect4_encoded, optics_clusterings)
+# optics_plots(df_connect4_encoded, optics_clusterings)
 
 path_val = os.path.join('..', '..', 'validation', 'connect4_val.txt')
 for i, m in enumerate(metrics):
@@ -88,14 +89,16 @@ for i, m in enumerate(metrics):
         unique, counts = np.unique(optics_model.labels_, return_counts=True)
 
         with open(path_val, 'a') as f:
-            f.write(f'\n \n*OPTICS: min_pts = {min_pts}, eps = {max_eps}, method =, {cluster_mth}, unique = {unique}, counts = {counts}  metric = {m}, algorithm = {a}')
+            f.write(
+                f'\n \n*OPTICS: min_pts = {min_pts}, eps = {max_eps}, method =, {cluster_mth}, unique = {unique}, counts = {counts}  metric = {m}, algorithm = {a}')
 
-        utils.print_metrics(df_connect4_encoded.iloc[:, :-1], df_connect4_encoded['class'], optics_model.labels_, file_path=path_val, isOPTICS=True)
+        utils.print_metrics(df_connect4_encoded_subset.iloc[:, :-1], df_connect4_encoded_subset['class'],
+                            optics_model.labels_,
+                            file_path=path_val, isOPTICS=True)
 
         """
         plt.bar(unique, counts)
         """
-
 
 """
 unique, counts = np.unique(optics_clusters.labels_, return_counts=True)

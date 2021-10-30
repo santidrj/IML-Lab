@@ -39,9 +39,9 @@ centers = np.array(kmeans.centroids)
 ax.scatter(centers[:, 0], centers[:, 1], marker="x", color="k")
 ax.set_title(f'K-means Clustering with K={K}, init={init_method} and metric={metric}')
 
+plt.savefig(os.path.join('..', '..', 'figures', 'connect-4', f'connect-4_k-means-{K}-{init_method}-{metric}.png'))
 plt.show()
 
-plt.savefig(os.path.join('..', '..', 'figures', 'pen-based', f'connect-4_k-means-{K}-{init_method}.png'))
 
 file_path = os.path.join('..', '..', 'validation', 'connect-4_k-means_val.txt')
 with open(file_path, 'a') as f:

@@ -65,9 +65,8 @@ for i, m in enumerate(metrics):
         ax2.set_title(f'OPTICS Clustering with minPts = {minPts}, metric = {m} and algorithm = {a}')
 
         plt.tight_layout()
-        plt.show()
-
         plt.savefig(os.path.join('..', '..', 'figures', 'heart-c', f'heart-c_optics-{m}-{a}.png'))
+        plt.show()
 
         file_path = os.path.join('..', '..', 'validation', 'heart-c_optics_val.txt')
         with open(file_path, 'a') as f:
