@@ -46,7 +46,7 @@ maj_class = counts.argmax()
 min_class = counts.argmin()
 df_gs.replace({'<50': maj_class, '>50_1': min_class}, inplace=True)
 
-file_path = os.path.join('..', '..', 'validation', 'heart-c_kmeans_val.txt')
+file_path = os.path.join('..', '..', 'validation', 'heart-c_k-means_val.txt')
 with open(file_path, 'a') as f:
     f.write(f'\n \nK-means: K = {K}, init = {init_method}, metric = {metric} max_inter = {n_iter}, n_init = {init}')
 

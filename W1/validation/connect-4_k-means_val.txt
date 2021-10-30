@@ -1,0 +1,27 @@
+K-means: K = 10, init = random, metric = euclidean, max_inter = 300, n_init = 10
+Internal validation
+Calinski-Harabasz score: 3273.827020132527
+Davies-Bouldin score: 2.610419976411867
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.004096551035432885
+Fowlkes-Mallows score (from 0 to 1): 0.23379460324019596
+
+ 
+K-means: K = 3, init = random, metric = euclidean, max_inter = 300, n_init = 10
+Internal validation
+Calinski-Harabasz score: 3963.7981467442564
+Davies-Bouldin score: 3.680874237002817
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.004986311159702889
+Fowlkes-Mallows score (from 0 to 1): 0.42081655002704366
+ 
+K-means: K = 3, init = k-means++, metric = euclidean, max_inter = 300, n_init = 10
+Internal validation
+Calinski-Harabasz score: 6303.935736834179
+Davies-Bouldin score: 2.7210461090114606
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.002371839195757695
+Fowlkes-Mallows score (from 0 to 1): 0.41770745691083777

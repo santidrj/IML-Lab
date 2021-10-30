@@ -136,36 +136,36 @@ Davies-Bouldin score: 8.649656340557504
 External validation
 Adjusted Mutual Information score (from 0 to 1): -0.0003877241132427127
 Fowlkes-Mallows score (from 0 to 1): 0.5093796072632315
- 
+
 *OPTICS: min_pts = 180, unique = [-1  0], counts = [ 9392 58165]
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.0008277282357828785
 Fowlkes-Mallows score (from 0 to 1): 0.614164861677138
- 
+
 *OPTICS: min_pts = 50, unique = [-1  0], counts = [1160 3840]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.002527646511758531
 Fowlkes-Mallows score (from 0 to 1): 0.5577957907489604
- 
+
 *OPTICS: min_pts = 60, unique = [-1  0], counts = [1919 3081]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.002199183667665019
 Fowlkes-Mallows score (from 0 to 1): 0.5096508426633505
- 
+
 *OPTICS: min_pts = 70, unique = [-1  0], counts = [3015 1985]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.004533706296772827
 Fowlkes-Mallows score (from 0 to 1): 0.518202809516087
- 
+
 *OPTICS: min_pts = 80, unique = [-1  0], counts = [3948 1052]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.006830987713330732
 Fowlkes-Mallows score (from 0 to 1): 0.5950992032483595
- 
+
 *OPTICS: min_pts = 90, unique = [-1  0  1], counts = [4633  175  192]
 Internal validation
 Calinski-Harabasz score: 92.43157460020706
@@ -174,129 +174,135 @@ Davies-Bouldin score: 1.9620531629943985
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.00287666734490644
 Fowlkes-Mallows score (from 0 to 1): 0.6629381436472843
- 
+
 *OPTICS: min_pts = 100, unique = [-1  0], counts = [ 416 4584]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.00028181516779447773
 Fowlkes-Mallows score (from 0 to 1): 0.6483827296305483
- 
+
 *OPTICS: min_pts = 110, unique = [-1  0], counts = [ 549 4451]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.0008102458760065244
 Fowlkes-Mallows score (from 0 to 1): 0.6297700301680871
- 
+
 *OPTICS: min_pts = 120, unique = [-1  0], counts = [ 800 4200]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.00112986686468147
 Fowlkes-Mallows score (from 0 to 1): 0.5982570327862512
- 
+
 *OPTICS: min_pts = 50, unique = [-1  0], counts = [   60 67497]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): -2.9990696562127537e-05
 Fowlkes-Mallows score (from 0 to 1): 0.7087001852325178
- 
+
 *OPTICS: min_pts = 60, unique = [-1  0], counts = [  131 67426]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): 2.1839125496945222e-05
 Fowlkes-Mallows score (from 0 to 1): 0.7080527625111537
- 
+
 *OPTICS: min_pts = 80, unique = [-1  0], counts = [  421 67136]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.00017757954613932504
 Fowlkes-Mallows score (from 0 to 1): 0.7051486170998509
- 
+
 *OPTICS: min_pts = 70, unique = [-1  0], counts = [  264 67293]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): 3.575250601167024e-05
 Fowlkes-Mallows score (from 0 to 1): 0.7067760974160349
- 
+
 *OPTICS: min_pts = 150, unique = [-1  0], counts = [ 4314 63243]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.00028057853526792175
 Fowlkes-Mallows score (from 0 to 1): 0.6648000861031301
- 
+
 *OPTICS: min_pts = 150, unique = [-1  0], counts = [ 4314 63243]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.00028057853526792175
 Fowlkes-Mallows score (from 0 to 1): 0.6648000861031301
- 
+
 *OPTICS: min_pts = 90, unique = [-1  0], counts = [  565 66992]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.00029774316227053295
 Fowlkes-Mallows score (from 0 to 1): 0.7037020416995114
- 
+
 *OPTICS: min_pts = 100, unique = [-1  0], counts = [  814 66743]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.00030882280170686197
 Fowlkes-Mallows score (from 0 to 1): 0.7010200714452778
- 
+
 *OPTICS: min_pts = 120, unique = [-1  0], counts = [ 1628 65929]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.00012529298981311333
 Fowlkes-Mallows score (from 0 to 1): 0.6921929731916706
- 
+
 *OPTICS: min_pts = 110, unique = [-1  0], counts = [ 1247 66310]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.00018514028742854145
 Fowlkes-Mallows score (from 0 to 1): 0.6962521117862294
- 
+
 *OPTICS: min_pts = 43, max_eps = 5, unique = [0], counts = [67557]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): -3.805018395249241e-15
 Fowlkes-Mallows score (from 0 to 1): 0.7092961389312715
- 
+
 *OPTICS: min_pts = 43, max_eps = 5, cluster_method= dbscan, unique = [0], counts = [67557]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): -3.805018395249241e-15
 Fowlkes-Mallows score (from 0 to 1): 0.7092961389312715
- 
+
 *OPTICS: min_pts = 60, max_eps = 10, cluster_method= dbscan, unique = [0], counts = [67557]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): -3.805018395249241e-15
 Fowlkes-Mallows score (from 0 to 1): 0.7092961389312715
- 
+
 *OPTICS: min_pts = 60, max_eps = 10, cluster_method= xi, unique = [-1  0], counts = [  131 67426]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): 2.1839125496945222e-05
 Fowlkes-Mallows score (from 0 to 1): 0.7080527625111537
- 
+
 *OPTICS: min_pts = 60, max_eps = 1.5, cluster_method= dbscan, unique = [-1], counts = [67557]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): -3.805018395249241e-15
 Fowlkes-Mallows score (from 0 to 1): 0.7092961389312715
- 
+
 *OPTICS: min_pts = 43, max_eps = 1.5, cluster_method= dbscan, unique = [-1], counts = [67557]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): -3.805018395249241e-15
 Fowlkes-Mallows score (from 0 to 1): 0.7092961389312715
- 
+
 *OPTICS: min_pts = 80, max_eps = 1.5, cluster_method= dbscan, unique = [-1], counts = [67557]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): -3.805018395249241e-15
 Fowlkes-Mallows score (from 0 to 1): 0.7092961389312715
- 
+
 *OPTICS: min_pts = 50, max_eps = 20, cluster_method= dbscan, unique = [0], counts = [67557]
 
 External validation
 Adjusted Mutual Information score (from 0 to 1): -3.805018395249241e-15
 Fowlkes-Mallows score (from 0 to 1): 0.7092961389312715
+
+*OPTICS: min_pts = 180, unique = [-1  0], counts = [ 9392 58165]
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0008277282357837694
+Fowlkes-Mallows score (from 0 to 1): 0.614164861677138
