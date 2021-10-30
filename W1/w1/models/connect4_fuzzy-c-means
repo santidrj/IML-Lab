@@ -145,6 +145,7 @@ def fuzzy_c_means(m=2, epsilon=0.001, max_iterations=12):
     clusters_centers = initial_cluster_centers_random(c, d)
     # iterative part
     for i in range(max_iterations):
+        print('hello')
         plot_data(i, clusters_centers)
         plt.show()
         clusters_centers_new = update_cluster_centers(u_matrix)

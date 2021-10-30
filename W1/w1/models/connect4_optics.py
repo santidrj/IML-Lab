@@ -26,7 +26,7 @@ algorithms = ['kd_tree', 'brute']
 start = time.time()
 optics_clusterings = []
 optics_clusterings.append(
-    OPTICS(min_samples=min_pts, metric='l2', algorithm='kd_tree').fit(df_connect4_encoded.iloc[:, :-1]))
+    OPTICS(min_samples=min_pts, metric='l2', algorithm='kd_tree').fit(df_connect4_encoded_subset.iloc[:, :-1]))
 """
 optics_clusterings.append(
     OPTICS(min_samples=min_pts, metric='l2', algorithm='brute').fit(df_connect4_encoded.iloc[:, :-1]))
