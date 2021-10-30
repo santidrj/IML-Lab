@@ -12,8 +12,8 @@ df_heart = pd.read_pickle(os.path.join(data_root_path, 'processed', 'processed_h
 df_gs = pd.read_pickle(os.path.join(data_root_path, 'processed', 'heart-c_gs.pkl'))
 
 K = 2
-init_method = 'k-means++'
-metric = 'l1'
+init_method = 'random'
+metric = 'euclidean'
 n_iter = 300
 init = 10
 kmeans = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)

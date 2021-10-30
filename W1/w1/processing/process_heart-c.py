@@ -30,7 +30,7 @@ for feature in categorical_features:
     print(f'{df_heart.value_counts(feature)}\n')
 
 # Treat missing values
-print('Total number of missing values:\n', df_heart.isnull().sum())
+print('Total number of missing values per feature:\n', df_heart.isnull().sum())
 print()
 print('ca possible values:\n', df_heart['ca'].value_counts())
 
@@ -44,7 +44,6 @@ df_heart_categorical = utils.categorical_to_numerical(df_heart)
 # Normalize data
 df_heart_numerical = df_heart.select_dtypes(include='number')
 df_heart_normalized = utils.normalize_data(df_heart_numerical, df_heart_numerical.columns, RobustScaler())
-# df_heart_normalized = utils.normalize_data(df_heart_categorical, df_heart_categorical.columns, RobustScaler())
 df_heart_normalized = pd.concat([df_heart_normalized, df_heart_categorical.drop(columns=df_heart_normalized.columns)],
                                 axis=1)
 print()
