@@ -1,12 +1,11 @@
 import os.path
-from scipy.io import arff
-from sklearn.cluster import OPTICS, cluster_optics_dbscan
+
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+from scipy.io import arff
 
-
-#root_path = os.path.join('..', 'datasets', 'datasets')
+# root_path = os.path.join('..', 'datasets', 'datasets')
 
 # %%
 ##############################
@@ -18,32 +17,34 @@ import matplotlib.pyplot as plt
 # meta contains information about the arff file such name and dtype of attributes
 # can not read sparse data represented with {} in the file
 # can read missing data represented with ? in the file, it assign NaN
-dataset, meta = arff.loadarff('W1/datasets/datasets/pen-based.arff')
+path = os.path.join('..', '..', 'datasets', 'datasets', 'pen-based.arff')
+dataset, meta = arff.loadarff(path)
 print(meta)
 # converting into pandas dataframe
 df = pd.DataFrame(dataset)
 
-#dropping the last column because is the output label value for supervised learning.
+# dropping the last column because is the output label value for supervised learning.
 df = df.drop('a17', 1)
 
 print("total number of missing values: ", df.isnull().sum().sum())
 
-#visualize the characteristic of each column using describe
+# visualize the characteristic of each column using describe
 df.describe()
 
 # applying fuzzy c means to the data set
 
-#initialize parameters
+# initialize parameters
 # number of samples
 n = len(df)
 # number of clusters
 c = 3
-#number of dimensions
+# number of dimensions
 d = len(df.iloc[0])
 # m fuzzy parameter
 m = 2
-#max number of iterations
+# max number of iterations
 max_iterations = 12
+
 
 def distance_measure(a, b):
     """ euclidean distance
@@ -56,15 +57,15 @@ def distance_measure(a, b):
 
 
 def initialize_u_matrix(n: int, c: int):
-    """ initialize the menbership matrix
+    """ initialize the membership matrix
         Params:
           n the number of samples
           c the number of cluster
         Constraint:
-        the sum of the menbership values for each sample for all the cluster must equal to 1
+        the sum of the membership values for each sample for all the cluster must equal to 1
 
         We use the dirichlet distribution which is a distribution over x
-        that fullfil the conditions xi > 0 and sum(X) = 1
+        that fulfils the conditions xi > 0 and sum(X) = 1
     """
     return np.random.dirichlet(np.ones(c), n)
 
@@ -179,15 +180,19 @@ def fuzzy_c_means(m=2, epsilon=0.001, max_iterations=12):
             clusters_centers = clusters_centers_new
     return u_matrix, clusters_centers
 
-#VALIDATION METRIC
-#PARTITION COEFFICIENT
+
+# VALIDATION METRIC
+# PARTITION COEFFICIENT
 """
 Measure the amount of overlap among clusters
 the range of values is [1/c , 1] -> 
 the closer to 1 =  the smaller the sharing of the vectors in data
 the closer to 1/c =  X possesses no clustering structure or the algorithms fails to unravel it.
  """
+
+
 def partition_coefficient(u, n):
-  return (np.power(u, 2).sum())/n
+    return (np.power(u, 2).sum()) / n
+
 
 partition_coefficient(uuu, n)
