@@ -52,29 +52,28 @@ def k_modes_plots(df, pred_labels):
 path_val = os.path.join('..', '..', 'validation', 'connect4_val.txt')
 plt.rcParams['xtick.labelsize'] = 16
 plt.rcParams['ytick.labelsize'] = 16
-plt.rcParams['axes.labelsize'] = 20
+plt.rcParams['axes.labelsize'] = 18
 plt.rcParams['axes.labelpad'] = 10
 plt.rcParams['axes.labelpad'] = 10
 plt.rcParams['legend.fontsize'] = 18
 
-
 colors = ['c', 'b', 'r', 'y', 'g']
 plt.figure(figsize=(9, 5))
 plt.grid(axis='y')
-plt.xlabel('Predicted labels')
-plt.ylabel('Samples')
+plt.xlabel('Clusters')
+plt.ylabel('Samples [% over the total]')
 
 for i, pred_labels in enumerate(k_modes_clusterings):
     unique, counts = np.unique(pred_labels, return_counts=True)
+    counts = counts/len(pred_labels)*100
     plt.bar(unique+i*0.2, counts, width= 0.2, align='center', alpha=0.9, color=colors[i])
 
-    """
-    #with open(path_val, 'a') as f:
+    with open(path_val, 'a') as f:
         f.write(f'\n \n*K-MODES: k = {i+2}')
 
     utils.print_metrics(df_connect4_encoded.iloc[:, :-1], df_connect4['class'], pred_labels,
                             file_path=path_val, isOPTICS=False)
-    """
+
 plt.xticks(np.arange(5)+0.3, ['0', '1', '2', '3', '4'])
 plt.tight_layout()
 plt.legend(['k = 2', 'k = 3', 'k = 4', 'k = 5'])

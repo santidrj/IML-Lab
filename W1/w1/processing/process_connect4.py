@@ -30,21 +30,3 @@ pd.to_pickle(df_connect4_encoded.sample(n=10000), os.path.join(save_path, 'encod
 pos_values = set(df_connect4_encoded['a1'])
 # print(f'Possible values after encoding: {pos_values}')
 
-
-"""
-connect_pca = PCA(2).fit_transform(df_connect_encoded)
-df_connect_encoded_pca = pd.DataFrame(connect_pca, columns=['a1', 'a2'])
-print(df_connect_encoded_pca.head())
-"""
-"""
-
-classes = KModes(df_connect, k=4, max_iter=10).run('bisecting', 'simple')
-print(classes.value_counts())
-print(correct_class.value_counts())
-np.save('predicted_classes_k_modes.npy', classes)
-
-classes = np.load('../predicted_classes_k_modes.npy')
-utils.print_metrics(df_connect_encoded, true_class, classes, 4)
-"""
-
-

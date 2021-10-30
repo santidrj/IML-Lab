@@ -574,8 +574,249 @@ External validation
 Adjusted Mutual Information score (from 0 to 1): 0.008765276569655912
 Fowlkes-Mallows score (from 0 to 1): 0.3441647711235715
  
+
+ 
 *OPTICS: min_pts = 50, unique = [-1  0], counts = [   60 67497]  metric = l2, algorithm = kd_tree
+0.089% of samples are not in a cluster.
+
 
 External validation
-Adjusted Mutual Information score (from 0 to 1): -2.9990696562127537e-05
-Fowlkes-Mallows score (from 0 to 1): 0.7087001852325178
+Adjusted Mutual Information score (from 0 to 1): 0.0
+Fowlkes-Mallows score (from 0 to 1): 0.7093130373218579
+ 
+*K-MODES: k = 2
+Internal validation
+Calinski-Harabasz score: 2343.6816296183097
+Davies-Bouldin score: 4.684832140255405
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.004267777493820867
+Fowlkes-Mallows score (from 0 to 1): 0.5638344743417099
+ 
+*K-MODES: k = 3
+Internal validation
+Calinski-Harabasz score: 2437.354591315681
+Davies-Bouldin score: 4.776271192825935
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0025094005495512705
+Fowlkes-Mallows score (from 0 to 1): 0.44364349136818343
+ 
+*K-MODES: k = 4
+Internal validation
+Calinski-Harabasz score: 2677.2782555114154
+Davies-Bouldin score: 3.7661616715158583
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0041787705679629875
+Fowlkes-Mallows score (from 0 to 1): 0.36858260843145624
+ 
+*K-MODES: k = 5
+Internal validation
+Calinski-Harabasz score: 1985.436361956638
+Davies-Bouldin score: 4.758485601942435
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.008765276569655912
+Fowlkes-Mallows score (from 0 to 1): 0.3441647711235715
+ 
+*K-MODES: k = 2
+Internal validation
+Calinski-Harabasz score: 2343.6816296183097
+Davies-Bouldin score: 4.684832140255405
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.004267777493820867
+Fowlkes-Mallows score (from 0 to 1): 0.5638344743417099
+ 
+*K-MODES: k = 3
+Internal validation
+Calinski-Harabasz score: 2437.354591315681
+Davies-Bouldin score: 4.776271192825935
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0025094005495512705
+Fowlkes-Mallows score (from 0 to 1): 0.44364349136818343
+ 
+*K-MODES: k = 4
+Internal validation
+Calinski-Harabasz score: 2677.2782555114154
+Davies-Bouldin score: 3.7661616715158583
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0041787705679629875
+Fowlkes-Mallows score (from 0 to 1): 0.36858260843145624
+ 
+*K-MODES: k = 5
+Internal validation
+Calinski-Harabasz score: 1985.436361956638
+Davies-Bouldin score: 4.758485601942435
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.008765276569655912
+Fowlkes-Mallows score (from 0 to 1): 0.3441647711235715
+ 
+*K-MODES: k = 2
+Internal validation
+Calinski-Harabasz score: 2343.6816296183097
+Davies-Bouldin score: 4.684832140255405
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.004267777493820867
+Fowlkes-Mallows score (from 0 to 1): 0.5638344743417099
+ 
+*K-MODES: k = 3
+Internal validation
+Calinski-Harabasz score: 2437.354591315681
+Davies-Bouldin score: 4.776271192825935
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0025094005495512705
+Fowlkes-Mallows score (from 0 to 1): 0.44364349136818343
+ 
+*K-MODES: k = 4
+Internal validation
+Calinski-Harabasz score: 2677.2782555114154
+Davies-Bouldin score: 3.7661616715158583
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0041787705679629875
+Fowlkes-Mallows score (from 0 to 1): 0.36858260843145624
+ 
+*K-MODES: k = 5
+Internal validation
+Calinski-Harabasz score: 1985.436361956638
+Davies-Bouldin score: 4.758485601942435
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.008765276569655912
+Fowlkes-Mallows score (from 0 to 1): 0.3441647711235715
+ 
+*K-MODES: k = 2
+Internal validation
+Calinski-Harabasz score: 2343.6816296183097
+Davies-Bouldin score: 4.684832140255405
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.004267777493820867
+Fowlkes-Mallows score (from 0 to 1): 0.5638344743417099
+ 
+*K-MODES: k = 3
+Internal validation
+Calinski-Harabasz score: 2437.354591315681
+Davies-Bouldin score: 4.776271192825935
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0025094005495512705
+Fowlkes-Mallows score (from 0 to 1): 0.44364349136818343
+ 
+*K-MODES: k = 4
+Internal validation
+Calinski-Harabasz score: 2677.2782555114154
+Davies-Bouldin score: 3.7661616715158583
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0041787705679629875
+Fowlkes-Mallows score (from 0 to 1): 0.36858260843145624
+ 
+*K-MODES: k = 5
+Internal validation
+Calinski-Harabasz score: 1985.436361956638
+Davies-Bouldin score: 4.758485601942435
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.008765276569655912
+Fowlkes-Mallows score (from 0 to 1): 0.3441647711235715
+ 
+*K-MODES: k = 2
+Internal validation
+Calinski-Harabasz score: 2343.6816296183097
+Davies-Bouldin score: 4.684832140255405
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.004267777493820867
+Fowlkes-Mallows score (from 0 to 1): 0.5638344743417099
+ 
+*K-MODES: k = 3
+Internal validation
+Calinski-Harabasz score: 2437.354591315681
+Davies-Bouldin score: 4.776271192825935
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0025094005495512705
+Fowlkes-Mallows score (from 0 to 1): 0.44364349136818343
+ 
+*K-MODES: k = 4
+Internal validation
+Calinski-Harabasz score: 2677.2782555114154
+Davies-Bouldin score: 3.7661616715158583
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0041787705679629875
+Fowlkes-Mallows score (from 0 to 1): 0.36858260843145624
+ 
+*K-MODES: k = 5
+Internal validation
+Calinski-Harabasz score: 1985.436361956638
+Davies-Bouldin score: 4.758485601942435
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.008765276569655912
+Fowlkes-Mallows score (from 0 to 1): 0.3441647711235715
+ 
+*OPTICS: min_pts = 50, unique = [-1  0  1  2], counts = [92.4   4.86  1.42  1.32]  metric = l2, algorithm = kd_tree
+92.4% of samples are not in a cluster.
+
+Internal validation
+Calinski-Harabasz score: 137.9949145996197
+Davies-Bouldin score: 1.722918717866639
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.011997499726748906
+Fowlkes-Mallows score (from 0 to 1): 0.4645895623480396
+ 
+*OPTICS: min_pts = 50, unique = [-1  0  1  2], counts = [92.4   4.86  1.42  1.32]  metric = l2, algorithm = brute
+92.4% of samples are not in a cluster.
+
+Internal validation
+Calinski-Harabasz score: 137.9949145996197
+Davies-Bouldin score: 1.722918717866639
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.011997499726748906
+Fowlkes-Mallows score (from 0 to 1): 0.4645895623480396
+ 
+*OPTICS: min_pts = 50, unique = [-1  0  1  2], counts = [92.4   4.86  1.42  1.32]  metric = l1, algorithm = kd_tree
+92.4% of samples are not in a cluster.
+
+Internal validation
+Calinski-Harabasz score: 137.9949145996197
+Davies-Bouldin score: 1.722918717866639
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.011997499726748906
+Fowlkes-Mallows score (from 0 to 1): 0.4645895623480396
+ 
+*OPTICS: min_pts = 50, unique = [-1  0], counts = [50.97 49.03]  metric = l1, algorithm = brute
+50.97% of samples are not in a cluster.
+
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 7.346855526939802e-16
+Fowlkes-Mallows score (from 0 to 1): 0.6758955312354096
+ 
+*OPTICS: min_pts = 50, unique = [-1  0], counts = [50.97 49.03]  metric = chebyshev, algorithm = kd_tree
+50.97% of samples are not in a cluster.
+
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 7.346855526939802e-16
+Fowlkes-Mallows score (from 0 to 1): 0.6758955312354096
+ 
+*OPTICS: min_pts = 50, unique = [-1  0], counts = [50.97 49.03]  metric = chebyshev, algorithm = brute
+50.97% of samples are not in a cluster.
+
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 7.346855526939802e-16
+Fowlkes-Mallows score (from 0 to 1): 0.6758955312354096
