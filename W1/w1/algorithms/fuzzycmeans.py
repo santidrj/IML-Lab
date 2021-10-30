@@ -41,7 +41,7 @@ def initialize_u_matrix(n: int, c: int):
 
 
 class FuzzyCMeans:
-    def __init__(self, c, m=2, epsilon=0.001, max_iter=12):
+    def __init__(self, c, m=2, epsilon=0.01, max_iter=100):
         self.c = c
         self.m = m
         self.epsilon = epsilon
@@ -150,7 +150,6 @@ class FuzzyCMeans:
         clusters_centers = self.initial_cluster_centers_random()
         # iterative part
         for i in range(self.max_iter):
-            self.plot_data(clusters_centers)
             u_matrix_new = self.update_u_matrix(clusters_centers)
             clusters_centers_new = self.update_cluster_centers(u_matrix_new)
 
