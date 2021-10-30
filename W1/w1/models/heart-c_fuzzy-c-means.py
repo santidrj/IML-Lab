@@ -38,5 +38,4 @@ axis[0].set_title('Membership functions')
 plt.savefig(os.path.join('..', '..', 'figures', 'heart-c', f'heart-c_fuzzy-c-means-MF-{C}.png'))
 plt.show()
 
-print(partition_coefficient(fuzzy.u_matrix, df.shape[0]))
-print(distance_measure(fuzzy.centers[0], fuzzy.centers[1]))
+print('Partition coefficient:', partition_coefficient(fuzzy.u_matrix, df.shape[0]))

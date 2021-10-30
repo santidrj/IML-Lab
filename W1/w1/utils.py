@@ -43,19 +43,21 @@ def print_metrics(data, true_labels, pred_labels, file_path, isOPTICS=False):
     with open(file_path, 'a') as file:
 
         if isOPTICS:
-            in_data = data[pred_labels != -1]
-            in_labels = pred_labels[pred_labels != -1]
-        else:
-            in_data = data
-            in_labels = pred_labels
+            aux = data[pred_labels != -1]
+            non_clusterized = (1 - len(aux)/len(data))*100
+            data = aux
+            true_labels = true_labels[pred_labels != -1]
+            pred_labels = pred_labels[pred_labels != -1]
 
-        if len(set(in_labels)) > 1:
+            file.write(f'\n{round(non_clusterized, 3)}% of samples are not in a cluster.\n')
+
+        if len(set(pred_labels)) > 1:
             file.write('\nInternal validation')
 
-            ch_score = metrics.calinski_harabasz_score(in_data, in_labels)
+            ch_score = metrics.calinski_harabasz_score(data, pred_labels)
             file.write(f'\nCalinski-Harabasz score: {ch_score}')
 
-            db_score = metrics.davies_bouldin_score(in_data, in_labels)
+            db_score = metrics.davies_bouldin_score(data, pred_labels)
             file.write(f'\nDavies-Bouldin score: {db_score}')
 
             # s_score = metrics.silhouette_score(data, pred_labels)
