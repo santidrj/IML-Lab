@@ -13,17 +13,16 @@ import utils
 ## OPTICS
 df_connect4 = pd.read_pickle(os.path.join('..', '..', 'datasets', 'processed', 'processed_connect4.pkl'))
 df_connect4_encoded = pd.read_pickle(os.path.join('..', '..', 'datasets', 'processed', 'encoded_connect4.pkl'))
-#df_connect4_encoded_subset = df_connect4_encoded.sample(n=3000)
+df_connect4_encoded_subset = pd.read_pickle(os.path.join('..', '..', 'datasets', 'processed', 'encoded_subset_connect4.pkl'))
 
-min_pts = 180
+min_pts = 50
+max_eps = 84
+cluster_mth= 'xi'
 
-start = time.time()
-optics_clusters = OPTICS(min_samples = min_pts).fit(df_connect4_encoded.iloc[:, :-1])
-end = time.time()
-"""
 metrics = ['euclidean', 'l1', 'chebyshev']
 algorithms = ['kd_tree', 'brute']
 
+start = time.time()
 optics_clusterings = []
 optics_clusterings.append(OPTICS(min_samples=min_pts, metric='l2', algorithm='kd_tree').fit(df_connect4_encoded.iloc[:, :-1]))
 optics_clusterings.append(OPTICS(min_samples=min_pts, metric='l2', algorithm='brute').fit(df_connect4_encoded.iloc[:, :-1]))
@@ -31,12 +30,10 @@ optics_clusterings.append(OPTICS(min_samples=min_pts, metric='l1', algorithm='kd
 optics_clusterings.append(OPTICS(min_samples=min_pts, metric='l1', algorithm='brute').fit(df_connect4_encoded.iloc[:, :-1]))
 optics_clusterings.append(OPTICS(min_samples=min_pts, metric='chebyshev', algorithm='kd_tree').fit(df_connect4_encoded.iloc[:, :-1]))
 optics_clusterings.append(OPTICS(min_samples=min_pts, metric='chebyshev', algorithm='brute').fit(df_connect4_encoded.iloc[:, :-1]))
-"""
-with open('connect4_optics_metrics', 'wb') as file:
-    pickle.dump(optics_clusters, file)
+end = time.time()
 
-#with open('connect4_optics_metrics', 'wb') as file:
-#    pickle.dump(optics_clusterings, file)
+with open('connect4_optics_metrics', 'wb') as file:
+    pickle.dump(optics_clusterings, file)
 
 comp_time = end-start
 print(f'OPTICS computation time: {comp_time/60.} minutes')
@@ -44,14 +41,8 @@ with open('info.txt', 'w') as f:
     f.write('*OPTICS computation time: \n' + str(comp_time))
 
 with open('connect4_optics_metrics', 'rb') as file:
-    optics_clusters = pickle.load(file)
+    optics_clusterings = pickle.load(file)
 
-#with open('connect4_optics_metrics', 'rb') as file:
-#    optics_clusterings = pickle.load(file)
-
-
-
-"""
 def optics_plots(df, models):
     labels = models.labels_
     print(labels)
@@ -66,26 +57,30 @@ def optics_plots(df, models):
         else:
             plt.plot(reachability[labels == l], color=c, marker='.', ls='')
     plt.show()
-"""
+
+#optics_plots(df_connect4_encoded, optics_clusterings)
+
 path_val = os.path.join('..', '..', 'validation', 'connect4_val.txt')
 for i, m in enumerate(metrics):
     for j, a in enumerate(algorithms):
         optics_model = optics_clusterings[i + j]
 
         with open(path_val, 'a') as f:
-            f.write(f'\n \n*OPTICS: min_pts = {min_pts}, metric = {m}, algorithm = {a}')
+            f.write(f'\n \n*OPTICS: min_pts = {min_pts}, eps = {max_eps}, method =, {cluster_mth}  metric = {m}, algorithm = {a}')
 
-        utils.print_metrics(df_connect4_encoded.iloc[:, :-1], df_connect4_encoded['class'], optics_model.labels_, file_path=path, isOPTICS=True)
-
-
+        utils.print_metrics(df_connect4_encoded.iloc[:, :-1], df_connect4_encoded['class'], optics_model.labels_, file_path=path_val, isOPTICS=True)
 
 
 
+
+
+"""
 unique, counts = np.unique(optics_clusters.labels_, return_counts=True)
 print(unique, counts)
 
 path = os.path.join('..', '..', 'validation', 'connect4_val.txt')
 with open(path, 'a') as f:
-    f.write(f'\n \n*OPTICS: min_pts = {min_pts}, unique = {unique}, counts = {counts}')
+    f.write(f'\n \n*OPTICS: min_pts = {min_pts}, max_eps = {max_eps}, cluster_method= {cluster_mth}, unique = {unique}, counts = {counts}')
 
 utils.print_metrics(df_connect4_encoded.iloc[:, :-1], df_connect4_encoded['class'], optics_clusters.labels_, file_path=path, isOPTICS=True )
+"""
