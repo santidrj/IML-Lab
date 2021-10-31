@@ -13,8 +13,8 @@ df_gs = df[df.columns[-1]]
 df = df.drop(columns=df.columns[-1])
 
 K = 10
-init_method = 'random'
-metric = 'l1'
+init_method = 'k-means++'
+metric = 'euclidean'
 n_iter = 300
 init = 10
 kmeans = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
@@ -26,21 +26,21 @@ ax = plt.subplot(111)
 
 colors = ['c', 'b', 'r', 'y', 'g', 'm', 'maroon', 'crimson', 'darkgreen', 'peru']
 labels = kmeans.labels
-for Class, colour in zip(range(9), colors):
+centers = np.array(kmeans.centroids)
+for Class, colour in zip(range(len(centers)), colors):
     Xk = df[labels == Class]
     ax.plot(Xk.iloc[:, 0], Xk.iloc[:, 1], 'o', color=colour, alpha=0.3)
+    ax.scatter(centers[Class, 0], centers[Class, 1], marker="x", color=colour, s=80)
 
 ax.plot(df.iloc[labels == -1, 0],
         df.iloc[labels == -1, 1],
         'k+', alpha=0.1)
 
-centers = np.array(kmeans.centroids)
-ax.scatter(centers[:, 0], centers[:, 1], marker="x", color="k", s=4)
-ax.set_title(f'K-means Clustering with K={K}, init={init_method} and metric={metric}')
+# ax.scatter(centers[:, 0], centers[:, 1], marker="x", color="k", s=10)
+ax.set_title(f'K-means clustering\nwith K={K}, init={init_method} and metric={metric}', fontsize=22)
 
 plt.savefig(os.path.join('..', '..', 'figures', 'pen-based', f'pen-based_k-means-{K}-{init_method}-{metric}.png'))
 plt.show()
-
 
 true_labels = df_gs.to_numpy(dtype='int32')
 

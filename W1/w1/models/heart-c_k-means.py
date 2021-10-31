@@ -23,19 +23,19 @@ print(f'Sum of squared error: {kmeans.square_error}')
 plt.figure(figsize=(12, 12))
 ax = plt.subplot(111)
 
-colors = ['c', 'b', 'r', 'y', 'g', 'm', 'maroon', 'crimson', 'darkgreen']
+colors = ['r', 'g']
 labels = kmeans.labels
-for Class, colour in zip(range(9), colors):
+centers = np.array(kmeans.centroids)
+for Class, colour in zip(range(len(centers)), colors):
     Xk = df_heart[labels == Class]
     ax.plot(Xk.iloc[:, 0], Xk.iloc[:, 1], 'o', color=colour, alpha=0.3)
+    ax.scatter(centers[Class, 0], centers[Class, 1], marker="x", color=colour, s=80)
 
 ax.plot(df_heart.iloc[labels == -1, 0],
         df_heart.iloc[labels == -1, 1],
         'k+', alpha=0.1)
 
-centers = np.array(kmeans.centroids)
-ax.scatter(centers[:, 0], centers[:, 1], marker="x", color="k")
-ax.set_title(f'K-means Clustering with K={K}, init={init_method} and metric={metric}')
+ax.set_title(f'K-means clustering\nwith K={K}, init={init_method} and metric={metric}', fontsize=22)
 
 plt.savefig(os.path.join('..', '..', 'figures', 'heart-c', f'heart-c_k-means-{K}-{init_method}-{metric}.png'))
 plt.show()

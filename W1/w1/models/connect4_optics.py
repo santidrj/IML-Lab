@@ -1,11 +1,9 @@
 import os
 import pickle
-import time
 
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt, gridspec
-from sklearn.cluster import OPTICS
 
 import utils
 
@@ -97,7 +95,7 @@ plt.ylabel('Samples [% over the total]')
 
 for i, m in enumerate(metrics):
     for j, a in enumerate(algorithms):
-        optics_model = optics_clusterings[i + j]
+        optics_model = optics_clusterings[i * (len(metrics) - 1) + j]
         unique, counts = np.unique(optics_model.labels_, return_counts=True)
 
         counts = counts / len(optics_model.labels_) * 100

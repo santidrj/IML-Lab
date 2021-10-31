@@ -820,3 +820,57 @@ Fowlkes-Mallows score (from 0 to 1): 0.6758955312354096
 External validation
 Adjusted Mutual Information score (from 0 to 1): 7.346855526939802e-16
 Fowlkes-Mallows score (from 0 to 1): 0.6758955312354096
+ 
+*OPTICS: min_pts = 50, unique = [-1  0  1  2], counts = [92.4   4.86  1.42  1.32]  metric = l2, algorithm = kd_tree
+92.4% of samples are not in a cluster.
+
+Internal validation
+Calinski-Harabasz score: 137.9949145996197
+Davies-Bouldin score: 1.722918717866639
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.011997499726749026
+Fowlkes-Mallows score (from 0 to 1): 0.4645895623480396
+ 
+*OPTICS: min_pts = 50, unique = [-1  0  1  2], counts = [92.4   4.86  1.42  1.32]  metric = l2, algorithm = brute
+92.4% of samples are not in a cluster.
+
+Internal validation
+Calinski-Harabasz score: 137.9949145996197
+Davies-Bouldin score: 1.722918717866639
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.011997499726749026
+Fowlkes-Mallows score (from 0 to 1): 0.4645895623480396
+ 
+*OPTICS: min_pts = 50, unique = [-1  0], counts = [50.97 49.03]  metric = l1, algorithm = kd_tree
+50.97% of samples are not in a cluster.
+
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 7.346855526939802e-16
+Fowlkes-Mallows score (from 0 to 1): 0.6758955312354096
+ 
+*OPTICS: min_pts = 50, unique = [-1  0], counts = [50.97 49.03]  metric = l1, algorithm = brute
+50.97% of samples are not in a cluster.
+
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 7.346855526939802e-16
+Fowlkes-Mallows score (from 0 to 1): 0.6758955312354096
+ 
+*OPTICS: min_pts = 50, unique = [-1  0], counts = [ 1.26 98.74]  metric = chebyshev, algorithm = kd_tree
+1.26% of samples are not in a cluster.
+
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): -3.1687969127796318e-15
+Fowlkes-Mallows score (from 0 to 1): 0.7086323500361816
+ 
+*OPTICS: min_pts = 50, unique = [-1  0], counts = [ 1.26 98.74]  metric = chebyshev, algorithm = brute
+1.26% of samples are not in a cluster.
+
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): -3.1687969127796318e-15
+Fowlkes-Mallows score (from 0 to 1): 0.7086323500361816

@@ -1,248 +1,200 @@
-OPTICS: min_pts = 9, metric = euclidean, algorithm = kd_tree
-Internal validation
-Calinski-Harabasz score: 75.81496738646148
-Davies-Bouldin score: 0.9687124799111388
+OPTICS: min_pts = 20, metric = euclidean, algorithm = kd_tree
+0.0% of samples are not in a cluster.
+
 
 External validation
-Adjusted Mutual Information score (from 0 to 1): 0.11322312125336041
-Fowlkes-Mallows score (from 0 to 1): 0.6060777147518953
+Adjusted Mutual Information score (from 0 to 1): 0.0
+Fowlkes-Mallows score (from 0 to 1): 0.7087508139080548
  
-OPTICS: min_pts = 9, metric = euclidean, algorithm = brute
-Internal validation
-Calinski-Harabasz score: 75.81496738646148
-Davies-Bouldin score: 0.9687124799111388
+OPTICS: min_pts = 20, metric = euclidean, algorithm = brute
+0.0% of samples are not in a cluster.
+
 
 External validation
-Adjusted Mutual Information score (from 0 to 1): 0.11322312125336041
-Fowlkes-Mallows score (from 0 to 1): 0.6060777147518953
+Adjusted Mutual Information score (from 0 to 1): 0.0
+Fowlkes-Mallows score (from 0 to 1): 0.7087508139080548
  
-OPTICS: min_pts = 9, metric = l1, algorithm = kd_tree
-Internal validation
-Calinski-Harabasz score: 75.81496738646148
-Davies-Bouldin score: 0.9687124799111388
+OPTICS: min_pts = 20, metric = l1, algorithm = kd_tree
+0.0% of samples are not in a cluster.
+
 
 External validation
-Adjusted Mutual Information score (from 0 to 1): 0.11322312125336041
-Fowlkes-Mallows score (from 0 to 1): 0.6060777147518953
+Adjusted Mutual Information score (from 0 to 1): 0.0
+Fowlkes-Mallows score (from 0 to 1): 0.7087508139080548
  
-OPTICS: min_pts = 9, metric = l1, algorithm = brute
+OPTICS: min_pts = 20, metric = l1, algorithm = brute
+77.888% of samples are not in a cluster.
+
 Internal validation
-Calinski-Harabasz score: 70.09162258335603
-Davies-Bouldin score: 0.7639373815285778
+Calinski-Harabasz score: 85.85028553815125
+Davies-Bouldin score: 0.8388016226560101
 
 External validation
-Adjusted Mutual Information score (from 0 to 1): 0.12338826582811857
-Fowlkes-Mallows score (from 0 to 1): 0.6099411035714108
+Adjusted Mutual Information score (from 0 to 1): 0.8019928663218149
+Fowlkes-Mallows score (from 0 to 1): 0.9413886384129846
  
-OPTICS: min_pts = 9, metric = chebyshev, algorithm = kd_tree
+OPTICS: min_pts = 20, metric = chebyshev, algorithm = kd_tree
+77.888% of samples are not in a cluster.
+
 Internal validation
-Calinski-Harabasz score: 70.09162258335603
-Davies-Bouldin score: 0.7639373815285778
+Calinski-Harabasz score: 85.85028553815125
+Davies-Bouldin score: 0.8388016226560101
 
 External validation
-Adjusted Mutual Information score (from 0 to 1): 0.12338826582811857
-Fowlkes-Mallows score (from 0 to 1): 0.6099411035714108
+Adjusted Mutual Information score (from 0 to 1): 0.8019928663218149
+Fowlkes-Mallows score (from 0 to 1): 0.9413886384129846
  
-OPTICS: min_pts = 9, metric = chebyshev, algorithm = brute
+OPTICS: min_pts = 20, metric = chebyshev, algorithm = brute
+77.888% of samples are not in a cluster.
+
 Internal validation
-Calinski-Harabasz score: 70.09162258335603
-Davies-Bouldin score: 0.7639373815285778
+Calinski-Harabasz score: 85.85028553815125
+Davies-Bouldin score: 0.8388016226560101
 
 External validation
-Adjusted Mutual Information score (from 0 to 1): 0.12338826582811857
-Fowlkes-Mallows score (from 0 to 1): 0.6099411035714108
-
- 
-OPTICS: min_pts = 9, metric = euclidean, algorithm = kd_tree
-Internal validation
-Calinski-Harabasz score: 75.81496738646148
-Davies-Bouldin score: 0.9687124799111388
-
-External validation
-Adjusted Mutual Information score (from 0 to 1): 0.1132231212533604
-Fowlkes-Mallows score (from 0 to 1): 0.6060777147518953
- 
-OPTICS: min_pts = 9, metric = euclidean, algorithm = brute
-Internal validation
-Calinski-Harabasz score: 75.81496738646148
-Davies-Bouldin score: 0.9687124799111388
-
-External validation
-Adjusted Mutual Information score (from 0 to 1): 0.1132231212533604
-Fowlkes-Mallows score (from 0 to 1): 0.6060777147518953
- 
-OPTICS: min_pts = 9, metric = l1, algorithm = kd_tree
-Internal validation
-Calinski-Harabasz score: 75.81496738646148
-Davies-Bouldin score: 0.9687124799111388
-
-External validation
-Adjusted Mutual Information score (from 0 to 1): 0.1132231212533604
-Fowlkes-Mallows score (from 0 to 1): 0.6060777147518953
- 
-OPTICS: min_pts = 9, metric = l1, algorithm = brute
-Internal validation
-Calinski-Harabasz score: 70.09162258335603
-Davies-Bouldin score: 0.7639373815285778
-
-External validation
-Adjusted Mutual Information score (from 0 to 1): 0.12338826582811842
-Fowlkes-Mallows score (from 0 to 1): 0.6099411035714108
- 
-OPTICS: min_pts = 9, metric = chebyshev, algorithm = kd_tree
-Internal validation
-Calinski-Harabasz score: 70.09162258335603
-Davies-Bouldin score: 0.7639373815285778
-
-External validation
-Adjusted Mutual Information score (from 0 to 1): 0.12338826582811842
-Fowlkes-Mallows score (from 0 to 1): 0.6099411035714108
- 
-OPTICS: min_pts = 9, metric = chebyshev, algorithm = brute
-Internal validation
-Calinski-Harabasz score: 70.09162258335603
-Davies-Bouldin score: 0.7639373815285778
-
-External validation
-Adjusted Mutual Information score (from 0 to 1): 0.12338826582811842
-Fowlkes-Mallows score (from 0 to 1): 0.6099411035714108
+Adjusted Mutual Information score (from 0 to 1): 0.8019928663218149
+Fowlkes-Mallows score (from 0 to 1): 0.9413886384129846
 
  
-OPTICS: min_pts = 9, metric = euclidean, algorithm = kd_tree
+OPTICS: min_pts = 20, metric = l2, algorithm = kd_tree
+0.0% of samples are not in a cluster.
 
-84.158% of samples are not in a cluster.
-
-Internal validation
-Calinski-Harabasz score: 75.81496738646148
-Davies-Bouldin score: 0.9687124799111388
 
 External validation
-Adjusted Mutual Information score (from 0 to 1): 0.46755005724013515
-Fowlkes-Mallows score (from 0 to 1): 0.6073273382921587
+Adjusted Mutual Information score (from 0 to 1): 0.0
+Fowlkes-Mallows score (from 0 to 1): 0.7087508139080548
  
-OPTICS: min_pts = 9, metric = euclidean, algorithm = brute
+OPTICS: min_pts = 20, metric = l2, algorithm = brute
+0.0% of samples are not in a cluster.
 
-84.158% of samples are not in a cluster.
-
-Internal validation
-Calinski-Harabasz score: 75.81496738646148
-Davies-Bouldin score: 0.9687124799111388
 
 External validation
-Adjusted Mutual Information score (from 0 to 1): 0.46755005724013515
-Fowlkes-Mallows score (from 0 to 1): 0.6073273382921587
+Adjusted Mutual Information score (from 0 to 1): 0.0
+Fowlkes-Mallows score (from 0 to 1): 0.7087508139080548
  
-OPTICS: min_pts = 9, metric = l1, algorithm = kd_tree
-
-84.158% of samples are not in a cluster.
+OPTICS: min_pts = 20, metric = l1, algorithm = kd_tree
+77.888% of samples are not in a cluster.
 
 Internal validation
-Calinski-Harabasz score: 75.81496738646148
-Davies-Bouldin score: 0.9687124799111388
+Calinski-Harabasz score: 85.85028553815125
+Davies-Bouldin score: 0.8388016226560101
 
 External validation
-Adjusted Mutual Information score (from 0 to 1): 0.46755005724013515
-Fowlkes-Mallows score (from 0 to 1): 0.6073273382921587
+Adjusted Mutual Information score (from 0 to 1): 0.8019928663218149
+Fowlkes-Mallows score (from 0 to 1): 0.9413886384129846
  
-OPTICS: min_pts = 9, metric = l1, algorithm = brute
+OPTICS: min_pts = 20, metric = l1, algorithm = brute
+0.0% of samples are not in a cluster.
 
-84.488% of samples are not in a cluster.
-
-Internal validation
-Calinski-Harabasz score: 70.09162258335603
-Davies-Bouldin score: 0.7639373815285778
 
 External validation
-Adjusted Mutual Information score (from 0 to 1): 0.6015068619517415
-Fowlkes-Mallows score (from 0 to 1): 0.7799817886349747
+Adjusted Mutual Information score (from 0 to 1): 0.0
+Fowlkes-Mallows score (from 0 to 1): 0.7087508139080548
  
-OPTICS: min_pts = 9, metric = chebyshev, algorithm = kd_tree
+OPTICS: min_pts = 20, metric = l2, algorithm = kd_tree
+0.0% of samples are not in a cluster.
 
-84.488% of samples are not in a cluster.
-
-Internal validation
-Calinski-Harabasz score: 70.09162258335603
-Davies-Bouldin score: 0.7639373815285778
 
 External validation
-Adjusted Mutual Information score (from 0 to 1): 0.6015068619517415
-Fowlkes-Mallows score (from 0 to 1): 0.7799817886349747
+Adjusted Mutual Information score (from 0 to 1): 0.0
+Fowlkes-Mallows score (from 0 to 1): 0.7087508139080548
  
-OPTICS: min_pts = 9, metric = chebyshev, algorithm = brute
+OPTICS: min_pts = 20, metric = l2, algorithm = brute
+0.0% of samples are not in a cluster.
 
-84.488% of samples are not in a cluster.
-
-Internal validation
-Calinski-Harabasz score: 70.09162258335603
-Davies-Bouldin score: 0.7639373815285778
 
 External validation
-Adjusted Mutual Information score (from 0 to 1): 0.6015068619517415
-Fowlkes-Mallows score (from 0 to 1): 0.7799817886349747
-
+Adjusted Mutual Information score (from 0 to 1): 0.0
+Fowlkes-Mallows score (from 0 to 1): 0.7087508139080548
  
-OPTICS: min_pts = 9, metric = euclidean, algorithm = kd_tree
-84.158% of samples are not in a cluster.
+OPTICS: min_pts = 20, metric = l1, algorithm = kd_tree
+77.888% of samples are not in a cluster.
 
 Internal validation
-Calinski-Harabasz score: 75.81496738646148
-Davies-Bouldin score: 0.9687124799111388
+Calinski-Harabasz score: 85.85028553815125
+Davies-Bouldin score: 0.8388016226560101
 
 External validation
-Adjusted Mutual Information score (from 0 to 1): 0.46755005724013515
-Fowlkes-Mallows score (from 0 to 1): 0.6073273382921587
+Adjusted Mutual Information score (from 0 to 1): 0.8019928663218149
+Fowlkes-Mallows score (from 0 to 1): 0.9413886384129846
  
-OPTICS: min_pts = 9, metric = euclidean, algorithm = brute
-84.158% of samples are not in a cluster.
+OPTICS: min_pts = 20, metric = l1, algorithm = brute
+77.888% of samples are not in a cluster.
 
 Internal validation
-Calinski-Harabasz score: 75.81496738646148
-Davies-Bouldin score: 0.9687124799111388
+Calinski-Harabasz score: 85.85028553815125
+Davies-Bouldin score: 0.8388016226560101
 
 External validation
-Adjusted Mutual Information score (from 0 to 1): 0.46755005724013515
-Fowlkes-Mallows score (from 0 to 1): 0.6073273382921587
+Adjusted Mutual Information score (from 0 to 1): 0.8019928663218149
+Fowlkes-Mallows score (from 0 to 1): 0.9413886384129846
  
-OPTICS: min_pts = 9, metric = l1, algorithm = kd_tree
-84.158% of samples are not in a cluster.
+OPTICS: min_pts = 20, metric = chebyshev, algorithm = kd_tree
+0.0% of samples are not in a cluster.
 
-Internal validation
-Calinski-Harabasz score: 75.81496738646148
-Davies-Bouldin score: 0.9687124799111388
 
 External validation
-Adjusted Mutual Information score (from 0 to 1): 0.46755005724013515
-Fowlkes-Mallows score (from 0 to 1): 0.6073273382921587
+Adjusted Mutual Information score (from 0 to 1): 0.0
+Fowlkes-Mallows score (from 0 to 1): 0.7087508139080548
  
-OPTICS: min_pts = 9, metric = l1, algorithm = brute
-84.488% of samples are not in a cluster.
+OPTICS: min_pts = 20, metric = chebyshev, algorithm = brute
+0.0% of samples are not in a cluster.
 
-Internal validation
-Calinski-Harabasz score: 70.09162258335603
-Davies-Bouldin score: 0.7639373815285778
 
 External validation
-Adjusted Mutual Information score (from 0 to 1): 0.6015068619517415
-Fowlkes-Mallows score (from 0 to 1): 0.7799817886349747
+Adjusted Mutual Information score (from 0 to 1): 0.0
+Fowlkes-Mallows score (from 0 to 1): 0.7087508139080548
  
-OPTICS: min_pts = 9, metric = chebyshev, algorithm = kd_tree
-84.488% of samples are not in a cluster.
+OPTICS: min_pts = 20, metric = l2, algorithm = kd_tree
+0.0% of samples are not in a cluster.
 
-Internal validation
-Calinski-Harabasz score: 70.09162258335603
-Davies-Bouldin score: 0.7639373815285778
 
 External validation
-Adjusted Mutual Information score (from 0 to 1): 0.6015068619517415
-Fowlkes-Mallows score (from 0 to 1): 0.7799817886349747
+Adjusted Mutual Information score (from 0 to 1): 0.0
+Fowlkes-Mallows score (from 0 to 1): 0.7087508139080548
  
-OPTICS: min_pts = 9, metric = chebyshev, algorithm = brute
-84.488% of samples are not in a cluster.
+OPTICS: min_pts = 20, metric = l2, algorithm = brute
+0.0% of samples are not in a cluster.
 
-Internal validation
-Calinski-Harabasz score: 70.09162258335603
-Davies-Bouldin score: 0.7639373815285778
 
 External validation
-Adjusted Mutual Information score (from 0 to 1): 0.6015068619517415
-Fowlkes-Mallows score (from 0 to 1): 0.7799817886349747
+Adjusted Mutual Information score (from 0 to 1): 0.0
+Fowlkes-Mallows score (from 0 to 1): 0.7087508139080548
+ 
+OPTICS: min_pts = 20, metric = l1, algorithm = kd_tree
+77.888% of samples are not in a cluster.
+
+Internal validation
+Calinski-Harabasz score: 85.85028553815125
+Davies-Bouldin score: 0.8388016226560101
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.8019928663218149
+Fowlkes-Mallows score (from 0 to 1): 0.9413886384129846
+ 
+OPTICS: min_pts = 20, metric = l1, algorithm = brute
+77.888% of samples are not in a cluster.
+
+Internal validation
+Calinski-Harabasz score: 85.85028553815125
+Davies-Bouldin score: 0.8388016226560101
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.8019928663218149
+Fowlkes-Mallows score (from 0 to 1): 0.9413886384129846
+ 
+OPTICS: min_pts = 20, metric = chebyshev, algorithm = kd_tree
+0.0% of samples are not in a cluster.
+
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0
+Fowlkes-Mallows score (from 0 to 1): 0.7087508139080548
+ 
+OPTICS: min_pts = 20, metric = chebyshev, algorithm = brute
+0.0% of samples are not in a cluster.
+
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0
+Fowlkes-Mallows score (from 0 to 1): 0.7087508139080548

@@ -12,9 +12,9 @@ df_heart = pd.read_pickle(os.path.join(data_root_path, 'processed', 'processed_h
 df_gs = pd.read_pickle(os.path.join(data_root_path, 'processed', 'heart-c_gs.pkl'))
 
 # Use OPTICS with euclidean distance and auto algorithm for approximation to the nearest neighbour
-metrics = ['euclidean', 'l1', 'chebyshev']
+metrics = ['l2', 'l1', 'chebyshev']
 algorithms = ['kd_tree', 'brute']
-minPts = 9
+minPts = 20
 
 optics_clusterings = []
 optics_clusterings.append(OPTICS(min_samples=minPts, metric='l2', algorithm='kd_tree').fit(df_heart))
@@ -26,7 +26,7 @@ optics_clusterings.append(OPTICS(min_samples=minPts, metric='chebyshev', algorit
 
 for i, m in enumerate(metrics):
     for j, a in enumerate(algorithms):
-        optics_model = optics_clusterings[i + j]
+        optics_model = optics_clusterings[i * (len(metrics) - 1) + j]
         # Creating a numpy array with numbers at equal spaces till
         # the specified range
         space = np.arange(len(df_heart))
@@ -51,7 +51,7 @@ for i, m in enumerate(metrics):
             ax1.plot(Xk, Rk, colour, alpha=0.3)
         ax1.plot(space[labels == -1], reachability[labels == -1], 'k.', alpha=0.3)
         ax1.set_ylabel('Reachability Distance')
-        ax1.set_title('Reachability Plot')
+        ax1.set_title('Reachability Plot', fontsize=14)
 
         # Plotting the OPTICS Clustering
         colors = ['c.', 'b.', 'r.', 'y.', 'g.']
@@ -62,7 +62,7 @@ for i, m in enumerate(metrics):
         ax2.plot(df_heart.iloc[optics_model.labels_ == -1, 0],
                  df_heart.iloc[optics_model.labels_ == -1, 1],
                  'k+', alpha=0.1)
-        ax2.set_title(f'OPTICS Clustering with minPts = {minPts}, metric = {m} and algorithm = {a}')
+        ax2.set_title(f'OPTICS Clustering\nwith minPts = {minPts}, metric = {m} and algorithm = {a}', fontsize=14)
 
         plt.tight_layout()
         plt.savefig(os.path.join('..', '..', 'figures', 'heart-c', f'heart-c_optics-{m}-{a}.png'))
