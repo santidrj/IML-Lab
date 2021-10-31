@@ -1,181 +1,36 @@
 import os
-import numpy as np
+import pickle
+
 import pandas as pd
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
 
+from algorithms.fuzzycmeans import FuzzyCMeans, partition_coefficient, distance_measure
 
-df_connect4 = pd.read_pickle(os.path.join('..', '..', 'datasets', 'processed', 'processed_connect4.pkl'))
 df_connect4_encoded = pd.read_pickle(os.path.join('..', '..', 'datasets', 'processed', 'encoded_connect4.pkl'))
-df_connect4_encoded_subset = pd.read_pickle(os.path.join('..', '..', 'datasets', 'processed', 'encoded_subset_connect4.pkl'))
 
 df = df_connect4_encoded.iloc[:, :-1]
 
-# applying fuzzy c means to the data set
+fuzzy_clusterings = []
+for C in range(4):
+    for i in range(10):
+        fuzzy_clusterings.append(FuzzyCMeans(C+2, max_iter=15).fit(df))
+        print(f'finished {i}')
 
-#initialize parameters
-# number of samples
-n = len(df)
-# number of clusters
-c = 3
-#number of dimensions
-d = len(df.iloc[0])
-# m fuzzy parameter
-m = 2
-#max number of iterations
-max_iterations = 12
+with open('connect4_fuzzy-c-means', 'wb') as file:
+    pickle.dump(fuzzy_clusterings, file)
 
-def distance_measure(a, b):
-    """ euclidean distance
-        Params:
-          object a and b
-        Return:
-          distance metrics
-    """
-    return np.power(np.power(a - b, 2).sum(), 0.5)
-
-
-def initialize_u_matrix(n: int, c: int):
-    """ initialize the menbership matrix
-        Params:
-          n the number of samples
-          c the number of cluster
-        Constraint:
-        the sum of the menbership values for each sample for all the cluster must equal to 1
-
-        We use the dirichlet distribution which is a distribution over x
-        that fullfil the conditions xi > 0 and sum(X) = 1
-    """
-    return np.random.dirichlet(np.ones(c), n)
-
-
-def initial_cluster_centers_random(c: int, d: int):
-    """
-      guess initial cluster centers
-      random values for the clusters
-    """
-    return np.random.rand(c, d)
-
-
-def initial_cluster_centers_from_data(c: int):
-    cc = np.zeros((c, d))
-    rng = np.random.default_rng()
-    for i in range(c):
-        random_number = rng.integers(10992)
-        random_cluster = df.iloc[random_number]
-        cc[i] = random_cluster
-    return cc
-
-
-def update_u_matrix(cc):
-    """
-    Params:
-      cluster centers
-    Return:
-      updated menbership matrix
-    """
-    # initialize new matrix
-    u_matrix = np.zeros((n, c))
-    # column
-    for i in range(c):
-        # row
-        for k in range(n):
-            # for each cluster center
-            xk = df.iloc[k]
-            vi = cc[i]
-            numerator = distance_measure(xk, vi)
-            res = np.zeros((c,))
-            for j in range(c):
-                denominator = distance_measure(xk, cc[j])
-                res[j] = numerator / denominator
-            res = np.power(np.power(res, 2 / (m - 1)).sum(), -1)
-            u_matrix[k][i] = res
-    return u_matrix
-
-
-def update_cluster_centers(u):
-    """
-    Params:
-      menbership matrix
-    Return:
-      updated cluster centers
-    """
-    cc = []
-    for i in range(c):
-        denominator = np.power(u[:, i], m).sum()
-        cj = []
-        for x in range(d):
-            numerator = (df.iloc[:, x].values * np.power(u[:, i], m)).sum()
-            c_val = numerator / denominator
-            cj.append(c_val)
-        cc.append(cj)
-    return np.array(cc)
-
-
-def compare_cluster_centers(c_new, c_current):
-    """
-    Compare unext with ucurrent to calculate the value to be compare against
-    epsilon.
-    """
-    return (c_new - c_current).max()
-
-
-def plot_data(location_of_plot, clusters):
-    plt.subplot(4, 3, location_of_plot + 1)
-
-    # selecting 2 columns to visualize the data
-    plt.scatter(list(df.iloc[:, 2]), list(df.iloc[:, 3]), marker='o')
-    for center in clusters:
-        plt.scatter(center[2], center[3], marker='o', color='r')
-    plt.axis('equal')
-    plt.xlabel('column a2', fontsize=16)
-    plt.ylabel('column a3', fontsize=16)
-    plt.grid()
-
-
-def fuzzy_c_means(m=2, epsilon=0.001, max_iterations=12):
-    """
-    FCM
-    Params:
-      c: number of cluter
-      m: fuzzy exponent parameter
-      epsilon: threshold criteria
-      max_iterations
-    """
-    u_matrix = initialize_u_matrix(n=n, c=c)
-    clusters_centers = initial_cluster_centers_random(c, d)
-    # iterative part
-    for i in range(max_iterations):
-        print('hello')
-        plot_data(i, clusters_centers)
-        plt.show()
-        clusters_centers_new = update_cluster_centers(u_matrix)
-        u_matrix_new = update_u_matrix(clusters_centers_new)
-
-        delta_u = compare_cluster_centers(clusters_centers_new, clusters_centers)
-        if delta_u <= epsilon:
-            break
-        else:
-            u_matrix = u_matrix_new
-            clusters_centers = clusters_centers_new
-    return u_matrix, clusters_centers
-
-
-labels_pred, clusters_centers = fuzzy_c_means()
-unique, counts = np.unique(labels_pred, return_counts=True)
-print(unique, counts)
-
+with open('connect4_fuzzy-c-means', 'rb') as file:
+    fuzzy_clusterings = pickle.load(file)
 
 """
-#VALIDATION METRIC
-#PARTITION COEFFICIENT
+colors = ['c', 'b', 'r', 'y', 'g', 'm', 'maroon', 'crimson', 'darkgreen', 'peru']
+fig, axis = plt.subplots(C, 1, figsize=(12, 12))
+for i, ax in enumerate(axis):
+    ax.plot(fuzzy.u_matrix[i], colors[i])
+axis[0].set_title('Membership functions')
 
-Measure the amount of overlap among clusters
-the range of values is [1/c , 1] -> 
-the closer to 1 =  the smaller the sharing of the vectors in data
-the closer to 1/c =  X possesses no clustering structure or the algorithms fails to unravel it.
+plt.savefig(os.path.join('..', '..', 'figures', 'connect4', f'MF-{C}.png'))
+plt.show()
 
-def partition_coefficient(u, n):
-  return (np.power(u, 2).sum())/n
-
-partition_coefficient(uuu, n)
+#print('Partition coefficient:', partition_coefficient(fuzzy.u_matrix, df.shape[0]))
 """
