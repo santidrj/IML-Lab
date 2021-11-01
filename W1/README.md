@@ -45,8 +45,8 @@ python run_fuzzy_c_means.py
 Also, if you want to execute a particular algorithm for a particular dataset you can run any of the scripts in this
 folder in the same way as in the above example.
 
-It is worth noting that for the OPTICS and Fuzzy C-Means algorithms the execution time is considerably high due to the
-Connect-4 dataset, which is very large.
+It is worth noting that for the Pen-Based and Connect-4 datasets the execution time is considerably high due to their
+sizes, specially for the latter.
 
 All these scripts generate several output files such as plots and validation results that are stored in the `figures`
 and `validation` folders respectively.
