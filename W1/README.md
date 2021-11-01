@@ -50,3 +50,6 @@ Connect-4 dataset, which is very large.
 
 All these scripts generate several output files such as plots and validation results that are stored in the `figures`
 and `validation` folders respectively.
+
+Additionally, for the Connect-4 dataset we also generate the results of the models and save them as pickle files in
+the `models_results`.
