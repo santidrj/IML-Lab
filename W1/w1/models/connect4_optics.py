@@ -47,18 +47,6 @@ with open(path_save_model, 'rb') as file:
     optics_clusterings = pickle.load(file)
 
 path_val = os.path.join('..', '..', 'validation', 'connect4_val.txt')
-plt.rcParams['xtick.labelsize'] = 16
-plt.rcParams['ytick.labelsize'] = 16
-plt.rcParams['axes.labelsize'] = 18
-plt.rcParams['axes.labelpad'] = 10
-plt.rcParams['axes.labelpad'] = 10
-plt.rcParams['legend.fontsize'] = 15
-
-colors = ['c', 'b', 'r', 'y', 'g', 'm']
-plt.figure(figsize=(9, 5))
-plt.grid(axis='y')
-plt.xlabel('Clusters')
-plt.ylabel('Samples [% over the total]')
 
 for i, m in enumerate(metrics):
     for j, a in enumerate(algorithms):
@@ -66,7 +54,6 @@ for i, m in enumerate(metrics):
         unique, counts = np.unique(optics_model.labels_, return_counts=True)
 
         counts = counts / len(optics_model.labels_) * 100
-        plt.bar(unique + (2*i+j) * 0.15, counts, width=0.15, align='center', alpha=0.9, color=colors[2*i+j])
 
         with open(path_val, 'a') as f:
             f.write(
@@ -76,9 +63,3 @@ for i, m in enumerate(metrics):
                             optics_model.labels_,
                             file_path=path_val, isOPTICS=True)
 
-
-plt.xticks(np.arange(4)-1+0.37, ['-1', '1', '2', '3'])
-plt.tight_layout()
-plt.legend(['L2, kd_tree', 'L2, brute', 'L1, kd_tree', 'L1, brute', 'Chebyshev, kd_tree', 'Chebyshev, brute'])
-plt.savefig(os.path.join('..', '..', 'figures', 'connect4', 'optics_barplot'))
-plt.show()
