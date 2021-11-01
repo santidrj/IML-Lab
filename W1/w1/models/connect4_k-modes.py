@@ -3,8 +3,7 @@ import pickle
 
 import numpy as np
 import pandas as pd
-from matplotlib import pyplot as plt, gridspec
-import seaborn as sns
+from matplotlib import pyplot as plt
 
 import utils
 from algorithms import kmodes
@@ -12,7 +11,6 @@ from algorithms import kmodes
 df_connect4 = pd.read_pickle(os.path.join('..', '..', 'datasets', 'processed', 'processed_connect4.pkl'))
 df_connect4_encoded = pd.read_pickle(os.path.join('..', '..', 'datasets', 'processed', 'encoded_connect4.pkl'))
 
-"""
 k_modes_clusterings = []
 
 k_modes_clusterings.append(kmodes.KModes(df_connect4.iloc[:, :-1], k=2, max_iter=10).run('bisecting'))
@@ -20,34 +18,13 @@ k_modes_clusterings.append(kmodes.KModes(df_connect4.iloc[:, :-1], k=3, max_iter
 k_modes_clusterings.append(kmodes.KModes(df_connect4.iloc[:, :-1], k=4, max_iter=10).run('bisecting'))
 k_modes_clusterings.append(kmodes.KModes(df_connect4.iloc[:, :-1], k=5, max_iter=10).run('bisecting'))
 
-with open('connect4_k-modes', 'wb') as file:
+path_save_model = os.path.join('..', '..', 'models_results', 'connect4', 'k-modes')
+with open(path_save_model, 'wb') as file:
     pickle.dump(k_modes_clusterings, file)
-"""
 
-with open('connect4_k-modes', 'rb') as file:
+with open(path_save_model, 'rb') as file:
     k_modes_clusterings = pickle.load(file)
 
-def k_modes_plots(df, pred_labels):
-
-    unique, counts = np.unique(pred_labels, return_counts=True)
-    colors = ['c', 'b', 'r', 'y', 'g']
-
-    plt.figure(figsize=(10, 10))
-    #g = gridspec.GridSpec(1, 1)
-    #ax = plt.subplot(g[0, :], projection='3d')
-
-    """
-    for l, c in zip(unique, colors):
-        print(c)
-        x, y, z = df['a3'][pred_labels == l], df['a4'][pred_labels == l], df['a5'][pred_labels == l]
-        #ax.scatter(x, y, z, color=c, alpha=0.3)
-        plt.bar(unique, )
-        #ax.text(x * (1 + 0.01), y * (1 + 0.01), z * (1 + 0.01), counts[unique == l], fontsize=12)
-    """
-    plt.show()
-
-
-#k_modes_plots(df_connect4_encoded, k_modes_clusterings[1])
 
 path_val = os.path.join('..', '..', 'validation', 'connect4_val.txt')
 plt.rcParams['xtick.labelsize'] = 16

@@ -1,2 +1,0 @@
-*OPTICS computation time: 
-1423.8368139266968
