@@ -44,12 +44,14 @@ for i, m in enumerate(metrics):
         ax2 = plt.subplot(G[1, :])
 
         # Plotting the Reachability-Distance Plot
-        colors = ['c.', 'b.', 'r.', 'y.', 'g.']
-        for Class, colour in zip(range(0, 5), colors):
+        colors = ['c.', 'b.', 'r.']
+        for Class, colour in zip(range(len(set(labels))), colors):
             Xk = space[labels == Class]
             Rk = reachability[labels == Class]
+            print(f'Class {Class}: {len(labels[labels == Class]) / len(labels) * 100}')
             ax1.plot(Xk, Rk, colour, alpha=0.3)
         ax1.plot(space[labels == -1], reachability[labels == -1], 'k.', alpha=0.3)
+
         ax1.set_ylabel('Reachability Distance')
         ax1.set_title('Reachability Plot', fontsize=14)
 
