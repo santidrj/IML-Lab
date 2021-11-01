@@ -8,3 +8,15 @@ Calinski-Harabasz score: 3244.070868419081
 Davies-Bouldin score: 1.5322313695642944
 
 External validation
+
+
+Fuzzy C-Means: C=3
+Partition coefficient: 0.33558745202467444
+
+Internal validation
+Calinski-Harabasz score: 2551.9752496031365
+Davies-Bouldin score: 1.6189095264861837
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.3053641595021891
+Fowlkes-Mallows score (from 0 to 1): 0.35247134844616423

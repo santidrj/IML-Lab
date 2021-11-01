@@ -75,3 +75,15 @@ Davies-Bouldin score: 2.127847298638196
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.3033462676568329
 Fowlkes-Mallows score (from 0 to 1): 0.6937810584238143
+
+
+Fuzzy C-Means: C=2
+Partition coefficient: 0.5002665563447357
+
+Internal validation
+Calinski-Harabasz score: 64.76815003916296
+Davies-Bouldin score: 2.127847298638196
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.3033462676568329
+Fowlkes-Mallows score (from 0 to 1): 0.6937810584238143
