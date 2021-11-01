@@ -1,0 +1,10 @@
+
+
+Fuzzy C-Means: C=3
+Partition coefficient: 0.41005994858856243
+
+Internal validation
+Calinski-Harabasz score: 3244.070868419081
+Davies-Bouldin score: 1.5322313695642944
+
+External validation

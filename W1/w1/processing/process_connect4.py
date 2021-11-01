@@ -1,3 +1,7 @@
+import sys
+
+sys.path.append("..")
+
 import os.path
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder

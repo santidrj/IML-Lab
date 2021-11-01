@@ -27,19 +27,33 @@ class Kmeans:
         self.square_error = None
 
     def _initialize_centroids(self, data):
+        """
+        Initializes the centroids using either K-means++ or random initialization.
+        :param data: Data from wich to select the random centroids.
+        :return: The array of centroids.
+        """
         if self.init == 'k-means++':
             return self._kmeans_plusplus(data, self.k)
         else:
             return data[np.random.choice(data.shape[0], self.k, replace=False), :]
 
     def _compute_distance(self, a, b):
+        """
+        Compute the distance between two n-dimensional arrays.
+        :param a: n-dimensional array.
+        :param b: n-dimensional array.
+        :return: Distance between a and b
+        """
         if self.metric == 'euclidean':
             return euclidean(a, b) ** 2
         elif self.metric == 'l1':
             return minkowski(a, b, p=1)
 
-    # noinspection SpellCheckingInspection
     def fit(self, data: DataFrame):
+        """
+        Perform K-means clustering over the data.
+        :param data: Data to use for the K-means.
+        """
         x = data.to_numpy(dtype='float64')
         best_sse = np.inf
         best_centroids = []
@@ -56,6 +70,13 @@ class Kmeans:
         self.square_error = best_sse
 
     def run_kmeans_once(self, x, max_iter):
+        """
+        Run the K-means algorithm once.
+        :param x: Data to cluster using K-means.
+        :param max_iter: Maximum number of iterations for updating the centers.
+        :return: Tuple containing the labels of the data, the clusters centroids and the SSE.
+        """
+
         # Initialize the centroids using K random samples of the data
         self.centroids = self._initialize_centroids(x)
 
@@ -77,6 +98,13 @@ class Kmeans:
         return labels, centroids, sse
 
     def _fit(self, x, centroids):
+        """
+        Assing each sample to the nearest cluster and update the centroids.
+        :param x: Array of samples.
+        :param centroids: List of clusters centroids.
+        :return: The new centroids and the labels for each sample.
+        """
+
         labels = np.ndarray(x.shape[0])
 
         # Get the nearest centroid for every element in the data
@@ -96,6 +124,13 @@ class Kmeans:
         return new_centroids, np.array(labels)
 
     def _update_centroids(self, x, old_centroids, labels):
+        """
+        Updates the centroids of each cluster.
+        :param x: N-dimensional array of samples
+        :param old_centroids: Current list of centroids.
+        :param labels: List of labels for each sample.
+        :return: The list of new centroids.
+        """
         aux = np.ndarray((x.shape[0], x.shape[1] + 1))
         aux[:, :-1] = x
         aux[:, -1] = labels
@@ -110,6 +145,13 @@ class Kmeans:
         return np.array(new_centers)
 
     def _compute_sse(self, x, labels, centroids):
+        """
+        Computes the Sum of Squared Error (SSE) of the clustering.
+        :param x: Data samples.
+        :param labels: Labels for each data sample.
+        :param centroids: Centroids of each cluster.
+        :return: The total SSE of the clustering.
+        """
         sum_squared_error = 0
         for i, centroid in enumerate(centroids):
             indices = np.where(labels == i)
@@ -118,6 +160,12 @@ class Kmeans:
         return sum_squared_error
 
     def _kmeans_plusplus(self, x, k):
+        """
+        Initialize the clusters centroids by applying the K-means++ algorithm.
+        :param x: Data samples.
+        :param k: Desired number of clusters.
+        :return: The list of initial centroids.
+        """
         # Number of local seeding trials based on what
         # Arthur, David & Vassilvitskii, Sergei said in
         # K-Means++: The Advantages of Careful Seeding
@@ -151,6 +199,12 @@ class Kmeans:
         return centroids
 
     def _closest_distances(self, x, y):
+        """
+        Compute the distances from y to each point in x.
+        :param x: Array of points.
+        :param y: Array of points.
+        :return: A matrix of distances.
+        """
         if x.ndim == 1:
             distances = np.array([self._compute_distance(x, point) for point in y])
         else:
