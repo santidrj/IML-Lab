@@ -1,0 +1,77 @@
+Fuzzy C-Means: C=5
+Partition coefficient: 0.20003268950927788
+
+Internal validation
+Calinski-Harabasz score: 33.273828037270846
+Davies-Bouldin score: 2.891511251356858
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.2932991847882732
+Fowlkes-Mallows score (from 0 to 1): 0.6898514295058014
+
+
+Fuzzy C-Means: C=4
+Partition coefficient: 0.25006006117372515
+
+Internal validation
+Calinski-Harabasz score: 22.723442513425507
+Davies-Bouldin score: 2.833373220974913
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.28729580159398804
+Fowlkes-Mallows score (from 0 to 1): 0.6878735752017842
+
+Fuzzy C-Means: C=3
+Partition coefficient: 0.33343989878869124
+
+Internal validation
+Calinski-Harabasz score: 33.46889582906737
+Davies-Bouldin score: 2.9039539011416924
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.2911490644722288
+Fowlkes-Mallows score (from 0 to 1): 0.6870855510514958
+
+Fuzzy C-Means: C=2
+Partition coefficient: 0.5002785835769097
+
+Internal validation
+Calinski-Harabasz score: 64.76815003916296
+Davies-Bouldin score: 2.127847298638196
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.3033462676568329
+Fowlkes-Mallows score (from 0 to 1): 0.6937810584238143
+
+Fuzzy C-Means: C=6
+Partition coefficient: 0.16669669393181522
+
+Internal validation
+Calinski-Harabasz score: 17.366082401898986
+Davies-Bouldin score: 2.536388466571248
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.2849753734975752
+Fowlkes-Mallows score (from 0 to 1): 0.6887328784829959
+
+Fuzzy C-Means: C=2
+Partition coefficient: 0.5002855188514482
+
+Internal validation
+Calinski-Harabasz score: 64.76815003916296
+Davies-Bouldin score: 2.127847298638196
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.3033462676568329
+Fowlkes-Mallows score (from 0 to 1): 0.6937810584238143
+
+Fuzzy C-Means: C=2
+Partition coefficient: 0.5002843065082689
+
+Internal validation
+Calinski-Harabasz score: 64.76815003916296
+Davies-Bouldin score: 2.127847298638196
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.3033462676568329
+Fowlkes-Mallows score (from 0 to 1): 0.6937810584238143
