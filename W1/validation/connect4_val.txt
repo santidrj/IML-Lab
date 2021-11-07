@@ -1614,3 +1614,403 @@ Davies-Bouldin score: 4.334633335907553
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.0012286159026275037
 Fowlkes-Mallows score (from 0 to 1): 0.3202977821938593
+ 
+*FCM: C = 2, it = 0 
+ Partition coefficient: 0.5000011907533333
+Internal validation
+Calinski-Harabasz score: 6125.324334862449
+Davies-Bouldin score: 3.2998181553619337
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0003517127828890681
+Fowlkes-Mallows score (from 0 to 1): 0.5016397111807812
+ 
+*FCM: C = 2, it = 1 
+ Partition coefficient: 0.5000004804358694
+Internal validation
+Calinski-Harabasz score: 6493.258936868231
+Davies-Bouldin score: 3.2080316002418723
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.000985551654835591
+Fowlkes-Mallows score (from 0 to 1): 0.5021144611743749
+ 
+*FCM: C = 2, it = 2 
+ Partition coefficient: 0.5000005506602778
+Internal validation
+Calinski-Harabasz score: 5133.659982868358
+Davies-Bouldin score: 3.587073593199734
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.00041568710220505207
+Fowlkes-Mallows score (from 0 to 1): 0.5036844329530084
+ 
+*FCM: C = 2, it = 3 
+ Partition coefficient: 0.5000005642846614
+Internal validation
+Calinski-Harabasz score: 5600.28872867392
+Davies-Bouldin score: 3.453084584212356
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0004935395123262658
+Fowlkes-Mallows score (from 0 to 1): 0.5017261421438044
+ 
+*FCM: C = 2, it = 4 
+ Partition coefficient: 0.5000013431297006
+Internal validation
+Calinski-Harabasz score: 6429.493400352063
+Davies-Bouldin score: 3.223108067953116
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.00010599764977153749
+Fowlkes-Mallows score (from 0 to 1): 0.5016554161529018
+ 
+*FCM: C = 2, it = 5 
+ Partition coefficient: 0.5000005460415388
+Internal validation
+Calinski-Harabasz score: 5548.2003342075195
+Davies-Bouldin score: 3.4650541185336996
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.00024390180231618062
+Fowlkes-Mallows score (from 0 to 1): 0.5026818246020375
+ 
+*FCM: C = 2, it = 6 
+ Partition coefficient: 0.5000005721576468
+Internal validation
+Calinski-Harabasz score: 5821.486886686463
+Davies-Bouldin score: 3.38580071268694
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0014744630283689436
+Fowlkes-Mallows score (from 0 to 1): 0.5017512208522673
+ 
+*FCM: C = 2, it = 7 
+ Partition coefficient: 0.500000929222309
+Internal validation
+Calinski-Harabasz score: 5921.8615323987015
+Davies-Bouldin score: 3.3584518686461013
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0005118408956216083
+Fowlkes-Mallows score (from 0 to 1): 0.5019295662312876
+ 
+*FCM: C = 2, it = 8 
+ Partition coefficient: 0.5000008112808539
+Internal validation
+Calinski-Harabasz score: 5741.962271412024
+Davies-Bouldin score: 3.4097159412200737
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0001296266557687581
+Fowlkes-Mallows score (from 0 to 1): 0.5020027608295924
+ 
+*FCM: C = 2, it = 9 
+ Partition coefficient: 0.5000008269782507
+Internal validation
+Calinski-Harabasz score: 6541.8855466828545
+Davies-Bouldin score: 3.1896501415453744
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 8.13617175764873e-05
+Fowlkes-Mallows score (from 0 to 1): 0.5025624742158393
+ 
+*FCM: C = 3, it = 0 
+ Partition coefficient: 0.333333626652356
+Internal validation
+Calinski-Harabasz score: 4357.719658486232
+Davies-Bouldin score: 3.439701547867299
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0004389941935291618
+Fowlkes-Mallows score (from 0 to 1): 0.44514304682185396
+ 
+*FCM: C = 3, it = 1 
+ Partition coefficient: 0.3333337349269195
+Internal validation
+Calinski-Harabasz score: 4927.393803073947
+Davies-Bouldin score: 3.1924172635722488
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.00026672964438466845
+Fowlkes-Mallows score (from 0 to 1): 0.42449677061990787
+ 
+*FCM: C = 3, it = 2 
+ Partition coefficient: 0.33333366659258135
+Internal validation
+Calinski-Harabasz score: 4159.188099877246
+Davies-Bouldin score: 3.400655436187234
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.00014799081085852458
+Fowlkes-Mallows score (from 0 to 1): 0.45844348528165335
+ 
+*FCM: C = 3, it = 3 
+ Partition coefficient: 0.33333388676991893
+Internal validation
+Calinski-Harabasz score: 4350.596498485323
+Davies-Bouldin score: 3.1856553346300864
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.001248104581300214
+Fowlkes-Mallows score (from 0 to 1): 0.43727804581990803
+ 
+*FCM: C = 3, it = 4 
+ Partition coefficient: 0.3333341985770532
+Internal validation
+Calinski-Harabasz score: 4795.58025739348
+Davies-Bouldin score: 3.1876601560388287
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0007537094298667071
+Fowlkes-Mallows score (from 0 to 1): 0.43595301994970853
+ 
+*FCM: C = 3, it = 5 
+ Partition coefficient: 0.3333338704500784
+Internal validation
+Calinski-Harabasz score: 5159.622760548314
+Davies-Bouldin score: 3.0174674302511435
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.002395266550857243
+Fowlkes-Mallows score (from 0 to 1): 0.4140348649074648
+ 
+*FCM: C = 3, it = 6 
+ Partition coefficient: 0.3333337675741119
+Internal validation
+Calinski-Harabasz score: 4066.6761708973286
+Davies-Bouldin score: 3.3811636394400324
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0012405426850878828
+Fowlkes-Mallows score (from 0 to 1): 0.4623721017769477
+ 
+*FCM: C = 3, it = 7 
+ Partition coefficient: 0.333333808333497
+Internal validation
+Calinski-Harabasz score: 4783.827338395469
+Davies-Bouldin score: 3.1946947090358346
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0015495610459666466
+Fowlkes-Mallows score (from 0 to 1): 0.4297522205395335
+ 
+*FCM: C = 3, it = 8 
+ Partition coefficient: 0.33333355897276024
+Internal validation
+Calinski-Harabasz score: 4402.09032723036
+Davies-Bouldin score: 3.0376964480209985
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0007950414052286494
+Fowlkes-Mallows score (from 0 to 1): 0.46074825734921326
+ 
+*FCM: C = 3, it = 9 
+ Partition coefficient: 0.33333369540650987
+Internal validation
+Calinski-Harabasz score: 5023.583297898236
+Davies-Bouldin score: 3.1299018701455363
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0017211438458541888
+Fowlkes-Mallows score (from 0 to 1): 0.40995935792036886
+ 
+*FCM: C = 4, it = 0 
+ Partition coefficient: 0.25000059438395333
+Internal validation
+Calinski-Harabasz score: 4469.050052951794
+Davies-Bouldin score: 3.2632444297192076
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0029448138540811987
+Fowlkes-Mallows score (from 0 to 1): 0.36996554364527645
+ 
+*FCM: C = 4, it = 1 
+ Partition coefficient: 0.2500005048241191
+Internal validation
+Calinski-Harabasz score: 4640.135897241335
+Davies-Bouldin score: 2.7263301146844467
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0031332875979887087
+Fowlkes-Mallows score (from 0 to 1): 0.38699487689715106
+ 
+*FCM: C = 4, it = 2 
+ Partition coefficient: 0.250000497761374
+Internal validation
+Calinski-Harabasz score: 4731.479812490547
+Davies-Bouldin score: 2.7243056177728953
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.00307906361017917
+Fowlkes-Mallows score (from 0 to 1): 0.3687312344592314
+ 
+*FCM: C = 4, it = 3 
+ Partition coefficient: 0.2500002673978057
+Internal validation
+Calinski-Harabasz score: 3763.1733331699447
+Davies-Bouldin score: 2.9971161704005693
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.00162551399470666
+Fowlkes-Mallows score (from 0 to 1): 0.42817320931670844
+ 
+*FCM: C = 4, it = 4 
+ Partition coefficient: 0.2500001643431288
+Internal validation
+Calinski-Harabasz score: 3189.7354118587077
+Davies-Bouldin score: 4.2626242075385905
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0009780313670627867
+Fowlkes-Mallows score (from 0 to 1): 0.41797173739424853
+ 
+*FCM: C = 4, it = 5 
+ Partition coefficient: 0.25000033852317416
+Internal validation
+Calinski-Harabasz score: 4162.665611116311
+Davies-Bouldin score: 2.719300084696584
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0017367465877084424
+Fowlkes-Mallows score (from 0 to 1): 0.41125140003646404
+ 
+*FCM: C = 4, it = 6 
+ Partition coefficient: 0.250000230458098
+Internal validation
+Calinski-Harabasz score: 3678.532134459054
+Davies-Bouldin score: 2.7373595884486397
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.002921488330509441
+Fowlkes-Mallows score (from 0 to 1): 0.4403379871200524
+ 
+*FCM: C = 4, it = 7 
+ Partition coefficient: 0.25000018045207273
+Internal validation
+Calinski-Harabasz score: 4831.852473363087
+Davies-Bouldin score: 2.7003491986491097
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0014218697537601475
+Fowlkes-Mallows score (from 0 to 1): 0.37784307167377207
+ 
+*FCM: C = 4, it = 8 
+ Partition coefficient: 0.2500002956641289
+Internal validation
+Calinski-Harabasz score: 4504.804653131459
+Davies-Bouldin score: 3.306234189055406
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.002722719137129784
+Fowlkes-Mallows score (from 0 to 1): 0.39007431316242724
+ 
+*FCM: C = 4, it = 9 
+ Partition coefficient: 0.25000029563578996
+Internal validation
+Calinski-Harabasz score: 4546.7170182702785
+Davies-Bouldin score: 3.2037799732707843
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0026928038378819215
+Fowlkes-Mallows score (from 0 to 1): 0.3782590220936334
+ 
+*FCM: C = 5, it = 0 
+ Partition coefficient: 0.20000024626499502
+Internal validation
+Calinski-Harabasz score: 3344.39065838451
+Davies-Bouldin score: 3.1653199273212764
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0014173602099929138
+Fowlkes-Mallows score (from 0 to 1): 0.3517270809804286
+ 
+*FCM: C = 5, it = 1 
+ Partition coefficient: 0.20000020159884616
+Internal validation
+Calinski-Harabasz score: 2772.860266218538
+Davies-Bouldin score: 3.1488652512157227
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0021880631959139128
+Fowlkes-Mallows score (from 0 to 1): 0.41084393849351564
+ 
+*FCM: C = 5, it = 2 
+ Partition coefficient: 0.20000034836632552
+Internal validation
+Calinski-Harabasz score: 3356.1195064489725
+Davies-Bouldin score: 2.399191396098599
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0036546991308008298
+Fowlkes-Mallows score (from 0 to 1): 0.4104260334103471
+ 
+*FCM: C = 5, it = 3 
+ Partition coefficient: 0.2000002531462124
+Internal validation
+Calinski-Harabasz score: 3818.7382922662637
+Davies-Bouldin score: 2.935592816379937
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0025376204563126487
+Fowlkes-Mallows score (from 0 to 1): 0.372510895231567
+ 
+*FCM: C = 5, it = 4 
+ Partition coefficient: 0.2000001084597512
+Internal validation
+Calinski-Harabasz score: 3808.8993877777452
+Davies-Bouldin score: 2.92853516133538
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0036337162600004924
+Fowlkes-Mallows score (from 0 to 1): 0.38751542635446123
+ 
+*FCM: C = 5, it = 5 
+ Partition coefficient: 0.20000016621596858
+Internal validation
+Calinski-Harabasz score: 4003.8335259524533
+Davies-Bouldin score: 3.372809640392682
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.00394806442470998
+Fowlkes-Mallows score (from 0 to 1): 0.33615739708862646
+ 
+*FCM: C = 5, it = 6 
+ Partition coefficient: 0.20000016749496502
+Internal validation
+Calinski-Harabasz score: 3974.876946935836
+Davies-Bouldin score: 2.8275942382808017
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.004589500442098016
+Fowlkes-Mallows score (from 0 to 1): 0.35582053761783716
+ 
+*FCM: C = 5, it = 7 
+ Partition coefficient: 0.20000011897624523
+Internal validation
+Calinski-Harabasz score: 3502.234941543062
+Davies-Bouldin score: 3.1562417716129003
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0013008020532375608
+Fowlkes-Mallows score (from 0 to 1): 0.35515942641077747
+ 
+*FCM: C = 5, it = 8 
+ Partition coefficient: 0.20000013176054623
+Internal validation
+Calinski-Harabasz score: 3310.5799681103467
+Davies-Bouldin score: 3.1245705610047336
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0010689061135603767
+Fowlkes-Mallows score (from 0 to 1): 0.36460160779001627
+ 
+*FCM: C = 5, it = 9 
+ Partition coefficient: 0.20000014958650927
+Internal validation
+Calinski-Harabasz score: 2408.9853875634058
+Davies-Bouldin score: 3.077374445780162
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.0006204367134089024
+Fowlkes-Mallows score (from 0 to 1): 0.4428404738488119
