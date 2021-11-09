@@ -40,9 +40,9 @@ class PCA:
         self._data_transformed = None
         self.df = None
         if self.k > self.dimensions[1]:
-            print("k needs to be smaller to the dimensions of the dataset in order to make sense")
+            raise ValueError("k needs to be smaller to the dimensions of the dataset in order to make sense")
         elif self.k == 0:
-            print("k must be bigger than 0, there must be a dimension")
+            raise ValueError("k must be bigger than 0, there must be a dimension")
         else:
             self._pca()
 
