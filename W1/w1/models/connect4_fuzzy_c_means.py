@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 
 import utils
 
-df_connect4_encoded = pd.read_pickle(os.path.join('..', '..', 'datasets', 'processed', 'encoded_connect4.pkl'))
+df_connect4_encoded = pd.read_pickle(os.path.join('..', '..', 'datasets', 'processed', 'connect4_encoded.pkl'))
 
 df = df_connect4_encoded.iloc[:, :-1]
 
