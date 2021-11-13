@@ -107,7 +107,6 @@ class PCA:
         self._eigen_vectors_srt = self._eigen_vectors_srt[:, :self.k]
         # step 5
         self._data_transformed = np.transpose(np.dot(np.transpose(self._eigen_vectors_srt), np.transpose(self._data)))
-        a = (self._eigen_vectors.T @ self._data.T).T
         # optional convert numpy to df
         self.df = pd.DataFrame(data=self._data_transformed, index=[i for i in range(self._data_transformed.shape[0])],
                                columns=['PCA' + str(i) for i in range(self._data_transformed.shape[1])])
@@ -119,5 +118,5 @@ class PCA:
             # number of mismatches wrt the original dataset
             mismat = self.recon_dataset.size - (self.dataset == self.recon_dataset).sum()
             perc_mismat = np.round(mismat*100/self.recon_dataset.size).astype(np.int)
-            print(f"Mismatches in the reconstructed categorical dataset: {perc_mismat}%")
+            print(f"Mismatches in the reconstructed categorical dataset: {perc_mismat}% [{mismat}/{self.recon_dataset.size}]")
 
