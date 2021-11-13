@@ -1,9 +1,13 @@
 import os
+import sys
+
+sys.path.append("..")
 
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 from sklearn.decomposition import PCA, IncrementalPCA
+
 from algorithms import pca
 
 data_root_path = os.path.join('..', '..', 'datasets')
