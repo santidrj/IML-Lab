@@ -29,7 +29,8 @@ class PCA:
         X': the transformed X input dataset
     """
 
-    def __init__(self, dataset, k):
+    def __init__(self, dataset, k, cat=False):
+        self.cat = cat
         self.dataset = dataset.to_numpy()
         self.k = k  # k desired dimensions.
         self.dimensions = self.dataset.shape  # (rows, column)
@@ -37,14 +38,30 @@ class PCA:
         self._covariance_matrix = None
         self._eigen_values = None
         self._eigen_vectors = None
+        self._eigen_values_srt = None
+        self._eigen_vectors_srt = None
         self._data_transformed = None
         self.df = None
+        self.recon_dataset = None
         if self.k > self.dimensions[1]:
-            raise ValueError("k needs to be smaller to the dimensions of the dataset in order to make sense")
+            print("k needs to be smaller to the dimensions of the dataset in order to make sense")
         elif self.k == 0:
-            raise ValueError("k must be bigger than 0, there must be a dimension")
+            print("k must be bigger than 0, there must be a dimension")
         else:
             self._pca()
+
+    def print_info(self):
+        print('--CUSTOM PCA--')
+        print('\nCovariance matrix:')
+        print(self.get_covariance_matrix())
+        print('\nEigenvectors:')
+        print(self.get_eigen_vectors())
+        print('\nEigenvalues')
+        print(self.get_eigenvalues())
+        print('\nSorted eigenvectors:')
+        print(self.get_sorted_eigen_vectors())
+        print('\nSorted eigenvalues')
+        print(self.get_sorted_eigenvalues())
 
     def get_center_data(self):
         return self._data
@@ -58,27 +75,48 @@ class PCA:
     def get_eigen_vectors(self):
         return self._eigen_vectors
 
+    def get_sorted_eigenvalues(self):
+        return self._eigen_values_srt
+
+    def get_sorted_eigen_vectors(self):
+        return self._eigen_vectors_srt
+
     def get_data_transformed(self):
         return self._data_transformed
 
     def get_df_transformed(self):
         return self.df
 
+    def get_reconstructed_dataset(self):
+        return self.recon_dataset
+
     def _pca(self):
         # step 1
-        self._data = self.dataset - np.mean(self.dataset, axis=0)
+        dataset_mean = np.mean(self.dataset, axis=0)
+        self._data = self.dataset - dataset_mean
         self._covariance_matrix = (1 / self.dimensions[0]) * np.dot(np.transpose(self._data), self._data)
         # step 2
         self._eigen_values, self._eigen_vectors = np.linalg.eigh(self._covariance_matrix)
         # step 3
         i = np.argsort(self._eigen_values)[::-1]
-        self._eigen_values = self._eigen_values[i]
-        self._eigen_vectors = self._eigen_vectors[:, i]
+        self._eigen_values_srt = self._eigen_values[i]
+        self._eigen_vectors_srt = self._eigen_vectors[:, i]
         # step 4
-        self._eigen_values = self._eigen_values[:self.k]
-        self._eigen_vectors = self._eigen_vectors[:, :self.k]
+        self._eigen_values_srt = self._eigen_values_srt[:self.k]
+        self._eigen_vectors_srt = self._eigen_vectors_srt[:, :self.k]
         # step 5
-        self._data_transformed = np.transpose(np.dot(np.transpose(self._eigen_vectors), np.transpose(self._data)))
+        self._data_transformed = np.transpose(np.dot(np.transpose(self._eigen_vectors_srt), np.transpose(self._data)))
+        a = (self._eigen_vectors.T @ self._data.T).T
         # optional convert numpy to df
         self.df = pd.DataFrame(data=self._data_transformed, index=[i for i in range(self._data_transformed.shape[0])],
                                columns=['PCA' + str(i) for i in range(self._data_transformed.shape[1])])
+        # reconstruction of the dataset
+        self.recon_dataset = np.transpose(np.dot(self._eigen_vectors_srt, np.transpose(self._data_transformed))) + dataset_mean
+        # transforming decimals into integers to reconstruct the encoded categorical dataset
+        if self.cat:
+            self.recon_dataset = np.round(self.recon_dataset)
+            # number of mismatches wrt the original dataset
+            mismat = self.recon_dataset.size - (self.dataset == self.recon_dataset).sum()
+            perc_mismat = np.round(mismat*100/self.recon_dataset.size).astype(np.int)
+            print(f"Mismatches in the reconstructed categorical dataset: {perc_mismat}%")
+
