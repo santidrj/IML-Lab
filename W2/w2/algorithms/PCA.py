@@ -24,6 +24,7 @@ class PCA:
         X: the data to be fed, must be normalized
         k: desire number of dimensions
           MUST k <= d
+        cat: True when dealing with encoded categorical data
 
       Returns:
         X': the transformed X input dataset
