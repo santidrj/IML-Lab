@@ -1,6 +1,7 @@
 import os
 import sys
 import pickle
+import time
 
 sys.path.append("..")
 
@@ -13,6 +14,7 @@ from algorithms.kmeans import Kmeans
 
 path_data = os.path.join('..', '..', 'datasets', 'processed')
 path_models = os.path.join('..', '..', 'models_results', 'connect-4')
+path_val = os.path.join('..', '..', 'validation')
 
 K = 3
 init_method = 'k-means++'
@@ -25,9 +27,14 @@ print("Starting K-Means in Connect-4")
 df = pd.read_pickle(os.path.join(path_data, 'connect4_encoded.pkl'))
 df_gs = df[df.columns[-1]]
 df = df.drop(columns=df.columns[-1])
+df_custom_pca = pd.read_pickle(os.path.join(path_data, 'connect4_custom-pca-4.pkl'))
+df_umap = pd.read_pickle(os.path.join(path_data, 'connect4_umap-4.pkl'))
 
+##### K-MENAS WITH ORIGINAL DATASET #####
+start_kmeans = time.time()
 kmeans = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
 kmeans.fit(df)
+end_kmeans = time.time()
 
 with open(os.path.join(path_models, f'k-means-{K}-{init_method}-{metric}.pkl'), 'wb') as f:
     pickle.dump(kmeans, f)
@@ -36,29 +43,40 @@ with open(os.path.join(path_models, f'k-means-{K}-{init_method}-{metric}.pkl'), 
     kmeans = pickle.load(f)
 
 
-"""
-# K-means with PCA reduced dataset
-#with open(os.path.join(path_data, 'connect4_pca-reduced-3.pkl'), 'rb') as f:
-    df_pca_reduced = pickle.load(f)
-    
+##### K-MENAS WITH CUSTOM PCA REDUCED DATASET #####
+start_kmeans_pca = time.time()
 kmeans_pca = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
-kmeans_pca.fit(df_pca_reduced)
-np.save(os.path.join('..', '..', 'models_results', 'connect-4', f'connect-4_k-means-pca-{K}-{init_method}-{metric}.npy'), kmeans_pca)
-kmeans_pca = np.load(os.path.join('..', '..', 'models_results', 'connect-4', f'connect-4_k-means-pca-{K}-{init_method}-{metric}.npy'))
+kmeans_pca.fit(df_custom_pca)
+end_kmeans_pca = time.time()
 
-# K-means with UMAP reduced dataset
+with open(os.path.join(path_models, f'k-means-pca-{K}-{init_method}-{metric}.pkl'), 'wb') as f:
+    pickle.dump(kmeans_pca, f)
 
-models = [kmeans, kmeans_pca]
-models_names = ['k-means', 'k-means-pca']
-"""
+with open(os.path.join(path_models, f'k-means-pca-{K}-{init_method}-{metric}.pkl'), 'rb') as f:
+    kmeans_pca = pickle.load(f)
 
-models = [kmeans]
-models_names = ['k-means']
 
-for model, name in zip(models, models_names):
+##### K-MENAS WITH UMAP REDUCED DATASET #####
+start_kmeans_umap = time.time()
+kmeans_umap = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
+kmeans_umap.fit(df_umap)
+end_kmeans_umap = time.time()
+
+with open(os.path.join(path_models, f'k-means-umap-{K}-{init_method}-{metric}.pkl'), 'wb') as f:
+    pickle.dump(kmeans_umap, f)
+
+with open(os.path.join(path_models, f'k-means-umap-{K}-{init_method}-{metric}.pkl'), 'rb') as f:
+    kmeans_umap = pickle.load(f)
+
+
+models = [kmeans, kmeans_pca, kmeans_umap]
+models_names = ['k-means', 'k-means-pca', 'k-means-umap']
+models_times = [end_kmeans-start_kmeans, end_kmeans_pca-start_kmeans_pca, end_kmeans_umap-start_kmeans_umap]
+
+for model, name, time in zip(models, models_names, models_times):
     print(f'Sum of squared error: {model.square_error}')
     
-    plt.figure(figsize=(12, 12))
+    plt.figure(figsize=(6, 5))
     ax = plt.subplot(111)
     
     colors = ['c', 'b', 'r', 'y', 'g', 'm', 'maroon', 'crimson', 'darkgreen', 'peru']
@@ -75,11 +93,11 @@ for model, name in zip(models, models_names):
     
     plt.savefig(os.path.join('..', '..', 'figures', 'connect-4', f'connect-4_{name}-{K}-{init_method}-{metric}.png'))
     plt.show()
-    
-    
-    file_path = os.path.join('..', '..', 'validation', 'connect-4_k-means_val.txt')
-    with open(file_path, 'a') as f:
+
+    with open(os.path.join(path_val, 'connect-4_k-means_val.txt'), 'a') as f:
         f.write(f'\n \n{name}: K = {K}, init = {init_method}, metric = {metric}, max_inter = {n_iter}, n_init = {init}')
+        f.write(f'\nExecution time: {time} s')
     
-    utils.print_metrics(df, df_gs, labels, file_path)
-    print("Finished K-Means in Connect-4")
+    utils.print_metrics(df, df_gs, labels, path_val)
+
+print("Finished K-Means in Connect-4")
