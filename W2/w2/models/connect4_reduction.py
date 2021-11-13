@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA, IncrementalPCA
 import umap
 
-from algorithms.PCA import PCA as OurPCA
+from algorithms.pca import PCA as OurPCA
 
 path_data = os.path.join('..', '..', 'datasets', 'processed')
 path_models = os.path.join('..', '..', 'models_results', 'connect-4')
