@@ -12,9 +12,9 @@ from sklearn.cluster import OPTICS
 
 import utils
 
-df_connect4_encoded = pd.read_pickle(os.path.join('..', '..', 'datasets', 'processed', 'encoded_connect4.pkl'))
+df_connect4_encoded = pd.read_pickle(os.path.join('..', '..', 'datasets', 'processed', 'connect4_encoded.pkl'))
 df_connect4_encoded_subset = pd.read_pickle(
-    os.path.join('..', '..', 'datasets', 'processed', 'encoded_subset_connect4.pkl'))
+    os.path.join('..', '..', 'datasets', 'processed', 'connect4_encoded_subset.pkl'))
 
 min_pts = 50
 

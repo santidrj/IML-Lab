@@ -13,7 +13,7 @@ import utils
 from algorithms import kmodes
 
 df_connect4 = pd.read_pickle(os.path.join('..', '..', 'datasets', 'processed', 'processed_connect4.pkl'))
-df_connect4_encoded = pd.read_pickle(os.path.join('..', '..', 'datasets', 'processed', 'encoded_connect4.pkl'))
+df_connect4_encoded = pd.read_pickle(os.path.join('..', '..', 'datasets', 'processed', 'connect4_encoded.pkl'))
 
 print("Starting K-Modes in Connect-4")
 k_modes_clusterings = []

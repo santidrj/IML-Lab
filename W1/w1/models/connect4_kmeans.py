@@ -11,7 +11,7 @@ import utils
 from algorithms.kmeans import Kmeans
 
 data_root_path = os.path.join('..', '..', 'datasets')
-df = pd.read_pickle(os.path.join(data_root_path, 'processed', 'encoded_connect4.pkl'))
+df = pd.read_pickle(os.path.join(data_root_path, 'processed', 'connect4_encoded.pkl'))
 
 df_gs = df[df.columns[-1]]
 df = df.drop(columns=df.columns[-1])
