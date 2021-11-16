@@ -17,10 +17,12 @@ path_models = os.path.join('..', '..', 'models_results', 'connect-4')
 path_figs = os.path.join('..', '..', 'figures', 'connect-4')
 
 df = pd.read_pickle(os.path.join(path_data, 'connect4_encoded.pkl'))
+true_labels = df['class']
 df = df.drop(columns=df.columns[-1])
-print(df.to_numpy().dtype)
 
 nc = 4
+
+color = ['r', 'g', 'b']
 
 ##### ORIGINAL DATASET #####
 features = df[['a6', 'a7']].to_numpy()
@@ -76,13 +78,13 @@ plt.show()
 
 
 ##### CUSTOM PCA #####
-custom_pca_model = CustomPCA(df, nc)
+custom_pca_model = CustomPCA(df, nc, cat=True)
 with open(os.path.join(path_data, f'connect4_our-pca-{nc}.pkl'), 'wb') as f:
     pickle.dump(custom_pca_model.df, f)
 with open(os.path.join(path_data, f'connect4_our-pca-{nc}.pkl'), 'rb') as f:
     custom_pca_df = pickle.load(f)
 
-print(custom_pca_df.head())
+print(custom_pca_model.print_info())
 
 fig, ax = plt.subplots(figsize=(6,5))
 ax.scatter(custom_pca_df['PCA0'], custom_pca_df['PCA1'], alpha=0.9, s=0.008)
@@ -95,13 +97,14 @@ plt.show()
 
 
 ##### UMAP #####
-umap_model = umap.UMAP(n_components=nc).fit_transform(df)
+umap_model = umap.UMAP(n_components=nc).fit(df)
 with open(os.path.join(path_data, f'connect4_umap-{nc}.pkl'), 'wb') as f:
     pickle.dump(umap_model.embedding_, f)
 with open(os.path.join(path_data, f'connect4_umap-{nc}.pkl'), 'rb') as f:
     umap_data = pickle.load(f)
 
 fig, ax = plt.subplots(figsize=(6,5))
+#ax.scatter(umap_data[:, 0], umap_data[:, 1], c=[color[x] for x in true_labels.map({'loss': 0, 'win': 1, 'draw': 2})], alpha=0.9, s=0.008)
 ax.scatter(umap_data[:, 0], umap_data[:, 1], alpha=0.9, s=0.008)
 ax.set_title(f'UMAP reduction with nc = {nc}')
 ax.set_xlabel('first component')
