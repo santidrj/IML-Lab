@@ -6,6 +6,7 @@ import os.path
 
 import numpy as np
 import pandas as pd
+import seaborn as sns
 from matplotlib import pyplot as plt
 
 import utils
@@ -29,9 +30,9 @@ print(f'Sum of squared error: {kmeans.square_error}')
 plt.figure(figsize=(8, 8))
 ax = plt.subplot(111)
 
-colors = ['r', 'g']
 labels = kmeans.labels
 centers = np.array(kmeans.centroids)
+colors = sns.color_palette()[:len(centers)]
 for Class, colour in zip(range(len(centers)), colors):
     Xk = df[labels == Class]
     ax.plot(Xk.iloc[:, 0], Xk.iloc[:, 1], 'o', color=colour, alpha=0.3)
@@ -60,3 +61,31 @@ with open(file_path, 'a') as f:
 
 utils.print_metrics(df, df_gs, labels, file_path)
 print("Finished K-means in Heart-C")
+
+## Run K-means in reduced Heart-C
+
+df = pd.read_pickle(os.path.join(data_root_path, 'processed', 'heart-c_custom_pca.pkl'))
+
+print("Starting K-means in reduced Heart-C")
+kmeans.fit(df)
+print(f'Sum of squared error: {kmeans.square_error}')
+
+plt.figure(figsize=(8, 8))
+ax = plt.subplot(111)
+
+labels = kmeans.labels.astype(np.int32)
+centers = np.array(kmeans.centroids)
+sns.set(style='white', context='paper', rc={'figure.figsize': (14, 10)})
+ax = plt.subplot()
+ax.scatter(df[:, 0], df[:, 1], c=[sns.color_palette()[x] for x in labels])
+plt.gca().set_aspect('equal', 'datalim')
+ax.set_title('K-means clustering in reduced Heart-C', fontsize=22)
+plt.savefig(os.path.join('..', '..', 'figures', 'heart-c', 'reduced-heart-c_k-means.png'))
+plt.show()
+
+file_path = os.path.join('..', '..', 'validation', 'reduced-heart-c_k-means_val.txt')
+with open(file_path, 'a') as f:
+    f.write(f'\n \nK-means: K = {K}, init = {init_method}, metric = {metric} max_inter = {n_iter}, n_init = {init}')
+
+utils.print_metrics(df, df_gs, labels, file_path)
+print("Finished K-means in reduced Heart-C")
