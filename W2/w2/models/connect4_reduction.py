@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA, IncrementalPCA
 import umap
 
-from algorithms.PCA import PCA as CustomPCA
+from algorithms.pca import PCA as CustomPCA
 
 path_data = os.path.join('..', '..', 'datasets', 'processed')
 path_models = os.path.join('..', '..', 'models_results', 'connect-4')
@@ -76,7 +76,7 @@ plt.show()
 
 
 ##### OUR PCA #####
-our_pca_model = OurPCA(df, nc)
+our_pca_model = CustomPCA(df, nc)
 with open(os.path.join(path_data, f'connect4_our-pca-{nc}.pkl'), 'wb') as f:
     pickle.dump(our_pca_model.df, f)
 with open(os.path.join(path_data, f'connect4_our-pca-{nc}.pkl'), 'rb') as f:
