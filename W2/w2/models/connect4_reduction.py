@@ -42,14 +42,14 @@ plt.show()
 
 
 ##### SKLEARN PCA #####
-pca_model = PCA(n_components=nc).fit(df.T)
+pca_data = PCA(n_components=nc).fit_transform(df)
 with open(os.path.join(path_data, f'connect4_pca-{nc}.pkl'), 'wb') as f:
-    pickle.dump(pca_model.components_, f)
+    pickle.dump(pca_data, f)
 with open(os.path.join(path_data, f'connect4_pca-{nc}.pkl'), 'rb') as f:
-    pca_df = pickle.load(f)
+    pca_data = pickle.load(f)
 
 fig, ax = plt.subplots(figsize=(6,5))
-ax.scatter(pca_df[0], pca_df[1], alpha=0.9, s=0.008)
+ax.scatter(pca_data[:, 0], pca_data[:, 1], alpha=0.9, s=0.008)
 ax.set_title(f'sklearn PCA reduction with nc = {nc}')
 ax.set_xlabel('first component')
 ax.set_ylabel('second component')
@@ -59,14 +59,14 @@ plt.show()
 
 
 ##### SKLEARN IPCA #####
-ipca_model = IncrementalPCA(n_components=nc).fit(df.T)
+ipca_data = IncrementalPCA(n_components=nc).fit_transform(df)
 with open(os.path.join(path_data, f'connect4_ipca-{nc}.pkl'), 'wb') as f:
-    pickle.dump(ipca_model.components_, f)
+    pickle.dump(ipca_data, f)
 with open(os.path.join(path_data, f'connect4_ipca-{nc}.pkl'), 'rb') as f:
-    ipca_df = pickle.load(f)
+    ipca_data = pickle.load(f)
 
 fig, ax = plt.subplots(figsize=(6,5))
-ax.scatter(ipca_df[0], ipca_df[1], alpha=0.9, s=0.008)
+ax.scatter(ipca_data[:, 0], ipca_data[:, 1], alpha=0.9, s=0.008)
 ax.set_title(f'sklearn IPCA reduction with nc = {nc}')
 ax.set_xlabel('first component')
 ax.set_ylabel('second component')
@@ -75,17 +75,17 @@ plt.savefig(os.path.join(path_figs, f'ipca-{nc}.png'))
 plt.show()
 
 
-##### OUR PCA #####
-our_pca_model = CustomPCA(df, nc)
+##### CUSTOM PCA #####
+custom_pca_model = CustomPCA(df, nc)
 with open(os.path.join(path_data, f'connect4_our-pca-{nc}.pkl'), 'wb') as f:
-    pickle.dump(our_pca_model.df, f)
+    pickle.dump(custom_pca_model.df, f)
 with open(os.path.join(path_data, f'connect4_our-pca-{nc}.pkl'), 'rb') as f:
-    our_pca_df = pickle.load(f)
+    custom_pca_df = pickle.load(f)
 
-print(our_pca_df.head())
+print(custom_pca_df.head())
 
 fig, ax = plt.subplots(figsize=(6,5))
-ax.scatter(our_pca_df['PCA0'], our_pca_df['PCA1'], alpha=0.9, s=0.008)
+ax.scatter(custom_pca_df['PCA0'], custom_pca_df['PCA1'], alpha=0.9, s=0.008)
 ax.set_title(f'Our PCA reduction with nc = {nc}')
 ax.set_xlabel('first component')
 ax.set_ylabel('second component')
@@ -95,14 +95,14 @@ plt.show()
 
 
 ##### UMAP #####
-umap_model = umap.UMAP(n_components=nc).fit(df)
+umap_model = umap.UMAP(n_components=nc).fit_transform(df)
 with open(os.path.join(path_data, f'connect4_umap-{nc}.pkl'), 'wb') as f:
     pickle.dump(umap_model.embedding_, f)
 with open(os.path.join(path_data, f'connect4_umap-{nc}.pkl'), 'rb') as f:
-    umap_df = pickle.load(f)
+    umap_data = pickle.load(f)
 
 fig, ax = plt.subplots(figsize=(6,5))
-ax.scatter(umap_df[:,0], umap_df[:,1], alpha=0.9, s=0.008)
+ax.scatter(umap_data[:, 0], umap_data[:, 1], alpha=0.9, s=0.008)
 ax.set_title(f'UMAP reduction with nc = {nc}')
 ax.set_xlabel('first component')
 ax.set_ylabel('second component')
