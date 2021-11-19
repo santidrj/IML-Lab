@@ -44,16 +44,16 @@ ax.plot(df.iloc[labels == -1, 0],
         df.iloc[labels == -1, 1],
         'k+', alpha=0.1)
 
-ax.set_title(f'K-means clustering\nwith K={K}, init={init_method} and metric={metric}', fontsize=22)
+ax.set_title(f'K-means clustering in full Heart-C', fontsize=22)
 
-plt.savefig(os.path.join('..', '..', 'figures', 'heart-c', f'heart-c_k-means-{K}-{init_method}-{metric}.png'))
+plt.savefig(os.path.join('..', '..', 'figures', 'heart-c', f'full-heart-c_k-means.png'))
 plt.show()
 
 
-counts = np.bincount(labels.astype(int))
-maj_class = counts.argmax()
-min_class = counts.argmin()
-df_gs.replace({'<50': maj_class, '>50_1': min_class}, inplace=True)
+# counts = np.bincount(labels.astype(int))
+# maj_class = counts.argmax()
+# min_class = counts.argmin()
+# df_gs.replace({'<50': maj_class, '>50_1': min_class}, inplace=True)
 
 file_path = os.path.join('..', '..', 'validation', 'heart-c_k-means_val.txt')
 with open(file_path, 'a') as f:
@@ -75,10 +75,18 @@ ax = plt.subplot(111)
 
 labels = kmeans.labels.astype(np.int32)
 centers = np.array(kmeans.centroids)
-sns.set(style='white', context='paper', rc={'figure.figsize': (14, 10)})
-ax = plt.subplot()
-ax.scatter(df[:, 0], df[:, 1], c=[sns.color_palette()[x] for x in labels])
-plt.gca().set_aspect('equal', 'datalim')
+colors = sns.color_palette()[:len(centers)]
+for Class, colour in zip(range(len(centers)), colors):
+    Xk = df[labels == Class]
+    ax.plot(Xk.iloc[:, 0], Xk.iloc[:, 1], 'o', color=colour, alpha=0.3)
+    ax.scatter(centers[Class, 0], centers[Class, 1], marker="x", color=colour, s=80)
+    ax.set_xlabel(df.columns[0], fontsize=18)
+    ax.set_ylabel(df.columns[1], fontsize=18)
+
+ax.plot(df.iloc[labels == -1, 0],
+        df.iloc[labels == -1, 1],
+        'k+', alpha=0.1)
+
 ax.set_title('K-means clustering in reduced Heart-C', fontsize=22)
 plt.savefig(os.path.join('..', '..', 'figures', 'heart-c', 'reduced-heart-c_k-means.png'))
 plt.show()
