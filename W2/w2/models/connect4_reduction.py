@@ -109,9 +109,9 @@ for n_comp in [10, 20, 30]:
         umap_data = umap.UMAP(n_neighbors=n_nb, min_dist=.0, n_components=n_comp).fit_transform(df)
         print(umap_data.shape)
 
-        with open(os.path.join(path_data, f'connect4_umap-{n_nb}-{n_comp}.pkl'), 'wb') as f:
+        with open(os.path.join(path_models, f'connect4_umap-{n_nb}-{n_comp}.pkl'), 'wb') as f:
             pickle.dump(umap_data, f)
-        with open(os.path.join(path_data, f'connect4_umap-{n_nb}-{n_comp}.pkl'), 'rb') as f:
+        with open(os.path.join(path_models, f'connect4_umap-{n_nb}-{n_comp}.pkl'), 'rb') as f:
             umap_data = pickle.load(f)
 
         fig, ax = plt.subplots(figsize=(6,5))

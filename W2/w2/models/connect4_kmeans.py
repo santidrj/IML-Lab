@@ -117,7 +117,7 @@ for n_comp in [10, 20, 30]:
             f.write(
                 f'\n \nUMAP: n_neighbors = {n_nb}, n_components = {n_comp}, min_dist = 0')
 
-        utils.print_metrics(df, true_class, kmeans_umap.labels, path_val)
+        utils.print_metrics(df, true_class, kmeans_umap.labels, os.path.join(path_val, 'connect-4_k-means_val.txt'))
 
 
 print("Finished K-Means in Connect-4")
