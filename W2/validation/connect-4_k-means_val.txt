@@ -155,7 +155,8 @@ Davies-Bouldin score: 3.2962940359189807
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.003246365099472317
 Fowlkes-Mallows score (from 0 to 1): 0.41450373445826394
- 
+
+"""
 k-means: K = 3, init = k-means++, metric = euclidean, max_inter = 300, n_init = 10pca components = 16, n_neighbors = 30, n_components = 16
 Percentage of samples in each cluster: [0.27487899 0.3293071  0.39581391]
 Execution time: 495.6546230316162 s
@@ -188,3 +189,4 @@ Davies-Bouldin score: 3.3154742858878152
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.004506493086317538
 Fowlkes-Mallows score (from 0 to 1): 0.45483047829240136
+"""
