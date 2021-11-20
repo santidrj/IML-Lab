@@ -23,25 +23,27 @@ n_iter = 300
 init = 10
 
 print("Starting K-Means in Connect-4")
-# K-means with complete dataset
-df = pd.read_pickle(os.path.join(path_data, 'connect4_encoded.pkl'))
-df_gs = df[df.columns[-1]]
-df = df.drop(columns=df.columns[-1])
-df_custom_pca = pd.read_pickle(os.path.join(path_data, 'connect4_custom-pca-4.pkl'))
-df_umap = pd.read_pickle(os.path.join(path_data, 'connect4_umap-4.pkl'))
 
-##### K-MENAS WITH ORIGINAL DATASET #####
+df = pd.read_pickle(os.path.join(path_data, 'connect4_encoded.pkl'))
+true_class = df[df.columns[-1]]
+df = df.drop(columns=df.columns[-1])
+"""
+df_custom_pca = pd.read_pickle(os.path.join(path_data, 'connect4_custom-pca-4.pkl'))
+
+#with open(os.path.join(path_data, f'connect4_umap-30-10.pkl'), 'rb') as f:
+    df_umap = pd.DataFrame(pickle.load(f))
+
+##### K-MEANS WITH ORIGINAL DATASET #####
 start_kmeans = time.time()
 kmeans = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
 kmeans.fit(df)
 end_kmeans = time.time()
 
-with open(os.path.join(path_models, f'k-means-{K}-{init_method}-{metric}.pkl'), 'wb') as f:
+with open(os.path.join(path_models, f'k-means.pkl'), 'wb') as f:
     pickle.dump(kmeans, f)
 
-with open(os.path.join(path_models, f'k-means-{K}-{init_method}-{metric}.pkl'), 'rb') as f:
+with open(os.path.join(path_models, f'k-means.pkl'), 'rb') as f:
     kmeans = pickle.load(f)
-
 
 ##### K-MENAS WITH CUSTOM PCA REDUCED DATASET #####
 start_kmeans_pca = time.time()
@@ -49,10 +51,10 @@ kmeans_pca = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_ini
 kmeans_pca.fit(df_custom_pca)
 end_kmeans_pca = time.time()
 
-with open(os.path.join(path_models, f'k-means-pca-{K}-{init_method}-{metric}.pkl'), 'wb') as f:
+with open(os.path.join(path_models, f'k-means-pca.pkl'), 'wb') as f:
     pickle.dump(kmeans_pca, f)
 
-with open(os.path.join(path_models, f'k-means-pca-{K}-{init_method}-{metric}.pkl'), 'rb') as f:
+with open(os.path.join(path_models, f'k-means-pca.pkl'), 'rb') as f:
     kmeans_pca = pickle.load(f)
 
 
@@ -65,9 +67,8 @@ end_kmeans_umap = time.time()
 with open(os.path.join(path_models, f'k-means-umap-{K}-{init_method}-{metric}.pkl'), 'wb') as f:
     pickle.dump(kmeans_umap, f)
 
-with open(os.path.join(path_models, f'k-means-umap-{K}-{init_method}-{metric}.pkl'), 'rb') as f:
+#with open(os.path.join(path_models, f'k-means-umap-{K}-{init_method}-{metric}.pkl'), 'rb') as f:
     kmeans_umap = pickle.load(f)
-
 
 models = [kmeans, kmeans_pca, kmeans_umap]
 models_names = ['k-means', 'k-means-pca', 'k-means-umap']
@@ -98,6 +99,25 @@ for model, name, time in zip(models, models_names, models_times):
         f.write(f'\n \n{name}: K = {K}, init = {init_method}, metric = {metric}, max_inter = {n_iter}, n_init = {init}')
         f.write(f'\nExecution time: {time} s')
     
-    utils.print_metrics(df, df_gs, labels, path_val)
+    utils.print_metrics(df, true_class, labels, path_val)
+"""
+
+for n_comp in [10, 20, 30]:
+    for n_nb in [30, 60, 90]:
+        with open(os.path.join(path_data, f'connect4_umap-{n_nb}-{n_comp}.pkl'), 'rb') as f:
+            df_umap = pd.DataFrame(pickle.load(f))
+
+        kmeans_umap = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
+        kmeans_umap.fit(df_umap)
+
+        with open(os.path.join(path_models, f'k-means-umap-{n_nb}-{n_comp}.pkl'), 'wb') as f:
+            pickle.dump(kmeans_umap, f)
+
+        with open(os.path.join(path_val, 'connect-4_k-means_val.txt'), 'a') as f:
+            f.write(
+                f'\n \nUMAP: n_neighbors = {n_nb}, n_components = {n_comp}, min_dist = 0')
+
+        utils.print_metrics(df, true_class, kmeans_umap.labels, path_val)
+
 
 print("Finished K-Means in Connect-4")

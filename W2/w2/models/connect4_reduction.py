@@ -9,6 +9,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA, IncrementalPCA
 import umap
+from sklearn import preprocessing
 
 from algorithms.pca import PCA as CustomPCA
 
@@ -17,13 +18,13 @@ path_models = os.path.join('..', '..', 'models_results', 'connect-4')
 path_figs = os.path.join('..', '..', 'figures', 'connect-4')
 
 df = pd.read_pickle(os.path.join(path_data, 'connect4_encoded.pkl'))
-true_labels = df['class']
+true_class = df['class']
 df = df.drop(columns=df.columns[-1])
 
-nc = 4
+nc = 16
 
 color = ['r', 'g', 'b']
-
+"""
 ##### ORIGINAL DATASET #####
 features = df[['a6', 'a7']].to_numpy()
 unique, counts = np.unique(features, axis=0, return_counts=True)
@@ -44,7 +45,8 @@ plt.show()
 
 
 ##### SKLEARN PCA #####
-pca_data = PCA(n_components=nc).fit_transform(df)
+pca_data = PCA(nc).fit_transform(df)
+
 with open(os.path.join(path_data, f'connect4_pca-{nc}.pkl'), 'wb') as f:
     pickle.dump(pca_data, f)
 with open(os.path.join(path_data, f'connect4_pca-{nc}.pkl'), 'rb') as f:
@@ -79,40 +81,48 @@ plt.show()
 
 ##### CUSTOM PCA #####
 custom_pca_model = CustomPCA(df, nc, cat=True)
-with open(os.path.join(path_data, f'connect4_our-pca-{nc}.pkl'), 'wb') as f:
+
+with open(os.path.join(path_data, f'connect4_custom-pca-{nc}.pkl'), 'wb') as f:
     pickle.dump(custom_pca_model.df, f)
-with open(os.path.join(path_data, f'connect4_our-pca-{nc}.pkl'), 'rb') as f:
+with open(os.path.join(path_data, f'connect4_custom-pca-{nc}.pkl'), 'rb') as f:
     custom_pca_df = pickle.load(f)
 
-print(custom_pca_model.print_info())
+print(f'Number of components: {nc}')
+var_ratio = custom_pca_model.explained_variance_ratio()
+print(f'Variance explained by {nc} components: {round(var_ratio.sum() * 100)}%')
+print(f'Cumulative variance: {np.round(np.cumsum(var_ratio), 4)}')
+custom_pca_model.print_info()
 
 fig, ax = plt.subplots(figsize=(6,5))
 ax.scatter(custom_pca_df['PCA0'], custom_pca_df['PCA1'], alpha=0.9, s=0.008)
-ax.set_title(f'Our PCA reduction with nc = {nc}')
+ax.set_title(f'Custom PCA reduction with nc = {nc}')
 ax.set_xlabel('first component')
 ax.set_ylabel('second component')
 plt.tight_layout()
-plt.savefig(os.path.join(path_figs, f'our-pca-{nc}.png'))
+plt.savefig(os.path.join(path_figs, f'custom-pca-{nc}.png'))
 plt.show()
 
-
+"""
 ##### UMAP #####
-umap_model = umap.UMAP(n_components=nc).fit(df)
-with open(os.path.join(path_data, f'connect4_umap-{nc}.pkl'), 'wb') as f:
-    pickle.dump(umap_model.embedding_, f)
-with open(os.path.join(path_data, f'connect4_umap-{nc}.pkl'), 'rb') as f:
-    umap_data = pickle.load(f)
+for n_comp in [10, 20, 30]:
+    for n_nb in [30, 60, 90]:
+        umap_data = umap.UMAP(n_neighbors=n_nb, min_dist=.0, n_components=n_comp).fit_transform(df)
+        print(umap_data.shape)
 
-fig, ax = plt.subplots(figsize=(6,5))
-#ax.scatter(umap_data[:, 0], umap_data[:, 1], c=[color[x] for x in true_labels.map({'loss': 0, 'win': 1, 'draw': 2})], alpha=0.9, s=0.008)
-ax.scatter(umap_data[:, 0], umap_data[:, 1], alpha=0.9, s=0.008)
-ax.set_title(f'UMAP reduction with nc = {nc}')
-ax.set_xlabel('first component')
-ax.set_ylabel('second component')
-plt.tight_layout()
-plt.savefig(os.path.join(path_figs, f'umap-{nc}.png'))
-plt.show()
+        with open(os.path.join(path_data, f'connect4_umap-{n_nb}-{n_comp}.pkl'), 'wb') as f:
+            pickle.dump(umap_data, f)
+        with open(os.path.join(path_data, f'connect4_umap-{n_nb}-{n_comp}.pkl'), 'rb') as f:
+            umap_data = pickle.load(f)
 
+        fig, ax = plt.subplots(figsize=(6,5))
+        #ax.scatter(umap_data[:, 0], umap_data[:, 1], c=[color[x] for x in true_labels.map({'loss': 0, 'win': 1, 'draw': 2})], alpha=0.9, s=0.008)
+        ax.scatter(umap_data[:, 0], umap_data[:, 1], alpha=0.9, s=0.008)
+        ax.set_title(f'UMAP reduction with \n n_neighbours = {n_nb}, n_components = {n_comp}, min_dist = 0')
+        ax.set_xlabel('first component')
+        ax.set_ylabel('second component')
+        plt.tight_layout()
+        plt.savefig(os.path.join(path_figs, f'umap-{n_nb}-{n_comp}.png'))
+        plt.show()
 
 
 
