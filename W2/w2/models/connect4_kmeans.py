@@ -87,7 +87,7 @@ for model, name, time in zip(models, models_names, models_times):
     labels = model.labels
     unique, counts = np.unique(labels, return_counts=True)
     counts = counts / len(labels)
-    
+    """
     plt.figure(figsize=(6, 5))
     ax = plt.subplot(111)
     colors = ['c', 'b', 'r', 'y', 'g', 'm', 'maroon', 'crimson', 'darkgreen', 'peru']
@@ -104,7 +104,7 @@ for model, name, time in zip(models, models_names, models_times):
     
     plt.savefig(os.path.join('..', '..', 'figures', 'connect-4', f'connect-4_{name}-{K}-{init_method}-{metric}.png'))
     plt.show()
-    
+    """
     with open(os.path.join(path_val, 'connect-4_k-means_val.txt'), 'a') as f:
         f.write(f'\n \n{name}: K = {K}, init = {init_method}, metric = {metric}, max_inter = {n_iter}, n_init = {init}')
         f.write(f'pca components = {nc}, n_neighbors = {n_nb}, n_components = {n_comp}')
