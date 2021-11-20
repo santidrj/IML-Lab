@@ -5,16 +5,17 @@ import umap
 from matplotlib import pyplot as plt
 import seaborn as sns
 
+N_NEIGHBORS = 40
+N = 7
+MIN_DIST = 0.0
+RANDOM_STATE = 42
+
 data_root_path = os.path.join('..', '..', 'datasets')
 df = pd.read_pickle(os.path.join(data_root_path, 'processed', 'processed_heart-c.pkl'))
 df_gs = pd.read_pickle(os.path.join(data_root_path, 'processed', 'heart-c_gs.pkl'))
 
-N = 2
-reducer = umap.UMAP(n_components=N)
-reducer.fit(df)
-embedding = reducer.embedding_
-
-print(embedding.shape)
+reducer = umap.UMAP(n_neighbors=N_NEIGHBORS, n_components=N, min_dist=MIN_DIST, random_state=RANDOM_STATE)
+embedding = reducer.fit_transform(df)
 
 save_path = os.path.join(data_root_path, 'processed')
 pd.to_pickle(pd.DataFrame(embedding), os.path.join(save_path, 'heart-c_umap.pkl'))
