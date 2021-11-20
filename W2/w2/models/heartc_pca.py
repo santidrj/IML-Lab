@@ -14,19 +14,19 @@ data_root_path = os.path.join('..', '..', 'datasets')
 df = pd.read_pickle(os.path.join(data_root_path, 'processed', 'processed_heart-c.pkl'))
 df_gs = pd.read_pickle(os.path.join(data_root_path, 'processed', 'heart-c_gs.pkl'))
 
-pca_model = PCA(n_components='mle').fit_transform(df)
-ipca_model = IncrementalPCA(n_components=pca_model.shape[1]).fit_transform(df)
-custom_pca = pca.PCA(df, pca_model.shape[1])
+N = 2
+
+pca_model = PCA(n_components=N).fit_transform(df)
+ipca_model = IncrementalPCA(n_components=N).fit_transform(df)
+custom_pca = pca.PCA(df, N)
 custom_pca.print_info()
 
 save_path = os.path.join(data_root_path, 'processed')
 pd.to_pickle(pd.DataFrame(pca_model), os.path.join(save_path, 'heart-c_pca.pkl'))
 pd.to_pickle(pd.DataFrame(ipca_model), os.path.join(save_path, 'heart-c_ipca.pkl'))
-pd.to_pickle(custom_pca, os.path.join(save_path, 'heart-c_custom_pca.pkl'))
+pd.to_pickle(custom_pca.df, os.path.join(save_path, 'heart-c_custom_pca.pkl'))
 
-print(f'PCA detected {pca_model.shape[1]} components')
-
-figs_folder_path = os.path.join('..', '..', 'figures')
+figs_folder_path = os.path.join('..', '..', 'figures', 'heart-c')
 sns.set(style='white', context='paper', rc={'figure.figsize': (14, 10)})
 ax = plt.subplot()
 ax.scatter(pca_model[:, 0], pca_model[:, 1], c=[sns.color_palette()[x] for x in df_gs.map({'<50': 0, '>50_1': 1})])
