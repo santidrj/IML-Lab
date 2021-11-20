@@ -49,8 +49,7 @@ with open(os.path.join(path_models, f'k-means.pkl'), 'wb') as f:
 with open(os.path.join(path_models, f'k-means.pkl'), 'rb') as f:
     kmeans = pickle.load(f)
 
-
-##### K-MENAS WITH CUSTOM PCA REDUCED DATASET #####
+##### K-MEANS WITH CUSTOM PCA REDUCED DATASET #####
 start_kmeans_pca = time.time()
 kmeans_pca = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
 kmeans_pca.fit(df_custom_pca)
@@ -61,7 +60,6 @@ with open(os.path.join(path_models, f'k-means-pca.pkl'), 'wb') as f:
 
 with open(os.path.join(path_models, f'k-means-pca.pkl'), 'rb') as f:
     kmeans_pca = pickle.load(f)
-
 
 """
 ##### K-MENAS WITH UMAP REDUCED DATASET #####
@@ -76,13 +74,12 @@ with open(os.path.join(path_models, f'k-means-umap.pkl'), 'wb') as f:
 with open(os.path.join(path_models, f'k-means-umap.pkl'), 'rb') as f:
     kmeans_umap = pickle.load(f)
 
-
 models = [kmeans, kmeans_pca, kmeans_umap]
 models_names = ['k-means', 'k-means-pca', 'k-means-umap']
-models_times = [end_kmeans-start_kmeans, end_kmeans_pca-start_kmeans_pca, 615.3271589279175]
+models_times = [end_kmeans - start_kmeans, end_kmeans_pca - start_kmeans_pca, 615.3271589279175]
 
 for model, name, time in zip(models, models_names, models_times):
-    #print(f'Sum of squared error: {model.square_error}')
+    # print(f'Sum of squared error: {model.square_error}')
 
     labels = model.labels
     unique, counts = np.unique(labels, return_counts=True)
@@ -110,9 +107,8 @@ for model, name, time in zip(models, models_names, models_times):
         f.write(f'pca components = {nc}, n_neighbors = {n_nb}, n_components = {n_comp}')
         f.write(f'\nPercentage of samples in each cluster: {counts}')
         f.write(f'\nExecution time: {time} s')
-    
-    utils.print_metrics(df, true_class, labels, os.path.join(path_val, 'connect-4_k-means_val.txt'))
 
+    utils.print_metrics(df, true_class, labels, os.path.join(path_val, 'connect-4_k-means_val.txt'))
 
 """
 for n_comp in [2]:
