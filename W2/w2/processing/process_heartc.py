@@ -53,12 +53,11 @@ pd.to_pickle(df_heart_normalized, os.path.join(save_path, 'processed_heart-c.pkl
 pd.to_pickle(df_gs, os.path.join(save_path, 'heart-c_gs.pkl'))
 
 figs_folder_path = os.path.join('..', '..', 'figures', 'heart-c')
-for col in df_heart_numerical.columns:
-    plt.clf()
-    sns.boxplot(x=df_heart_numerical[col]).set_title(f'{col} data distribution')
-    sns.stripplot(x=df_heart_numerical[col],
-                  jitter=True,
-                  marker='o',
-                  alpha=0.5,
-                  color='black')
-    plt.savefig(os.path.join(figs_folder_path, f'heart-c_{col}_boxplot.png'))
+sns.set(style='white', context='paper', rc={'figure.figsize': (14, 10)})
+ax = plt.subplot()
+ax.scatter(df_heart_normalized.iloc[:, 0], df_heart_normalized.iloc[:, 1],
+           c=[sns.color_palette()[x] for x in df_gs.map({'<50': 0, '>50_1': 1})])
+plt.gca().set_aspect('equal', 'datalim')
+ax.set_title('Heart-C dataset', fontsize=24)
+plt.savefig(os.path.join(figs_folder_path, 'original_heartc.png'))
+plt.show()

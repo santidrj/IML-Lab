@@ -91,6 +91,10 @@ class PCA:
     def get_reconstructed_dataset(self):
         return self.recon_dataset
 
+    def explained_variance_ratio(self):
+        eigenvalues = self.get_sorted_eigenvalues()
+        return eigenvalues[:self.k]/eigenvalues.sum()
+
     def _pca(self):
         # step 1
         dataset_mean = np.mean(self.dataset, axis=0)
@@ -103,16 +107,14 @@ class PCA:
         self._eigen_values_srt = self._eigen_values[i]
         self._eigen_vectors_srt = self._eigen_vectors[:, i]
         # step 4
-        self._eigen_values_srt = self._eigen_values_srt[:self.k]
-        self._eigen_vectors_srt = self._eigen_vectors_srt[:, :self.k]
-        # step 5
-        self._data_transformed = np.transpose(np.dot(np.transpose(self._eigen_vectors_srt), np.transpose(self._data)))
+        self._data_transformed = np.transpose(np.dot(np.transpose(self._eigen_vectors_srt[:, :self.k]), np.transpose(self._data)))
         # optional convert numpy to df
         self.df = pd.DataFrame(data=self._data_transformed, index=[i for i in range(self._data_transformed.shape[0])],
                                columns=['PCA' + str(i) for i in range(self._data_transformed.shape[1])])
+        # step 5
         # reconstruction of the dataset
-        self.recon_dataset = np.transpose(np.dot(self._eigen_vectors_srt, np.transpose(self._data_transformed))) + dataset_mean
-        # transforming decimals into integers to reconstruct the encoded categorical dataset
+        self.recon_dataset = np.transpose(np.dot(self._eigen_vectors_srt[:, :self.k], np.transpose(self._data_transformed))) + dataset_mean
+        # transform decimals into integers to reconstruct the encoded categorical dataset
         if self.cat:
             self.recon_dataset = np.round(self.recon_dataset)
             # number of mismatches wrt the original dataset
