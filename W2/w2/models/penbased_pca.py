@@ -66,9 +66,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 from sklearn.decomposition import PCA, IncrementalPCA
-
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 #from google.colab import drive
 #drive.mount('/content/drive')
