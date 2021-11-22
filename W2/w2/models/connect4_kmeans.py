@@ -37,6 +37,8 @@ with open(os.path.join(path_data, f'connect4_custom-pca-{nc}.pkl'), 'rb') as f:
 with open(os.path.join(path_data, f'connect4_umap-{n_nb}-{n_comp}.pkl'), 'rb') as f:
     df_umap = pd.DataFrame(pickle.load(f))
 
+kmeans = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
+
 ##### K-MEANS WITH ORIGINAL DATASET #####
 start_kmeans = time.time()
 kmeans = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
@@ -49,6 +51,7 @@ with open(os.path.join(path_models, f'k-means.pkl'), 'wb') as f:
 with open(os.path.join(path_models, f'k-means.pkl'), 'rb') as f:
     kmeans = pickle.load(f)
 
+
 ##### K-MEANS WITH CUSTOM PCA REDUCED DATASET #####
 start_kmeans_pca = time.time()
 kmeans_pca = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
@@ -60,6 +63,7 @@ with open(os.path.join(path_models, f'k-means-pca.pkl'), 'wb') as f:
 
 with open(os.path.join(path_models, f'k-means-pca.pkl'), 'rb') as f:
     kmeans_pca = pickle.load(f)
+
 
 ##### K-MENAS WITH UMAP REDUCED DATASET #####
 
@@ -79,6 +83,7 @@ models_names = ['k-means', 'k-means-pca', 'k-means-umap']
 dfs = [df, df_custom_pca, df_umap]
 models_times = [end_kmeans - start_kmeans, end_kmeans_pca - start_kmeans_pca, end_kmeans_umap - start_kmeans_umap]
 
+
 for model, name, df, time in zip(models, models_names, dfs, models_times):
 
     labels = model.labels
@@ -91,7 +96,7 @@ for model, name, df, time in zip(models, models_names, dfs, models_times):
 
     for Class, colour in zip(range(9), colors):
         Xk = df[labels == Class]
-        if name == 'k-means':
+        if name=='k-means':
             ax.scatter(Xk.iloc[:, 5], Xk.iloc[:, 6], color=colour)
             ax.set_xlabel('a6')
             ax.set_ylabel('a7')
@@ -105,18 +110,18 @@ for model, name, df, time in zip(models, models_names, dfs, models_times):
             ax.set_ylabel('second component')
 
     centers = np.array(model.centroids)
-    if name == 'k-means':
+    if name=='k-means':
         ax.scatter(centers[:, 5], centers[:, 6], marker="x", color="k")
     else:
         ax.scatter(centers[:, 0], centers[:, 1], marker="x", color="k")
 
-    if name == 'k-means':
+    if name=='k-means':
         ax.set_title(f'Clustering of the Full dataset')
     if name == 'k-means-pca':
         ax.set_title(f'Clustering of the custom PCA reduction')
     if name == 'k-means-umap':
         ax.set_title(f'Clustering of the UMAP reduction')
-
+    
     plt.savefig(os.path.join('..', '..', 'figures', 'connect-4', f'connect-4_{name}.png'))
     plt.show()
 
