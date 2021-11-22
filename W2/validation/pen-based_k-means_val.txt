@@ -169,3 +169,57 @@ Davies-Bouldin score: 0.9248390024041171
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.6406248699175581
 Fowlkes-Mallows score (from 0 to 1): 0.509659082127938
+ 
+K-means: K = 10, init = k-means++, metric = euclidean, max_inter = 300, n_init = 10, time = 172.5352132320404
+Internal validation
+Calinski-Harabasz score: 2720.446235118436
+Davies-Bouldin score: 1.2641363903137168
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.6690321106794189
+Fowlkes-Mallows score (from 0 to 1): 0.5714651246102269
+ 
+K-means: K = 10, init = k-means++, metric = euclidean max_inter = 300, n_init = 10, reduction = PCA(6), time = 222.14790272712708
+Internal validation
+Calinski-Harabasz score: 3668.6403359127125
+Davies-Bouldin score: 1.2539525501467388
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.6221283277895361
+Fowlkes-Mallows score (from 0 to 1): 0.5361123952176502
+ 
+K-means: K = 10, init = k-means++, metric = euclidean max_inter = 300, n_init = 10, reduction=UMAP(6), time = 187.93448185920715
+Internal validation
+Calinski-Harabasz score: 1677.0503239916118
+Davies-Bouldin score: 0.9702057788290228
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.6043154034379957
+Fowlkes-Mallows score (from 0 to 1): 0.4772140176999946
+ 
+K-means: K = 10, init = k-means++, metric = euclidean, max_inter = 300, n_init = 10, time = 169.2380735874176
+Internal validation
+Calinski-Harabasz score: 2731.2275411373457
+Davies-Bouldin score: 1.1755117988501693
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.6710544408073993
+Fowlkes-Mallows score (from 0 to 1): 0.5573003485478608
+ 
+K-means: K = 10, init = k-means++, metric = euclidean max_inter = 300, n_init = 10, reduction = PCA(6), time = 221.7932529449463
+Internal validation
+Calinski-Harabasz score: 3654.686986149641
+Davies-Bouldin score: 1.1055467300056663
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.6257150337137796
+Fowlkes-Mallows score (from 0 to 1): 0.5229537962460906
+ 
+K-means: K = 10, init = k-means++, metric = euclidean max_inter = 300, n_init = 10, reduction=UMAP(6), time = 198.93020629882812
+Internal validation
+Calinski-Harabasz score: 1460.4525039424916
+Davies-Bouldin score: 0.812084697082159
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.6265319307970123
+Fowlkes-Mallows score (from 0 to 1): 0.4741245826495163

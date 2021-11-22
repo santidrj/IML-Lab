@@ -55,7 +55,7 @@ true_labels = df_gs.to_numpy(dtype='int32')
 file_path = os.path.join('..', '..', 'validation', 'pen-based_k-means_val.txt')
 with open(file_path, 'a') as f:
     f.write(
-        f'\n \nK-means: K = {K}, init = {init_method}, metric = {metric}, max_inter = {n_iter}, n_init = {init}, time = {start_kmeans - finish_kmeans}')
+        f'\n \nK-means: K = {K}, init = {init_method}, metric = {metric}, max_inter = {n_iter}, n_init = {init}, time = {finish_kmeans - start_kmeans}')
 
 utils.print_metrics(df, true_labels, labels, file_path)
 print("Finished K-means in Pen-Based")
@@ -66,6 +66,7 @@ print("Finished K-means in Pen-Based")
 print("Starting K-means in reduced Pen-Based with PCA")
 df = pd.read_pickle(os.path.join(data_root_path, 'processed', 'pen-based_custom_pca.pkl'))
 
+kmeans = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
 start_kmeans = time.time()
 kmeans.fit(df)
 finish_kmeans = time.time()
@@ -104,6 +105,7 @@ print("Finished K-means in reduced Pen-Based using PCA")
 df = pd.read_pickle(os.path.join(data_root_path, 'processed', 'pen-based_umap.pkl'))
 
 print("Starting K-means in reduced Pen-Based with UMAP")
+kmeans = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
 start_kmeans = time.time()
 kmeans.fit(df)
 finish_kmeans = time.time()
@@ -133,7 +135,7 @@ plt.show()
 file_path = os.path.join('..', '..', 'validation', 'pen-based_k-means_val.txt')
 with open(file_path, 'a') as f:
     f.write(
-        f'\n \nK-means: K = {K}, init = {init_method}, metric = {metric} max_inter = {n_iter}, n_init = {init}, reduction=UMAP({df.shape[1]}), time = {start_kmeans - finish_kmeans}')
+        f'\n \nK-means: K = {K}, init = {init_method}, metric = {metric} max_inter = {n_iter}, n_init = {init}, reduction=UMAP({df.shape[1]}), time = {finish_kmeans - start_kmeans}')
 
 utils.print_metrics(df, df_gs, labels, file_path)
 print("Finished K-means in reduced Pen-based with UMAP")

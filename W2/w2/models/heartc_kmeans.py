@@ -61,6 +61,7 @@ print("Finished K-means in Heart-C")
 df = pd.read_pickle(os.path.join(data_root_path, 'processed', 'heart-c_custom_pca.pkl'))
 
 print("Starting K-means in reduced Heart-C with PCA")
+kmeans = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
 kmeans.fit(df)
 print(f'Sum of squared error: {kmeans.square_error}')
 
@@ -97,6 +98,7 @@ print("Finished K-means in reduced Heart-C with PCA")
 df = pd.read_pickle(os.path.join(data_root_path, 'processed', 'heart-c_umap.pkl'))
 
 print("Starting K-means in reduced Heart-C with UMAP")
+kmeans = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
 kmeans.fit(df)
 print(f'Sum of squared error: {kmeans.square_error}')
 
