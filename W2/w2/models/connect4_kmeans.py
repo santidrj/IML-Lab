@@ -37,24 +37,23 @@ with open(os.path.join(path_data, f'connect4_custom-pca-{nc}.pkl'), 'rb') as f:
 with open(os.path.join(path_data, f'connect4_umap-{n_nb}-{n_comp}.pkl'), 'rb') as f:
     df_umap = pd.DataFrame(pickle.load(f))
 
+kmeans = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
 
 ##### K-MEANS WITH ORIGINAL DATASET #####
 start_kmeans = time.time()
-kmeans = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
-kmeans.fit(df)
+kmeans_org = kmeans.fit(df)
 end_kmeans = time.time()
 
 with open(os.path.join(path_models, f'k-means.pkl'), 'wb') as f:
-    pickle.dump(kmeans, f)
+    pickle.dump(kmeans_org, f)
 
 with open(os.path.join(path_models, f'k-means.pkl'), 'rb') as f:
-    kmeans = pickle.load(f)
+    kmeans_org = pickle.load(f)
 
 
 ##### K-MEANS WITH CUSTOM PCA REDUCED DATASET #####
 start_kmeans_pca = time.time()
-kmeans_pca = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
-kmeans_pca.fit(df_custom_pca)
+kmeans_pca = kmeans.fit(df_custom_pca)
 end_kmeans_pca = time.time()
 
 with open(os.path.join(path_models, f'k-means-pca.pkl'), 'wb') as f:
@@ -67,8 +66,7 @@ with open(os.path.join(path_models, f'k-means-pca.pkl'), 'rb') as f:
 ##### K-MENAS WITH UMAP REDUCED DATASET #####
 
 start_kmeans_umap = time.time()
-kmeans_umap = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
-kmeans_umap.fit(df_umap)
+kmeans_umap = kmeans.fit(df_umap)
 end_kmeans_umap = time.time()
 
 with open(os.path.join(path_models, f'k-means-umap.pkl'), 'wb') as f:
