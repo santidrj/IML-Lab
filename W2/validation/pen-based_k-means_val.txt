@@ -1,0 +1,90 @@
+K-means: K = 10, init = k-means++, metric = euclidean, max_inter = 300, n_init = 10
+Internal validation
+Calinski-Harabasz score: 2731.233891345602
+Davies-Bouldin score: 1.1763699205476796
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.6710253246914588
+Fowlkes-Mallows score (from 0 to 1): 0.5573053529114105
+ 
+K-means: K = 10, init = k-means++, metric = euclidean max_inter = 300, n_init = 10, reduction=PCA(6)
+Internal validation
+Calinski-Harabasz score: 3490.3716777345126
+Davies-Bouldin score: 1.0499790155133832
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.6710253246914588
+Fowlkes-Mallows score (from 0 to 1): 0.5573053529114105
+ 
+K-means: K = 10, init = k-means++, metric = euclidean max_inter = 300, n_init = 10, reduction=UMAP(6)
+Internal validation
+Calinski-Harabasz score: 1491.0640101680274
+Davies-Bouldin score: 0.947697465439402
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.600691539528419
+Fowlkes-Mallows score (from 0 to 1): 0.4742194393190339
+ 
+K-means: K = 10, init = k-means++, metric = euclidean, max_inter = 300, n_init = 10
+Internal validation
+Calinski-Harabasz score: 2731.227541137346
+Davies-Bouldin score: 1.1755117988501695
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.6710544408073993
+Fowlkes-Mallows score (from 0 to 1): 0.5573003485478608
+ 
+K-means: K = 10, init = k-means++, metric = euclidean max_inter = 300, n_init = 10, reduction=PCA(6)
+Internal validation
+Calinski-Harabasz score: 3491.0247985067895
+Davies-Bouldin score: 1.0490339419818935
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.6710544408073993
+Fowlkes-Mallows score (from 0 to 1): 0.5573003485478608
+ 
+K-means: K = 10, init = k-means++, metric = euclidean max_inter = 300, n_init = 10, reduction=UMAP(6)
+Internal validation
+Calinski-Harabasz score: 1628.9579647145506
+Davies-Bouldin score: 0.7911566325293061
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.6486665599335932
+Fowlkes-Mallows score (from 0 to 1): 0.48991000100053717
+
+ 
+K-means: K = 10, init = k-means++, metric = euclidean, max_inter = 300, n_init = 10
+Internal validation
+Calinski-Harabasz score: 2731.2313210983925
+Davies-Bouldin score: 1.1758025926168358
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.6710572584668977
+Fowlkes-Mallows score (from 0 to 1): 0.5573035844479077
+ 
+K-means: K = 10, init = k-means++, metric = euclidean max_inter = 300, n_init = 10, reduction=PCA(6)
+Internal validation
+Calinski-Harabasz score: 3490.6280634217333
+Davies-Bouldin score: 1.0492901305170987
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.6710572584668977
+Fowlkes-Mallows score (from 0 to 1): 0.5573035844479077
+ 
+K-means: K = 10, init = k-means++, metric = euclidean max_inter = 300, n_init = 10, reduction=UMAP(6)
+Internal validation
+Calinski-Harabasz score: 1078.735267215445
+Davies-Bouldin score: 0.960563926232448
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.5843462902633833
+Fowlkes-Mallows score (from 0 to 1): 0.46664554004243414
+ 
+K-means: K = 10, init = k-means++, metric = euclidean, max_inter = 300, n_init = 10
+Internal validation
+Calinski-Harabasz score: 2731.233891345602
+Davies-Bouldin score: 1.1763699205476796
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.6710253246914588
+Fowlkes-Mallows score (from 0 to 1): 0.5573053529114105

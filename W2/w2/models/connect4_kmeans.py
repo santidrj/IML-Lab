@@ -41,19 +41,21 @@ kmeans = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=in
 
 ##### K-MEANS WITH ORIGINAL DATASET #####
 start_kmeans = time.time()
-kmeans_org = kmeans.fit(df)
+kmeans = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
+kmeans.fit(df)
 end_kmeans = time.time()
 
 with open(os.path.join(path_models, f'k-means.pkl'), 'wb') as f:
-    pickle.dump(kmeans_org, f)
+    pickle.dump(kmeans, f)
 
 with open(os.path.join(path_models, f'k-means.pkl'), 'rb') as f:
-    kmeans_org = pickle.load(f)
+    kmeans = pickle.load(f)
 
 
 ##### K-MEANS WITH CUSTOM PCA REDUCED DATASET #####
 start_kmeans_pca = time.time()
-kmeans_pca = kmeans.fit(df_custom_pca)
+kmeans_pca = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
+kmeans_pca.fit(df_custom_pca)
 end_kmeans_pca = time.time()
 
 with open(os.path.join(path_models, f'k-means-pca.pkl'), 'wb') as f:
@@ -66,7 +68,8 @@ with open(os.path.join(path_models, f'k-means-pca.pkl'), 'rb') as f:
 ##### K-MENAS WITH UMAP REDUCED DATASET #####
 
 start_kmeans_umap = time.time()
-kmeans_umap = kmeans.fit(df_umap)
+kmeans_umap = Kmeans(k=K, init=init_method, metric=metric, max_iter=n_iter, n_init=init)
+kmeans_umap.fit(df_umap)
 end_kmeans_umap = time.time()
 
 with open(os.path.join(path_models, f'k-means-umap.pkl'), 'wb') as f:

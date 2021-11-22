@@ -1,0 +1,53 @@
+# Work 2: Dimensionality reduction
+
+Authors: Augusto Moran Calderon, Santiago del Rey Juárez, and Yazmina Zurita Martel
+
+## Contents of the project
+
+The project is divided into three packages: `processing`, `algorithms`, and `models`.
+
+### Processing
+
+This folder contains the Python scripts used to clean the different datasets used.
+
+In order to clean all the datasets at once you can access the folder and run the `process.py` file as follows:
+
+```bash
+cd w2/processing
+python process.py
+```
+
+In the same way, you can run each script individually.
+
+These scripts will generate their corresponding cleaned datasets and save them as pickle files in
+the `datasets/processed` folder.
+
+### Algorithms
+
+This folder contains the Python classes implementing the K-Means and PCA algorithms.
+
+### Models
+
+In the `models` folder we find all the necessary scripts tu run the different algorithms for each dataset. Each script
+is of the form `dataset_algorithm.py`.
+
+In order to run all the data reduction scripts or the K-Means for all the datasets you need to access the `models` folder and execute one of the
+following scripts:
+
+```bash
+cd w2/models
+python run_data_reduction.py
+python run_kmeans.py
+```
+
+Also, if you want to execute a particular algorithm for a particular dataset you can run any of the scripts in this
+folder in the same way as in the above example.
+
+It is worth noting that for the Pen-Based and Connect-4 datasets the execution time is considerably high due to their
+sizes, specially for the latter.
+
+All these scripts generate several output files such as plots and validation results that are stored in the `figures`
+and `validation` folders respectively.
+
+Additionally, for the Connect-4 dataset we also generate the results of the models and save them as pickle files in
+the `models_results`.
