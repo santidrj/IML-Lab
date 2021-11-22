@@ -484,3 +484,30 @@ Davies-Bouldin score: 0.8033387945041341
 External validation
 Adjusted Mutual Information score (from 0 to 1): 0.2639606932261892
 Fowlkes-Mallows score (from 0 to 1): 0.6763340954855357
+ 
+K-means: K = 2, init = k-means++, metric = euclidean max_inter = 300, n_init = 10, reduction=None
+Internal validation
+Calinski-Harabasz score: 65.06403031382244
+Davies-Bouldin score: 2.12119180700052
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.3149936157672686
+Fowlkes-Mallows score (from 0 to 1): 0.7023556540128196
+ 
+K-means: K = 2, init = k-means++, metric = euclidean max_inter = 300, n_init = 10, reduction=PCA(7)
+Internal validation
+Calinski-Harabasz score: 97.46397753256579
+Davies-Bouldin score: 1.7214344358831992
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.32861030076265557
+Fowlkes-Mallows score (from 0 to 1): 0.7110540346491815
+ 
+K-means: K = 2, init = k-means++, metric = euclidean max_inter = 300, n_init = 10, reduction=UMAP(7)
+Internal validation
+Calinski-Harabasz score: 437.2301950369409
+Davies-Bouldin score: 0.8033387945041341
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.2639606932261892
+Fowlkes-Mallows score (from 0 to 1): 0.6763340954855357
