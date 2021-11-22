@@ -49,12 +49,6 @@ ax.set_title(f'K-means clustering in full Heart-C', fontsize=22)
 plt.savefig(os.path.join('..', '..', 'figures', 'heart-c', f'full-heart-c_k-means.png'))
 plt.show()
 
-
-# counts = np.bincount(labels.astype(int))
-# maj_class = counts.argmax()
-# min_class = counts.argmin()
-# df_gs.replace({'<50': maj_class, '>50_1': min_class}, inplace=True)
-
 file_path = os.path.join('..', '..', 'validation', 'heart-c_k-means_val.txt')
 with open(file_path, 'a') as f:
     f.write(f'\n \nK-means: K = {K}, init = {init_method}, metric = {metric} max_inter = {n_iter}, n_init = {init}, reduction=None')
