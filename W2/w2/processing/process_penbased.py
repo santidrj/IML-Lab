@@ -2,6 +2,9 @@ import os
 
 import sys
 
+import seaborn as sns
+import matplotlib.pyplot as plt
+
 sys.path.append("..")
 
 import pandas as pd
@@ -24,3 +27,12 @@ print(df.describe())
 save_path = os.path.join(data_root_path, 'processed')
 pd.to_pickle(df, os.path.join(save_path, 'processed_pen-based.pkl'))
 pd.to_pickle(df_gs, os.path.join(save_path, 'pen-based_gs.pkl'))
+
+figs_folder_path = os.path.join('..', '..', 'figures', 'pen-based')
+sns.set(style='white', context='paper', rc={'figure.figsize': (14, 10)})
+ax = plt.subplot()
+ax.scatter(df.iloc[:, 0], df.iloc[:, 1],
+           c=[sns.color_palette()[x] for x in df_gs.astype(int)])
+plt.gca().set_aspect('equal', 'datalim')
+ax.set_title('Pen-Based dataset', fontsize=24)
+plt.savefig(os.path.join(figs_folder_path, 'original_penbased.png'))

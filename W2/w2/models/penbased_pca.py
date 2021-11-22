@@ -44,7 +44,7 @@ for name, group in groups:
     axes[2].plot(group["recovered_data_1"], group["recovered_data_2"], marker="o", linestyle="", label=name)
 axes[2].set_title('Pen-based recovered Dataset', fontsize=24)
 axes[2].legend()
-plt.savefig(os.path.join(figs_folder_path, 'penbased_custom_pca.png'))
+plt.savefig(os.path.join(figs_folder_path, 'penbased_our_pca.png'))
 plt.show()
 
 """
@@ -74,27 +74,30 @@ pd.to_pickle(custom_pca.df, os.path.join(save_path, 'pen-based_custom_pca.pkl'))
 
 df_gs = [int(i) for i in df_gs]
 
-fig, ax = plt.subplots(3, 1, figsize=(20, 20))
-axes = ax.ravel()
+fig, ax = plt.subplots(1, 1, figsize=(14, 10))
 
 data = pd.DataFrame({"pca_1": pca_model[:, 0], "pca_2": pca_model[:, 1], "Category": df_gs})
 groups = data.groupby("Category")
 for name, group in groups:
-    axes[0].plot(group["pca_1"], group["pca_2"], marker="o", linestyle="", label=name)
-axes[0].set_title('Pen-based reduced using sklearn PCA', fontsize=24)
-axes[0].legend()
+    ax.plot(group["pca_1"], group["pca_2"], marker="o", linestyle="", label=name)
+ax.set_title('Pen-based reduced using sklearn PCA', fontsize=24)
+ax.legend()
+plt.savefig(os.path.join(figs_folder_path, 'penbased_pca.png'))
 
 data = pd.DataFrame({"IncrementalPca_1": ipca_model[:, 0], "IncrementalPca_2": ipca_model[:, 1], "Category": df_gs})
 groups = data.groupby("Category")
+fig, ax = plt.subplots(1, 1, figsize=(14, 10))
 for name, group in groups:
-    axes[1].plot(group["IncrementalPca_1"], group["IncrementalPca_2"], marker="o", linestyle="", label=name)
-axes[1].set_title('Pen-based reduced using sklearn Incremental PCA', fontsize=24)
-axes[1].legend()
+    ax.plot(group["IncrementalPca_1"], group["IncrementalPca_2"], marker="o", linestyle="", label=name)
+ax.set_title('Pen-based reduced using sklearn Incremental PCA', fontsize=24)
+ax.legend()
+plt.savefig(os.path.join(figs_folder_path, 'penbased_ipca.png'))
 data = pd.DataFrame({"Ourpca_1": custom_pca.df['PCA0'], "Ourpca_2": custom_pca.df['PCA1'], "Category": df_gs})
 groups = data.groupby("Category")
+fig, ax = plt.subplots(1, 1, figsize=(14, 10))
 for name, group in groups:
-    axes[2].plot(group["Ourpca_1"], group["Ourpca_2"], marker="o", linestyle="", label=name)
-axes[2].set_title('Pen-based reduced using our PCA', fontsize=24)
-axes[2].legend()
-plt.savefig(os.path.join(figs_folder_path, 'penbased_pca.png'))
+    ax.plot(group["Ourpca_1"], group["Ourpca_2"], marker="o", linestyle="", label=name)
+ax.set_title('Pen-based reduced using our PCA', fontsize=24)
+ax.legend()
+plt.savefig(os.path.join(figs_folder_path, 'penbased_custom_pca.png'))
 plt.show()

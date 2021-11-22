@@ -190,3 +190,36 @@ External validation
 Adjusted Mutual Information score (from 0 to 1): 0.004506493086317538
 Fowlkes-Mallows score (from 0 to 1): 0.45483047829240136
 """
+ 
+k-means: K = 3, init = k-means++, metric = euclidean, max_inter = 300, n_init = 10pca components = 16, n_neighbors = 30, n_components = 16
+Percentage of samples in each cluster: [0.27481978 0.32936631 0.39581391]
+Execution time: 573.8511698246002 s
+Internal validation
+Calinski-Harabasz score: 6303.935262522477
+Davies-Bouldin score: 2.721170193729859
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.002369653167000444
+Fowlkes-Mallows score (from 0 to 1): 0.41771511373133013
+ 
+k-means-pca: K = 3, init = k-means++, metric = euclidean, max_inter = 300, n_init = 10pca components = 16, n_neighbors = 30, n_components = 16
+Percentage of samples in each cluster: [0.27483458 0.32942552 0.39573989]
+Execution time: 409.0528061389923 s
+Internal validation
+Calinski-Harabasz score: 7525.496554409046
+Davies-Bouldin score: 2.4901917804809184
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.002389359608216502
+Fowlkes-Mallows score (from 0 to 1): 0.41773443100021124
+ 
+k-means-umap: K = 3, init = k-means++, metric = euclidean, max_inter = 300, n_init = 10pca components = 16, n_neighbors = 30, n_components = 16
+Percentage of samples in each cluster: [0.10403067 0.54078778 0.35518155]
+Execution time: 312.025593996048 s
+Internal validation
+Calinski-Harabasz score: 29281.319106921925
+Davies-Bouldin score: 1.2158765174305488
+
+External validation
+Adjusted Mutual Information score (from 0 to 1): 0.004178493421349234
+Fowlkes-Mallows score (from 0 to 1): 0.4558084080957228
