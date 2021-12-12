@@ -119,6 +119,7 @@ class IBL:
 
     def _run(self):
         # TODO: Implement below
+        # labels = self.training_set.iloc[:, -1]
         # self.training_set = preprocess(self.training_set)
         if self.algorihtm in {"ibl1", "ibl2", "ibl3"}:
             if self.algorithm is "ibl1":
