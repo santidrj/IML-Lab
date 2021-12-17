@@ -1,10 +1,7 @@
 import time
-import random
+
 import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
 from pandas import DataFrame
-from scipy.io import arff
 from sklearn.preprocessing import RobustScaler
 
 
@@ -16,8 +13,6 @@ def num_distance(x, y):
     return:
       the similarity distance between x and y
     """
-    if x is None or y is None:
-        return 1
     return np.sqrt(np.square(x - y).sum())
 
 
@@ -65,9 +60,13 @@ Performance dimensions:
 
 
 def cat_distance(x, y):
-    if x is None or y is None:
-        return 1
-    return x == y
+    dist = 0
+    for i in range(len(x)):
+        if x is None or y is None:
+            dist += 1
+        else:
+            dist += (x == y)
+    return dist
 
 
 class IBL:
