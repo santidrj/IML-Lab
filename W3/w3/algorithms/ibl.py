@@ -3,11 +3,12 @@ import random
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from pandas import DataFrame
 from scipy.io import arff
 from sklearn.preprocessing import RobustScaler
 
 
-def similarity(x, y):
+def num_distance(x, y):
     """
     x and y should be numpy arrays
     parameters:
@@ -15,7 +16,8 @@ def similarity(x, y):
     return:
       the similarity distance between x and y
     """
-
+    if x is None or y is None:
+        return 1
     return np.sqrt(np.square(x - y).sum())
 
 
@@ -62,6 +64,12 @@ Performance dimensions:
 """
 
 
+def cat_distance(x, y):
+    if x is None or y is None:
+        return 1
+    return x == y
+
+
 class IBL:
     """
     dataframe: should be a Pandas Dataframe with the features normalize
@@ -71,7 +79,7 @@ class IBL:
         if the value is not pass, IBL1 is selected.
     """
 
-    def __init__(self, dataframe: Dataframe, algorithm="ibl1"):
+    def __init__(self, dataframe: DataFrame, algorithm="ibl1"):
         self.training_set = dataframe
         self.number_samples = len(dataframe)
         self.algorithm = algorithm
@@ -85,19 +93,22 @@ class IBL:
         self._run()
         self.print_results()
 
-    def _ibl1(self):
+    def _ibl1(self, numerical_features, cat_features, labels):
         for i in range(self.number_samples):
-            x = self.training_set.iloc[i]
+            x_num = numerical_features[i]
+            x_cat = cat_features[i]
+            label = labels[i]
             if not self.cd:
-                self.cd.add(x)
+                self.cd.add((x_num, x_cat, label))
             else:
-                similarity_list = [similarity(x[:-1], y[:-1]) for y in cd]
-                y_max = min(similarity_list)
-                if x[-1] == y_max[-1]:
+                similarity_list = [np.concatenate(num_distance(x_num, y[0]), cat_distance(x_num, y[1]), y[2]) for y
+                                   in self.cd]
+                y_max = np.argmin(np.sum(similarity_list[:-1], axis=1))
+                if label == similarity_list[y_max][-1]:
                     self.correct_samples += 1
                 else:
                     self.incorrect_samples += 1
-            self.cd.add(x)
+            self.cd.add((x_num, x_cat, label))
 
     def _ibl2(self):
         for i in range(self.number_samples):
@@ -105,7 +116,7 @@ class IBL:
             if not self.cd:
                 self.cd.add(x)
             else:
-                similarity_list = [similarity(x[:-1], y[:-1]) for y in cd]
+                similarity_list = [num_distance(x[:-1], y[:-1]) for y in self.cd]
                 y_max = min(similarity_list)
                 if x[-1] == y_max[-1]:
                     self.correct_samples += 1
@@ -119,12 +130,12 @@ class IBL:
 
     def _run(self):
         # TODO: Implement below
-        # labels = self.training_set.iloc[:, -1]
-        # self.training_set = preprocess(self.training_set)
-        if self.algorihtm in {"ibl1", "ibl2", "ibl3"}:
+        labels = self.training_set.iloc[:, -1]
+        numerical_features, cat_features = preprocess(self.training_set)
+        if self.algorithm in {"ibl1", "ibl2", "ibl3"}:
             if self.algorithm is "ibl1":
                 start = time.time()
-                self._ibl1()
+                self._ibl1(numerical_features, cat_features, labels)
                 end = time.time()
                 self.execution_time = end - start
             elif self.algorithm is "ibl2":
