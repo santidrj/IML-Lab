@@ -21,14 +21,9 @@ def preprocess(data: DataFrame):
     Splits the data into numerical and categorical variables.
     It also normalizes the numerical variables.
 
-    Parameters
-    ----------
-    data: DataFrame
-        Dataset to be preprocessed.
-
-    Returns
-    -------
-    tuple
+    :param data: Dataset to be preprocessed.
+    :type data: DataFrame
+    :return:
         a tuple with the normalized numerical features as the first element 
         and the categorical features as the second element.
     """
@@ -69,13 +64,29 @@ def cat_distance(x, y):
     return dist
 
 
+def get_class(distance_list, method='nn'):
+    """
+    Compute the class of a sample using its distance to the points in the CD.
+
+    :param distance_list: List with the distances to the points in the CD and their classes.
+    :param method: Method used to obtain the class. By default, it uses Nearest Neighbors.
+    :return: The class of the sample.
+    """
+
+    # TODO: implement voting system
+    if method == 'nn':
+        return distance_list[distance_list[:, 0].argmin(), 1]
+    return 0
+
+
 class IBL:
     """
-    dataframe: should be a Pandas Dataframe with the features normalize
-        the last column is the class value of each row
-    algorithm: string which determine the IBL to execute
+    Instance Based Learning algorithm.
 
-        if the value is not pass, IBL1 is selected.
+    Attributes
+
+    - dataframe: Pandas DataFrame where the last column is the class value of each row.
+    - algorithm: String which determine the IBL to execute. If the value is not pass, IBL1 is selected.
     """
 
     def __init__(self, dataframe: DataFrame, algorithm="ibl1"):
@@ -97,17 +108,41 @@ class IBL:
             x_num = numerical_features[i]
             x_cat = cat_features[i]
             label = labels[i]
+
             if not self.cd:
                 self.cd.add((x_num, x_cat, label))
             else:
-                similarity_list = [np.concatenate(num_distance(x_num, y[0]), cat_distance(x_num, y[1]), y[2]) for y
-                                   in self.cd]
-                y_max = np.argmin(np.sum(similarity_list[:-1], axis=1))
-                if label == similarity_list[y_max][-1]:
+                # Obtain a list with the sample distance to each point in the CD and save it together with the point
+                # class
+                distance_list = [np.concatenate(num_distance(x_num, y[0]) + cat_distance(x_num, y[1]), y[2]) for y
+                                 in self.cd]
+                y_max = np.argmin(distance_list[:, 0])
+                if label == distance_list[y_max][1]:
                     self.correct_samples += 1
                 else:
                     self.incorrect_samples += 1
             self.cd.add((x_num, x_cat, label))
+
+    def _ibl1_predict(self, numerical_features, cat_features):
+        labels = []
+        for i in range(numerical_features.shape[0]):
+            x_num = numerical_features[i]
+            x_cat = cat_features[i]
+
+            # Obtain a list with the sample distance to each point in the CD and save it together with the point class
+            distance_list = [np.concatenate(num_distance(x_num, y[0]) + cat_distance(x_num, y[1]), y[2]) for y in
+                             self.cd]
+            most_similar = np.argmin(distance_list[:, 0])
+            label = get_class(distance_list)
+            if label == distance_list[most_similar][1]:
+                self.correct_samples += 1
+            else:
+                self.incorrect_samples += 1
+
+            labels.append(label)
+            self.cd.add((x_num, x_cat, label))
+
+        return labels
 
     def _ibl2(self):
         for i in range(self.number_samples):
@@ -151,6 +186,15 @@ class IBL:
             self.accuracy = self.correct_samples / self.number_samples
         else:
             print("You selected a wrong Instance-Based Learning algorithm")
+
+    def ib1Algorithm(self, test_data):
+        # TODO: reset accuracy before prediction to avoid counting train samples?
+        numerical_features, cat_features = preprocess(test_data)
+        start = time.time()
+        labels = self._ibl1_predict(numerical_features, cat_features)
+        self.execution_time = time.time() - start
+
+        return labels
 
     def print_results(self):
         print(f"Performance metrics of the {self.algorithm} algorithm")
