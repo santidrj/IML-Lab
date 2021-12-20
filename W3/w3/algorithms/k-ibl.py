@@ -29,6 +29,7 @@ def vote(votes, policy='most_voted', mp_k=1):
         return max(votes, key=votes.count)
 
     if policy == 'mod_plurality':
+
         # Unique options sorted by decreasing number of votes
         options_srt = sorted(set(votes), key=votes.count, reverse=True)
         # Votes for each option
@@ -39,6 +40,28 @@ def vote(votes, policy='most_voted', mp_k=1):
             return vote(votes[:mp_k], policy='mod_plurality', mp_k=mp_k)
         else:
             return options_srt[0]
+
+    if policy == 'borda_count':
+        # Dictionary of unique options
+        options = dict.fromkeys(set(votes), 0)
+
+        # Points for each element in votes
+        points = list(range(len(votes)))[::-1]
+        # Assign total points to each option in the dictionary
+        for opt in options.keys():
+            opt_points = [points[i] for i in np.where(np.array(votes) == opt)[0]]
+            options[opt] = sum(opt_points)
+
+        """
+        ---REMOVE---
+        Same reasoning as "most_voted" in case of tie
+        ---REMOVE---
+        """
+        return max(options, key=options.get)
+
+
+
+
 
 
 
