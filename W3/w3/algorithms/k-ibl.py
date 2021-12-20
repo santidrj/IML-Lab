@@ -36,8 +36,10 @@ def vote(votes, policy='most_voted', mp_k=1):
         count_srt = [votes.count(x) for x in options_srt]
 
         # In case of tie, remove mp_k neighbours and repeat
-        if len(count_srt) > 1 and count_srt[0] == count_srt[1]:
-            return vote(votes[:mp_k], policy='mod_plurality', mp_k=mp_k)
+        if len(votes) > 1 and count_srt[0] == count_srt[1]:
+            if len(votes) <= mp_k:
+                mp_k = 1
+            return vote(votes[:-mp_k], policy='mod_plurality', mp_k=mp_k)
         else:
             return options_srt[0]
 
@@ -60,7 +62,7 @@ def vote(votes, policy='most_voted', mp_k=1):
         return max(options, key=options.get)
 
 
-
+vote(['a', 'b', 'b', 'a', 'a', 'b'], policy='mod_plurality', mp_k=2)
 
 
 
