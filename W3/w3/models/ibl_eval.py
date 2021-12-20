@@ -73,6 +73,7 @@ class IBLEval:
                 f.write('Mean accuracy: {}'.format(self.acc_mean['ibl3']))
                 f.write('Execution time per fold: {}'.format(self.time_fold['ibl3']))
                 f.write('Mean execution time: {}'.format(self.time_mean['ibl3']))
+            f.write('\n\n')
 
     def print_results(self, algorithms=None):
         if algorithms is None:
