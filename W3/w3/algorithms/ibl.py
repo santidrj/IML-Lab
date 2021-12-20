@@ -1,8 +1,10 @@
+import math
 import time
 
 import numpy as np
 from pandas import DataFrame
-from sklearn.preprocessing import RobustScaler
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import MinMaxScaler
 
 
 def num_distance(x, y):
@@ -13,7 +15,22 @@ def num_distance(x, y):
     return:
       the similarity distance between x and y
     """
-    return np.sqrt(np.square(x - y).sum())
+    diff_sum = 0
+    for i in range(len(x)):
+        if np.isnan(x[i]) and np.isnan(y[i]):
+            diff_sum += 1
+        elif np.isnan(x[i]) and y[i] < 0.5:
+            diff_sum += ((1 - y[i]) ** 2)
+        elif np.isnan(x[i]) and y[i] >= 0.5:
+            diff_sum += ((-y[i]) ** 2)
+        elif np.isnan(y[i]) and x[i] < 0.5:
+            diff_sum += ((x[i] - 1) ** 2)
+        elif np.isnan(y[i]) and x[i] >= 0.5:
+            diff_sum += (x[i] ** 2)
+        else:
+            diff_sum += ((x[i] - y[i]) ** 2)
+
+    return math.sqrt(diff_sum)
 
 
 def preprocess(data: DataFrame):
@@ -29,9 +46,10 @@ def preprocess(data: DataFrame):
     """
 
     numeric_features = data.select_dtypes(include="number")
-    normalized_num_features = RobustScaler(unit_variance=True).fit_transform(
-        numeric_features
-    )
+    # numeric_features = SimpleImputer(strategy="mean").fit_transform(numeric_features)
+
+    # Apply MinMaxScaler to scale features to the [0, 1] range
+    normalized_num_features = MinMaxScaler().fit_transform(numeric_features)
 
     categorical_features = data.select_dtypes(include="object").to_numpy()
 
@@ -176,6 +194,7 @@ class IBL:
             for y in self.cd:
                 distance_list.append(num_distance(x_num, np.asarray(y[0])) + cat_distance(x_cat, np.asarray(y[1])))
                 cd_labels.append(y[2])
+                num_distance(x_num, np.asarray(y[0])) + cat_distance(x_cat, np.asarray(y[1]))
 
             most_similar = np.argmin(distance_list)
             label = get_class(distance_list, cd_labels)

@@ -33,7 +33,7 @@ class IBLEval:
         file_names = sorted(os.listdir(self.dataset_path))
 
         for fold in range(0, len(file_names), 2):
-            acc, time = self.feed_data(file_names[fold], file_names[fold + 1], algorithm)
+            acc, time = self.feed_data(file_names[fold + 1], file_names[fold], algorithm)
             self.acc_fold[algorithm].append(acc)
             self.time_fold[algorithm].append(time)
 
