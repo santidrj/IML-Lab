@@ -130,7 +130,7 @@ class IBL:
             x_cat = cat_features[i]
 
             # Obtain a list with the sample distance to each point in the CD and save it together with the point class
-            distance_list = [np.concatenate(num_distance(x_num, y[0]) + cat_distance(x_num, y[1]), y[2]) for y in
+            distance_list = [np.concatenate(num_distance(x_num, y[0]) + cat_distance(x_cat, y[1]), y[2]) for y in
                              self.cd]
             most_similar = np.argmin(distance_list[:, 0])
             label = get_class(distance_list)
