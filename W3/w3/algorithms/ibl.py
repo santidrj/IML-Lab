@@ -57,7 +57,7 @@ Performance dimensions:
 def cat_distance(x, y):
     dist = 0
     for i in range(len(x)):
-        if x is None or y is None:
+        if x[i] is None or y[i] is None:
             dist += 1
         else:
             dist += (x[i] != y[i])
