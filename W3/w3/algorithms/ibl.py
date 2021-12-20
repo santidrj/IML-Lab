@@ -60,7 +60,7 @@ def cat_distance(x, y):
         if x is None or y is None:
             dist += 1
         else:
-            dist += (x == y)
+            dist += (x[i] != y[i])
     return dist
 
 
@@ -114,7 +114,7 @@ class IBL:
             else:
                 # Obtain a list with the sample distance to each point in the CD and save it together with the point
                 # class
-                distance_list = [np.concatenate(num_distance(x_num, y[0]) + cat_distance(x_num, y[1]), y[2]) for y
+                distance_list = [np.concatenate(num_distance(x_num, y[0]) + cat_distance(x_cat, y[1]), y[2]) for y
                                  in self.cd]
                 y_max = np.argmin(distance_list[:, 0])
                 if label == distance_list[y_max][1]:
