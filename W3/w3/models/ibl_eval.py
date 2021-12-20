@@ -1,5 +1,6 @@
 import os
 import sys
+
 sys.path.append('..')
 
 from algorithms.ibl import IBL
@@ -23,25 +24,27 @@ class IBLEval:
         utils.convert_byte_string_to_string(train_data)
         utils.convert_byte_string_to_string(test_data)
 
-        ibl = IBL(train_data, test_data, algorithm)
+        ibl = IBL(train_data, algorithm)
+        if algorithm == 'ibl1':
+            pred_labels = ibl.ib1Algorithm(test_data)
         return ibl.accuracy, ibl.execution_time
 
     def feed_folds(self, algorithm='ibl1'):
         file_names = sorted(os.listdir(self.dataset_path))
 
         for fold in range(0, len(file_names), 2):
-            acc, time = self.feed_data(file_names[fold], file_names[fold+1], algorithm)
+            acc, time = self.feed_data(file_names[fold], file_names[fold + 1], algorithm)
             self.acc_fold[algorithm].append(acc)
             self.time_fold[algorithm].append(time)
 
         self.acc_mean[algorithm] = np.mean(self.acc_fold[algorithm])
         self.time_mean[algorithm] = np.mean(self.time_fold[algorithm])
 
-    def run(self, algorithms = ['ibl1', 'ibl2', 'ibl3']):
+    def run(self, algorithms=['ibl1', 'ibl2', 'ibl3']):
         for alg in algorithms:
             self.feed_folds(alg)
 
-    def print_results(self, algorithms = ['ibl1', 'ibl2', 'ibl3']):
+    def print_results(self, algorithms=['ibl1', 'ibl2', 'ibl3']):
         print('Dataset: {}'.format(self.dataset_path.rsplit('/', 1)[-1]))
         if 'ibl1' in algorithms:
             print('\n--IBL1 results--')
@@ -61,6 +64,3 @@ class IBLEval:
             print('Mean accuracy: {}'.format(self.acc_mean['ibl3']))
             print('Execution time per fold: {}'.format(self.time_fold['ibl3']))
             print('Mean execution time: {}'.format(self.time_mean['ibl3']))
-
-
-
