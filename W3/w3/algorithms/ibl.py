@@ -73,6 +73,7 @@ def num_distance(x, y):
 
 
 def cat_distance(x, y):
+    # TODO: Fix
     dist = 0
     for i in range(len(x)):
         if x[i] is None or y[i] is None:
