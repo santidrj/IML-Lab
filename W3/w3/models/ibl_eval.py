@@ -11,13 +11,14 @@ import numpy as np
 
 class IBLEval:
     def __init__(self, dataset_path):
-        self.acc_fold = dict(ibl1=[], ibl2=[], ibl3=[])
-        self.acc_mean = dict(ibl1=[], ibl2=[], ibl3=[])
-        self.time_fold = dict(ibl1=[], ibl2=[], ibl3=[])
-        self.time_mean = dict(ibl1=[], ibl2=[], ibl3=[])
+        self.acc_fold = dict(ibl1=[], ibl2=[], ibl3=[], kibl=[])
+        self.acc_mean = dict(ibl1=[], ibl2=[], ibl3=[], kibl=[])
+        self.time_fold = dict(ibl1=[], ibl2=[], ibl3=[], kibl=[])
+        self.time_mean = dict(ibl1=[], ibl2=[], ibl3=[], kibl=[])
         self.dataset_path = dataset_path
 
-    def feed_data(self, train_file_name, test_file_name, algorithm='ibl1'):
+    def feed_data(self, train_file_name, test_file_name, algorithm='ibl1', k=3, policy='most_voted',
+                  measure='euclidean'):
         train_data = utils.load_arff(os.path.join(self.dataset_path, train_file_name))
         test_data = utils.load_arff(os.path.join(self.dataset_path, test_file_name))
 
@@ -29,6 +30,8 @@ class IBLEval:
             ibl.ib1Algorithm(test_data)
         elif algorithm == 'ibl2':
             ibl.ib2Algorithm(test_data)
+        elif algorithm == 'k-ibl':
+            ibl.kIBLAlgorithm(test_data, k, policy, measure)
 
         return ibl.accuracy, ibl.execution_time
 
@@ -45,13 +48,13 @@ class IBLEval:
 
     def run(self, algorithms=None):
         if algorithms is None:
-            algorithms = ['ibl1', 'ibl2', 'ibl3']
+            algorithms = ['ibl1', 'ibl2', 'ibl3', 'k-ibl']
         for alg in algorithms:
             self.feed_folds(alg)
 
     def write_results(self, file, algorithms=None):
         if algorithms is None:
-            algorithms = ['ibl1', 'ibl2', 'ibl3']
+            algorithms = ['ibl1', 'ibl2', 'ibl3', 'k-ibl']
 
         with open(file, 'a') as f:
             f.write('Dataset: {}'.format(self.dataset_path.rsplit('/', 1)[-1]))
@@ -73,8 +76,14 @@ class IBLEval:
                 f.write('Mean accuracy: {}\n'.format(self.acc_mean['ibl3']))
                 f.write('Execution time per fold: {}\n'.format(self.time_fold['ibl3']))
                 f.write('Mean execution time: {}\n'.format(self.time_mean['ibl3']))
+            if 'k-ibl' in algorithms:
+                f.write('\n--K-IBL results--\n')
+                f.write('Accuracy per fold: {}\n'.format(self.acc_fold['k-ibl']))
+                f.write('Mean accuracy: {}\n'.format(self.acc_mean['k-ibl']))
+                f.write('Execution time per fold: {}\n'.format(self.time_fold['k-ibl']))
+                f.write('Mean execution time: {}\n'.format(self.time_mean['k-ibl']))
             f.write('\n')
-            f.write('-'*120)
+            f.write('-' * 120)
             f.write('\n')
 
     def print_results(self, algorithms=None):

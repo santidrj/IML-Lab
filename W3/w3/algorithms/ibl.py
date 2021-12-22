@@ -416,24 +416,25 @@ class IBL:
 
         return labels
 
-    def _run(self, training_set):
+    def _run(self, training_set, k=3, policy='most_voted', measure='euclidean'):
         numerical_features, cat_features, labels = preprocess(training_set)
         if self.algorithm in {"ibl1", "ibl2", "ibl3"}:
             if self.algorithm is "ibl1":
                 start = time.time()
                 self._ibl1(numerical_features, cat_features, labels)
-                end = time.time()
-                self.execution_time = end - start
+                self.execution_time = time.time() - start
             elif self.algorithm is "ibl2":
                 start = time.time()
                 self._ibl2(numerical_features, cat_features, labels)
-                end = time.time()
-                self.execution_time = end - start
+                self.execution_time = time.time() - start
             elif self.algorithm is "ibl3":
                 start = time.time()
                 self._ibl3()
-                end = time.time()
-                self.execution_time = end - start
+                self.execution_time = time.time() - start
+            elif self.algorithm is "k-ibl":
+                start = time.time()
+                self._kibl(numerical_features, cat_features, labels, k, policy, measure)
+                self.execution_time = time.time() - start
 
             self.accuracy = self.correct_samples / self.number_samples
         else:
@@ -456,6 +457,17 @@ class IBL:
         numerical_features, cat_features, gs = preprocess(test_data)
         start = time.time()
         labels = self._ibl2_predict(numerical_features, cat_features, gs)
+        self.execution_time = time.time() - start
+        self.accuracy = self.correct_samples / self.number_samples
+
+        return labels
+
+    def kIBLAlgorithm(self, test_data, k=3, policy='most_voted', measure='euclidean'):
+        self._reset_evaluation_metrics()
+        self.number_samples = test_data.shape[0]
+        numerical_features, cat_features, gs = preprocess(test_data)
+        start = time.time()
+        labels = self._kibl_predict(numerical_features, cat_features, gs, k, policy, measure)
         self.execution_time = time.time() - start
         self.accuracy = self.correct_samples / self.number_samples
 
