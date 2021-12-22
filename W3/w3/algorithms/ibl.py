@@ -1,9 +1,12 @@
 import time
 
 import numpy as np
+import pandas as pd
 from pandas import DataFrame
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import MinMaxScaler
+
+import k_ibl_utils
 
 
 def preprocess(data: DataFrame):
@@ -18,15 +21,16 @@ def preprocess(data: DataFrame):
         and the categorical features as the second element.
     """
 
-    numeric_features = data.select_dtypes(include="number")
+    labels = data.iloc[:, -1].cat.codes
+    numeric_features = data.iloc[:, :-1].select_dtypes(include="number")
     numeric_features = SimpleImputer(strategy="mean").fit_transform(numeric_features)
 
     # Apply MinMaxScaler to scale features to the [0, 1] range
     normalized_num_features = MinMaxScaler().fit_transform(numeric_features)
 
-    categorical_features = data.select_dtypes(include="object").to_numpy()
+    categorical_features = data.iloc[:, :-1].select_dtypes(include="object").to_numpy()
 
-    return normalized_num_features, categorical_features
+    return normalized_num_features, categorical_features, labels
 
 
 def distance(x_numerical, y_numerical, x_categorical=None, y_categorical=None):
@@ -50,20 +54,25 @@ def cat_diff(x, y):
     return dist
 
 
-def get_class(distance_list, cd_labels, method='nn'):
+def get_class(distance_list, cd_labels, method='nn', k=3, policy='most_voted'):
     """
     Compute the class of a sample using its distance to the points in the CD.
 
     :param distance_list: List with the distances to the points in the CD.
     :param cd_labels: List with the labels of each sample in the CD.
     :param method: Method used to obtain the class. By default, it uses Nearest Neighbors.
+    :param k: Number of neighbours to use in the voting method.
+    :param policy: Policy to use for the voting method.
     :return: The class of the sample.
     """
 
-    # TODO: implement voting system
     if method == 'nn':
         return cd_labels[np.argmin(distance_list)]
-    return 0
+    elif method == 'voting':
+        ind = np.argpartition(distance_list, k)[:k]
+        return k_ibl_utils.vote(cd_labels[ind], policy)
+    else:
+        raise ValueError(f'The {method} method does not exist.')
 
 
 """
@@ -115,19 +124,30 @@ class IBL:
         self.saved_samples = 0
         self.execution_time = 0
 
-    def get_distance_num(self, x):
+    def get_distance_num(self, x, metric='euclidean'):
         distance_list = []
         cd_labels = []
         for y in self.cd:
-            distance_list.append(distance(x, np.asarray(y[0])))
+            y_num = np.asarray(y[0])
+            if metric == 'hvdm':
+                dist = k_ibl_utils.hvdm(x, pd.DataFrame(), y_num, pd.DataFrame())
+            else:
+                dist = k_ibl_utils.distance(x, np.asarray(y[0]), metric=metric)
+            distance_list.append(dist)
             cd_labels.append(y[1])
         return distance_list, cd_labels
 
-    def get_distance_mixed(self, x_num, x_cat):
+    def get_distance_mixed(self, x_num, x_cat, metric='euclidean'):
         distance_list = []
         cd_labels = []
         for y in self.cd:
-            distance_list.append(distance(x_num, np.asarray(y[0]), x_cat, np.asarray(y[1])))
+            y_num = np.asarray(y[0])
+            y_cat = np.asarray(y[1])
+            if metric == 'hvdm':
+                dist = k_ibl_utils.hvdm(x_num, pd.DataFrame(x_cat), y_num, pd.DataFrame(y_cat))
+            else:
+                dist = k_ibl_utils.distance(x_num, y_num, x_cat, y_cat, metric)
+            distance_list.append(dist)
             cd_labels.append(y[2])
         return distance_list, cd_labels
 
@@ -307,9 +327,97 @@ class IBL:
         # TODO: Implement this
         pass
 
+    def _kibl(self, numerical_features, cat_features, labels, k=3, policy='most_voted', measure='euclidean'):
+        if cat_features.size == 0:
+            self._numerical_kibl(numerical_features, labels, k, policy, measure)
+        else:
+            for i in range(self.number_samples):
+                x_num = numerical_features[i]
+                x_cat = cat_features[i]
+                label = labels[i]
+
+                if not self.cd:
+                    self.cd.add((tuple(x_num), tuple(x_cat), label))
+                else:
+                    # Obtain a list with the sample distance to each point in the CD and save it together with the point
+                    # class
+                    distance_list, cd_labels = self.get_distance_mixed(x_num, x_cat, measure)
+
+                    ind = np.argpartition(distance_list, k)[:k]
+                    if label == k_ibl_utils.vote(cd_labels[ind], policy):
+                        self.correct_samples += 1
+                    else:
+                        self.incorrect_samples += 1
+                self.saved_samples += 1
+                self.cd.add((tuple(x_num), tuple(x_cat), label))
+
+    def _numerical_kibl(self, numerical_features, labels, k=3, policy='most_voted', measure='euclidean'):
+        for i in range(self.number_samples):
+            x = numerical_features[i]
+            label = labels[i]
+
+            if not self.cd:
+                self.cd.add((tuple(x), label))
+            else:
+                # Obtain a list with the sample distance to each point in the CD and save it together with the point
+                # class
+                distance_list, cd_labels = self.get_distance_num(x, measure)
+
+                ind = np.argpartition(distance_list, k)[:k]
+                if label == k_ibl_utils.vote(cd_labels[ind], policy):
+                    self.correct_samples += 1
+                else:
+                    self.incorrect_samples += 1
+
+                self.saved_samples += 1
+                self.cd.add((tuple(x), label))
+
+    def _kibl_predict(self, numerical_features, cat_features, gs, k=3, policy='most_voted', measure='euclidean'):
+        if cat_features.size == 0:
+            return self._kibl_predict_numerical(numerical_features, gs, k, policy, measure)
+
+        labels = []
+        for i in range(self.number_samples):
+            x_num = numerical_features[i]
+            x_cat = cat_features[i]
+
+            # Obtain a list with the sample distance to each point in the CD and save it together with the point class
+            distance_list, cd_labels = self.get_distance_mixed(x_num, x_cat, measure)
+            label = get_class(distance_list, cd_labels, 'voting', k, policy)
+
+            if label == gs[i]:
+                self.correct_samples += 1
+            else:
+                self.incorrect_samples += 1
+
+            labels.append(label)
+            self.saved_samples += 1
+            self.cd.add((tuple(x_num), tuple(x_cat), label))
+
+        return labels
+
+    def _kibl_predict_numerical(self, numerical_features, gs, k=3, policy='most_voted', measure='euclidean'):
+        labels = []
+        for i in range(self.number_samples):
+            x = numerical_features[i]
+
+            # Obtain a list with the sample distance to each point in the CD and save it together with the point class
+            distance_list, cd_labels = self.get_distance_mixed(x, measure)
+            label = get_class(distance_list, cd_labels, 'voting', k, policy)
+
+            if label == gs[i]:
+                self.correct_samples += 1
+            else:
+                self.incorrect_samples += 1
+
+            labels.append(label)
+            self.saved_samples += 1
+            self.cd.add((tuple(x), label))
+
+        return labels
+
     def _run(self, training_set):
-        labels = training_set.iloc[:, -1]
-        numerical_features, cat_features = preprocess(training_set.iloc[:, :-1])
+        numerical_features, cat_features, labels = preprocess(training_set)
         if self.algorithm in {"ibl1", "ibl2", "ibl3"}:
             if self.algorithm is "ibl1":
                 start = time.time()
@@ -334,9 +442,9 @@ class IBL:
     def ib1Algorithm(self, test_data):
         self._reset_evaluation_metrics()
         self.number_samples = test_data.shape[0]
-        numerical_features, cat_features = preprocess(test_data.iloc[:, :-1])
+        numerical_features, cat_features, gs = preprocess(test_data)
         start = time.time()
-        labels = self._ibl1_predict(numerical_features, cat_features, test_data.iloc[:, -1])
+        labels = self._ibl1_predict(numerical_features, cat_features, gs)
         self.execution_time = time.time() - start
         self.accuracy = self.correct_samples / self.number_samples
 
@@ -345,9 +453,9 @@ class IBL:
     def ib2Algorithm(self, test_data):
         self._reset_evaluation_metrics()
         self.number_samples = test_data.shape[0]
-        numerical_features, cat_features = preprocess(test_data.iloc[:, :-1])
+        numerical_features, cat_features, gs = preprocess(test_data)
         start = time.time()
-        labels = self._ibl2_predict(numerical_features, cat_features, test_data.iloc[:, -1])
+        labels = self._ibl2_predict(numerical_features, cat_features, gs)
         self.execution_time = time.time() - start
         self.accuracy = self.correct_samples / self.number_samples
 

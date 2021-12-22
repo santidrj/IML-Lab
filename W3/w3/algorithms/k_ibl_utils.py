@@ -89,7 +89,25 @@ def cat_prod(x, y):
     return result
 
 
-def distance(x_num, y_num, x_cat, y_cat, metric='euclidean'):
+def num_distance(x, y, metric='euclidean'):
+    if metric == 'euclidean':
+        return np.sqrt(np.square(x - y).sum())
+
+    if metric == 'manhattan':
+        return abs(x - y).sum()
+
+    if metric == 'cosine':
+        sim = (x * y).sum() / (np.sqrt((x * x).sum()) * np.sqrt((y * y).sum()))
+        return 1 - sim
+
+    if metric == 'clark':
+        return (np.square(x - y)/np.square(x + y)).sum()
+
+    if metric == 'canberra':
+        return (abs(x - y)/abs(x + y)).sum()
+
+
+def distance(x_num, y_num, x_cat=None, y_cat=None, metric='euclidean'):
     """
     Calculates distance between two samples according to some metric.
     :param x_num: numerical features of the x samples
@@ -99,6 +117,9 @@ def distance(x_num, y_num, x_cat, y_cat, metric='euclidean'):
     :param metric: distance metric
     :return: distance between x and y
     """
+
+    if x_cat is None or y_cat is None:
+        return num_distance(x_num, y_num, metric)
 
     # Distance for categorical attributes
     if metric == 'hamming':
