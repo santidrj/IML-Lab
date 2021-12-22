@@ -6,7 +6,7 @@ from pandas import DataFrame
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import MinMaxScaler
 
-import k_ibl_utils
+from w3.algorithms import k_ibl_utils
 
 
 def preprocess(data: DataFrame):
@@ -21,7 +21,7 @@ def preprocess(data: DataFrame):
         and the categorical features as the second element.
     """
 
-    labels = data.iloc[:, -1].cat.codes
+    labels = data.iloc[:, -1].astype('category').cat.codes
     numeric_features = data.iloc[:, :-1].select_dtypes(include="number")
     numeric_features = SimpleImputer(strategy="mean").fit_transform(numeric_features)
 

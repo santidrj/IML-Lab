@@ -1,10 +1,7 @@
 import os
-import sys
 
-sys.path.append('..')
-
-from algorithms.ibl import IBL
-import utils
+from w3.algorithms.ibl import IBL
+from w3 import utils
 
 import numpy as np
 
