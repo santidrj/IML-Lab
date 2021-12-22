@@ -26,9 +26,9 @@ class IBLEval:
 
         ibl = IBL(train_data, algorithm)
         if algorithm == 'ibl1':
-            pred_labels = ibl.ib1Algorithm(test_data)
+            ibl.ib1Algorithm(test_data)
         elif algorithm == 'ibl2':
-            pred_labels = ibl.ib2Algorithm(test_data)
+            ibl.ib2Algorithm(test_data)
 
         return ibl.accuracy, ibl.execution_time
 
@@ -56,24 +56,26 @@ class IBLEval:
         with open(file, 'a') as f:
             f.write('Dataset: {}'.format(self.dataset_path.rsplit('/', 1)[-1]))
             if 'ibl1' in algorithms:
-                f.write('\n--IBL1 results--')
-                f.write('Accuracy per fold: {}'.format(self.acc_fold['ibl1']))
-                f.write('Mean accuracy: {}'.format(self.acc_mean['ibl1']))
-                f.write('Execution time per fold: {}'.format(self.time_fold['ibl1']))
-                f.write('Mean execution time: {}'.format(self.time_mean['ibl1']))
+                f.write('\n--IBL1 results--\n')
+                f.write('Accuracy per fold: {}\n'.format(self.acc_fold['ibl1']))
+                f.write('Mean accuracy: {}\n'.format(self.acc_mean['ibl1']))
+                f.write('Execution time per fold: {}\n'.format(self.time_fold['ibl1']))
+                f.write('Mean execution time: {}\n'.format(self.time_mean['ibl1']))
             if 'ibl2' in algorithms:
-                f.write('\n--IBL2 results--')
-                f.write('Accuracy per fold: {}'.format(self.acc_fold['ibl2']))
-                f.write('Mean accuracy: {}'.format(self.acc_mean['ibl2']))
-                f.write('Execution time per fold: {}'.format(self.time_fold['ibl2']))
-                f.write('Mean execution time: {}'.format(self.time_mean['ibl2']))
+                f.write('\n--IBL2 results--\n')
+                f.write('Accuracy per fold: {}\n'.format(self.acc_fold['ibl2']))
+                f.write('Mean accuracy: {}\n'.format(self.acc_mean['ibl2']))
+                f.write('Execution time per fold: {}\n'.format(self.time_fold['ibl2']))
+                f.write('Mean execution time: {}\n'.format(self.time_mean['ibl2']))
             if 'ibl3' in algorithms:
-                f.write('\n--IBL3 results--')
-                f.write('Accuracy per fold: {}'.format(self.acc_fold['ibl3']))
-                f.write('Mean accuracy: {}'.format(self.acc_mean['ibl3']))
-                f.write('Execution time per fold: {}'.format(self.time_fold['ibl3']))
-                f.write('Mean execution time: {}'.format(self.time_mean['ibl3']))
-            f.write('\n\n')
+                f.write('\n--IBL3 results--\n')
+                f.write('Accuracy per fold: {}\n'.format(self.acc_fold['ibl3']))
+                f.write('Mean accuracy: {}\n'.format(self.acc_mean['ibl3']))
+                f.write('Execution time per fold: {}\n'.format(self.time_fold['ibl3']))
+                f.write('Mean execution time: {}\n'.format(self.time_mean['ibl3']))
+            f.write('\n')
+            f.write('-'*120)
+            f.write('\n')
 
     def print_results(self, algorithms=None):
         if algorithms is None:

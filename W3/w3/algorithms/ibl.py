@@ -2,6 +2,7 @@ import time
 
 import numpy as np
 from pandas import DataFrame
+from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import MinMaxScaler
 
 
@@ -18,7 +19,7 @@ def preprocess(data: DataFrame):
     """
 
     numeric_features = data.select_dtypes(include="number")
-    # numeric_features = SimpleImputer(strategy="mean").fit_transform(numeric_features)
+    numeric_features = SimpleImputer(strategy="mean").fit_transform(numeric_features)
 
     # Apply MinMaxScaler to scale features to the [0, 1] range
     normalized_num_features = MinMaxScaler().fit_transform(numeric_features)
@@ -28,55 +29,21 @@ def preprocess(data: DataFrame):
     return normalized_num_features, categorical_features
 
 
-def num_distance(x, y):
-    """
-    x and y should be numpy arrays
-    parameters:
-      x and y: sample of n dimension
-    return:
-      the similarity distance between x and y
-    """
-    x_aux = x.copy()
-    y_aux = y.copy()
-    x_nan = np.isnan(x)
-    y_nan = np.isnan(y)
-    x_low = x < 0.5
-    x_high = x >= 0.5
-    y_low = y < 0.5
-    y_high = y >= 0.5
+def distance(x_numerical, y_numerical, x_categorical=None, y_categorical=None):
+    if x_categorical is None or y_categorical is None:
+        return np.sqrt(np.square(x_numerical - y_numerical).sum())
 
-    x_aux[x_nan & y_nan] = 0
-    x_aux[x_nan & y_low] = 1
-    x_aux[x_nan & y_high] = 0
-    y_aux[y_nan & x_nan] = 1
-    y_aux[y_nan & x_low] = 1
-    y_aux[y_nan & x_high] = 0
-
-    return np.sqrt(np.square(x_aux - y_aux).sum())
-
-    # diff_sum = 0
-    # for i in range(len(x)):
-    #     if np.isnan(x[i]) and np.isnan(y[i]):
-    #         diff_sum += 1
-    #     elif np.isnan(x[i]) and y[i] < 0.5:
-    #         diff_sum += ((1 - y[i]) ** 2)
-    #     elif np.isnan(x[i]) and y[i] >= 0.5:
-    #         diff_sum += ((-y[i]) ** 2)
-    #     elif np.isnan(y[i]) and x[i] < 0.5:
-    #         diff_sum += ((x[i] - 1) ** 2)
-    #     elif np.isnan(y[i]) and x[i] >= 0.5:
-    #         diff_sum += (x[i] ** 2)
-    #     else:
-    #         diff_sum += ((x[i] - y[i]) ** 2)
-    #
-    # return math.sqrt(diff_sum)
+    return np.sqrt(num_diff(x_numerical, y_numerical) + cat_diff(x_categorical, y_categorical))
 
 
-def cat_distance(x, y):
-    # TODO: Fix
+def num_diff(x, y):
+    return np.square(x - y).sum()
+
+
+def cat_diff(x, y):
     dist = 0
     for i in range(len(x)):
-        if x[i] is None or y[i] is None:
+        if x[i] == '?' and y[i] == '?':
             dist += 1
         else:
             dist += (x[i] != y[i])
@@ -141,11 +108,28 @@ class IBL:
         print("Finished adding train samples to CD\n")
 
     def _reset_evaluation_metrics(self):
+        self.number_samples = 0
         self.correct_samples = 0
         self.incorrect_samples = 0
         self.accuracy = 0
         self.saved_samples = 0
         self.execution_time = 0
+
+    def get_distance_num(self, x):
+        distance_list = []
+        cd_labels = []
+        for y in self.cd:
+            distance_list.append(distance(x, np.asarray(y[0])))
+            cd_labels.append(y[1])
+        return distance_list, cd_labels
+
+    def get_distance_mixed(self, x_num, x_cat):
+        distance_list = []
+        cd_labels = []
+        for y in self.cd:
+            distance_list.append(distance(x_num, np.asarray(y[0]), x_cat, np.asarray(y[1])))
+            cd_labels.append(y[2])
+        return distance_list, cd_labels
 
     def _ibl1(self, numerical_features, cat_features, labels):
         if cat_features.size == 0:
@@ -161,7 +145,7 @@ class IBL:
                 else:
                     # Obtain a list with the sample distance to each point in the CD and save it together with the point
                     # class
-                    distance_list, cd_labels = self.get_distance_mixed(x_cat, x_num)
+                    distance_list, cd_labels = self.get_distance_mixed(x_num, x_cat)
 
                     y_max = np.argmin(distance_list)
                     if label == cd_labels[y_max]:
@@ -192,26 +176,19 @@ class IBL:
                 self.saved_samples += 1
                 self.cd.add((tuple(x), label))
 
-    def _ibl1_predict(self, numerical_features, cat_features):
+    def _ibl1_predict(self, numerical_features, cat_features, gs):
         if cat_features.size == 0:
-            return self._ibl1_predict_numerical(numerical_features)
+            return self._ibl1_predict_numerical(numerical_features, gs)
 
         labels = []
-        for i in range(numerical_features.shape[0]):
+        for i in range(self.number_samples):
             x_num = numerical_features[i]
             x_cat = cat_features[i]
 
             # Obtain a list with the sample distance to each point in the CD and save it together with the point class
-            distance_list = []
-            cd_labels = []
-            for y in self.cd:
-                distance_list.append(num_distance(x_num, np.asarray(y[0])) + cat_distance(x_cat, np.asarray(y[1])))
-                cd_labels.append(y[2])
-                num_distance(x_num, np.asarray(y[0])) + cat_distance(x_cat, np.asarray(y[1]))
-
-            most_similar = np.argmin(distance_list)
+            distance_list, cd_labels = self.get_distance_mixed(x_num, x_cat)
             label = get_class(distance_list, cd_labels)
-            if label == cd_labels[most_similar]:
+            if label == gs[i]:
                 self.correct_samples += 1
             else:
                 self.incorrect_samples += 1
@@ -222,17 +199,15 @@ class IBL:
 
         return labels
 
-    def _ibl1_predict_numerical(self, numerical_features):
+    def _ibl1_predict_numerical(self, numerical_features, gs):
         labels = []
-        for i in range(numerical_features.shape[0]):
+        for i in range(self.number_samples):
             x = numerical_features[i]
 
             # Obtain a list with the sample distance to each point in the CD and save it together with the point class
             distance_list, cd_labels = self.get_distance_num(x)
-
-            most_similar = np.argmin(distance_list)
             label = get_class(distance_list, cd_labels)
-            if label == cd_labels[most_similar]:
+            if label == gs[i]:
                 self.correct_samples += 1
             else:
                 self.incorrect_samples += 1
@@ -255,7 +230,7 @@ class IBL:
                 if not self.cd:
                     self.cd.add((tuple(x_num), tuple(x_cat), label))
                 else:
-                    distance_list, cd_labels = self.get_distance_mixed(x_cat, x_num)
+                    distance_list, cd_labels = self.get_distance_mixed(x_num, x_cat)
 
                     y_max = np.argmin(distance_list)
                     if label == cd_labels[y_max]:
@@ -266,7 +241,7 @@ class IBL:
                         self.cd.add((tuple(x_num), tuple(x_cat), label))
 
     def _numerical_ibl2(self, numerical_features, labels):
-        for i in range(numerical_features.shape[0]):
+        for i in range(self.number_samples):
             x = numerical_features[i]
             label = labels[i]
 
@@ -285,26 +260,19 @@ class IBL:
                     self.saved_samples += 1
                     self.cd.add((tuple(x), label))
 
-    def _ibl2_predict(self, numerical_features, cat_features):
+    def _ibl2_predict(self, numerical_features, cat_features, gs):
         if cat_features.size == 0:
-            return self._ibl2_predict_numerical(numerical_features)
+            return self._ibl2_predict_numerical(numerical_features, gs)
 
         labels = []
-        for i in range(numerical_features.shape[0]):
+        for i in range(self.number_samples):
             x_num = numerical_features[i]
             x_cat = cat_features[i]
 
             # Obtain a list with the sample distance to each point in the CD and save it together with the point class
-            distance_list = []
-            cd_labels = []
-            for y in self.cd:
-                distance_list.append(num_distance(x_num, np.asarray(y[0])) + cat_distance(x_cat, np.asarray(y[1])))
-                cd_labels.append(y[2])
-                num_distance(x_num, np.asarray(y[0])) + cat_distance(x_cat, np.asarray(y[1]))
-
-            most_similar = np.argmin(distance_list)
+            distance_list, cd_labels = self.get_distance_mixed(x_num, x_cat)
             label = get_class(distance_list, cd_labels)
-            if label == cd_labels[most_similar]:
+            if label == gs[i]:
                 self.correct_samples += 1
             else:
                 self.incorrect_samples += 1
@@ -315,17 +283,16 @@ class IBL:
 
         return labels
 
-    def _ibl2_predict_numerical(self, numerical_features):
+    def _ibl2_predict_numerical(self, numerical_features, gs):
         labels = []
-        for i in range(numerical_features.shape[0]):
+        for i in range(self.number_samples):
             x = numerical_features[i]
 
             # Obtain a list with the sample distance to each point in the CD and save it together with the point class
             distance_list, cd_labels = self.get_distance_num(x)
 
-            most_similar = np.argmin(distance_list)
             label = get_class(distance_list, cd_labels)
-            if label == cd_labels[most_similar]:
+            if label == gs[i]:
                 self.correct_samples += 1
             else:
                 self.incorrect_samples += 1
@@ -336,30 +303,11 @@ class IBL:
 
         return labels
 
-    def get_distance_num(self, x):
-        distance_list = []
-        cd_labels = []
-        for y in self.cd:
-            distance_list.append(num_distance(x, np.asarray(y[0])))
-            cd_labels.append(y[1])
-        return distance_list, cd_labels
-
-    def get_distance_mixed(self, x_cat, x_num):
-        distance_list = []
-        cd_labels = []
-        for y in self.cd:
-            distance_list.append(
-                num_distance(x_num, np.asarray(y[0])) + cat_distance(x_cat, np.asarray(y[1]))
-            )
-            cd_labels.append(y[2])
-        return distance_list, cd_labels
-
     def _ibl3(self):
         # TODO: Implement this
         pass
 
     def _run(self, training_set):
-        # TODO: Implement below
         labels = training_set.iloc[:, -1]
         numerical_features, cat_features = preprocess(training_set.iloc[:, :-1])
         if self.algorithm in {"ibl1", "ibl2", "ibl3"}:
@@ -384,26 +332,24 @@ class IBL:
             raise ValueError("You selected a wrong Instance-Based Learning algorithm")
 
     def ib1Algorithm(self, test_data):
-        # TODO: reset accuracy before prediction to avoid counting train samples?
-        # self._reset_evaluation_metrics()
-        self.number_samples += test_data.shape[0]
+        self._reset_evaluation_metrics()
+        self.number_samples = test_data.shape[0]
         numerical_features, cat_features = preprocess(test_data.iloc[:, :-1])
         start = time.time()
-        labels = self._ibl1_predict(numerical_features, cat_features)
+        labels = self._ibl1_predict(numerical_features, cat_features, test_data.iloc[:, -1])
         self.execution_time = time.time() - start
-        # self.accuracy = self.correct_samples / self.number_samples
+        self.accuracy = self.correct_samples / self.number_samples
 
         return labels
 
     def ib2Algorithm(self, test_data):
-        # TODO: reset accuracy before prediction to avoid counting train samples?
-        # self._reset_evaluation_metrics()
-        self.number_samples += test_data.shape[0]
+        self._reset_evaluation_metrics()
+        self.number_samples = test_data.shape[0]
         numerical_features, cat_features = preprocess(test_data.iloc[:, :-1])
         start = time.time()
-        labels = self._ibl2_predict(numerical_features, cat_features)
+        labels = self._ibl2_predict(numerical_features, cat_features, test_data.iloc[:, -1])
         self.execution_time = time.time() - start
-        # self.accuracy = self.correct_samples / self.number_samples
+        self.accuracy = self.correct_samples / self.number_samples
 
         return labels
 

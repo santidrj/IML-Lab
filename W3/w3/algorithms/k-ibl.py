@@ -6,7 +6,7 @@ import pandas as pd
 ----> self.labels <---- = self.training_set.iloc[:, -1]
 numerical_features, ----> self.cat_features <---- = preprocess(self.training_set)
 """
-cat_features = []   # Pandas Dataframe
+cat_features = []  # Pandas Dataframe
 labels = []
 sigma = []
 
@@ -14,8 +14,10 @@ sigma = []
 def hvdm(x_num, x_cat, y_num, y_cat):
     """
     Computes the heterogeneous value difference between two samples.
-    :param x_num, y_num: numerical values of x and y
-    :param x_cat, y_cat: categorical values of x and y.
+    :param x_num: numerical values of x
+    :param y_num: numerical values of y
+    :param x_cat: categorical values of x.
+    :param y_cat: categorical values of y.
     :return: distance between x and y
     """
 
@@ -52,15 +54,48 @@ def hvdm(x_num, x_cat, y_num, y_cat):
                     n_ay = counts['Count'][counts[att] == x_cat[i]].sum()
                     p_ayc = n_ayc / n_ay
 
-                het_dist += (p_axc - p_ayc)**2
+                het_dist += (p_axc - p_ayc) ** 2
 
     return np.sqrt(het_dist)
 
 
-def distance(x, y, metric):
+def cat_diff(x, y):
+    result = []
+    for i in range(len(x)):
+        if x[i] == '?' and y[i] == '?':
+            result.append(1)
+        else:
+            result.append(x[i] != y[i])
+    return result
+
+
+def cat_sum(x, y):
+    result = []
+    for i in range(len(x)):
+        if x[i] == '?' and y[i] == '?':
+            result.append(1)
+        else:
+            result.append(1 + (x[i] == y[i]))
+    return result
+
+
+def cat_prod(x, y):
+    result = []
+    for i in range(len(x)):
+        if x[i] == '?' and y[i] == '?':
+            result.append(0)
+        else:
+            result.append(x[i] == y[i])
+    return result
+
+
+def distance(x_num, y_num, x_cat, y_cat, metric='euclidean'):
     """
     Calculates distance between two samples according to some metric.
-    :param x, y: samples
+    :param x_num: numerical features of the x samples
+    :param y_num: numerical features of the y samples
+    :param x_cat: categorical features of the x samples
+    :param y_cat: categorical features of the y samples
     :param metric: distance metric
     :return: distance between x and y
     """
@@ -68,28 +103,32 @@ def distance(x, y, metric):
     # Distance for categorical attributes
     if metric == 'hamming':
         dist = 0
-        for i in range(len(x)):
-            if x[i] is None or y[i] is None:
+        for i in range(len(x_cat)):
+            if x_cat[i] is None or y_cat[i] is None:
                 dist += 1
             else:
-                dist += (x[i] != y[i])
+                dist += (x_cat[i] != y_cat[i])
         return dist
 
     if metric == 'euclidean':
-        return np.sqrt(np.square(x - y).sum())
+        return np.sqrt(np.square(np.concatenate((x_num - y_num, cat_diff(x_cat, y_cat)))).sum())
 
     if metric == 'manhattan':
-        return abs(x - y).sum()
+        return abs(np.concatenate((x_num - y_num, cat_diff(x_cat, y_cat)))).sum()
 
     if metric == 'cosine':
-        sim = (x * y).sum() / (np.sqrt((x * x).sum()) * np.sqrt((y * y).sum()))
+        sim = (np.concatenate((x_num * y_num, cat_prod(x_cat, y_cat)))).sum() \
+              / (np.sqrt((np.concatenate((x_num * x_num, cat_prod(x_cat, x_cat)))).sum())
+                 * np.sqrt((np.concatenate((y_num * y_num, cat_prod(y_cat, y_cat)))).sum()))
         return 1 - sim
 
     if metric == 'clark':
-        return (np.square(x - y)/np.square(x + y)).sum()
+        return (np.square(np.concatenate((x_num - y_num, cat_diff(x_cat, y_cat)))) / np.square(
+            np.concatenate((x_num + y_num, cat_sum(x_cat, y_cat))))).sum()
 
     if metric == 'canberra':
-        return (abs(x - y)/abs(x + y)).sum()
+        return (abs(np.concatenate((x_num - y_num, cat_diff(x_cat, y_cat)))) / abs(
+            np.concatenate((x_num + y_num, cat_sum(x_cat, y_cat))))).sum()
 
 
 def vote(votes, policy='most_voted', mp_k=1):
@@ -151,10 +190,3 @@ def vote(votes, policy='most_voted', mp_k=1):
         ---REMOVE---
         """
         return max(options, key=options.get)
-
-
-
-
-
-
-
