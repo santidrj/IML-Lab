@@ -23,10 +23,17 @@ def preprocess(data: DataFrame):
 
     labels = data.iloc[:, -1].astype('category').cat.codes
     numeric_features = data.iloc[:, :-1].select_dtypes(include="number")
-    numeric_features = SimpleImputer(strategy="mean").fit_transform(numeric_features)
+    imputer = SimpleImputer(strategy="mean").fit(numeric_features)
+    numeric_features_imputed = imputer.transform(numeric_features)
+
+    # Since SimpleImputer discards columns which only contain missing values, we have to add them again with a 0 value.
+    for i, stat in enumerate(imputer.statistics_):
+        if np.isnan(stat):
+            numeric_features_imputed = np.insert(numeric_features_imputed, i,
+                                                 np.zeros((numeric_features_imputed.shape[0],)), axis=1)
 
     # Apply MinMaxScaler to scale features to the [0, 1] range
-    normalized_num_features = MinMaxScaler().fit_transform(numeric_features)
+    normalized_num_features = MinMaxScaler().fit_transform(numeric_features_imputed)
 
     categorical_features = data.iloc[:, :-1].select_dtypes(include="object").to_numpy()
 
@@ -69,8 +76,10 @@ def get_class(distance_list, cd_labels, method='nn', k=3, policy='most_voted'):
     if method == 'nn':
         return cd_labels[np.argmin(distance_list)]
     elif method == 'voting':
+        if len(cd_labels) < k:
+            raise ValueError('The selected K is to big for the current CD.')
         ind = np.argpartition(distance_list, k)[:k]
-        return k_ibl_utils.vote(cd_labels[ind], policy)
+        return k_ibl_utils.vote([cd_labels[i] for i in ind], policy)
     else:
         raise ValueError(f'The {method} method does not exist.')
 
@@ -101,9 +110,12 @@ class IBL:
     - algorithm: String which determine the IBL to execute. If the value is not pass, IBL1 is selected.
     """
 
-    def __init__(self, dataframe: DataFrame, algorithm="ibl1"):
+    def __init__(self, dataframe: DataFrame, algorithm="ibl1", k=3, measure='euclidean', policy='most_voted'):
         self.number_samples = len(dataframe)
         self.algorithm = algorithm
+        self.k = k
+        self.measure = measure
+        self.policy = policy
         self.correct_samples = 0
         self.incorrect_samples = 0
         self.accuracy = 0
@@ -161,6 +173,7 @@ class IBL:
                 label = labels[i]
 
                 if not self.cd:
+                    self.saved_samples += 1
                     self.cd.add((tuple(x_num), tuple(x_cat), label))
                 else:
                     # Obtain a list with the sample distance to each point in the CD and save it together with the point
@@ -172,8 +185,8 @@ class IBL:
                         self.correct_samples += 1
                     else:
                         self.incorrect_samples += 1
-                self.saved_samples += 1
-                self.cd.add((tuple(x_num), tuple(x_cat), label))
+                    self.saved_samples += 1
+                    self.cd.add((tuple(x_num), tuple(x_cat), label))
 
     def _numerical_ibl1(self, numerical_features, labels):
         for i in range(self.number_samples):
@@ -181,6 +194,7 @@ class IBL:
             label = labels[i]
 
             if not self.cd:
+                self.saved_samples += 1
                 self.cd.add((tuple(x), label))
             else:
                 # Obtain a list with the sample distance to each point in the CD and save it together with the point
@@ -248,6 +262,7 @@ class IBL:
                 label = labels[i]
 
                 if not self.cd:
+                    self.saved_samples += 1
                     self.cd.add((tuple(x_num), tuple(x_cat), label))
                 else:
                     distance_list, cd_labels = self.get_distance_mixed(x_num, x_cat)
@@ -266,6 +281,7 @@ class IBL:
             label = labels[i]
 
             if not self.cd:
+                self.saved_samples += 1
                 self.cd.add((tuple(x), label))
             else:
                 # Obtain a list with the sample distance to each point in the CD and save it together with the point
@@ -337,19 +353,25 @@ class IBL:
                 label = labels[i]
 
                 if not self.cd:
+                    self.correct_samples += 1
+                    self.saved_samples += 1
                     self.cd.add((tuple(x_num), tuple(x_cat), label))
                 else:
                     # Obtain a list with the sample distance to each point in the CD and save it together with the point
                     # class
                     distance_list, cd_labels = self.get_distance_mixed(x_num, x_cat, measure)
 
-                    ind = np.argpartition(distance_list, k)[:k]
-                    if label == k_ibl_utils.vote(cd_labels[ind], policy):
+                    if len(self.cd) <= k:
+                        cls = k_ibl_utils.vote(cd_labels, policy)
+                    else:
+                        ind = np.argpartition(distance_list, k)[:k].astype(int)
+                        cls = k_ibl_utils.vote([cd_labels[i] for i in ind], policy)
+                    if label == cls:
                         self.correct_samples += 1
                     else:
                         self.incorrect_samples += 1
-                self.saved_samples += 1
-                self.cd.add((tuple(x_num), tuple(x_cat), label))
+                    self.saved_samples += 1
+                    self.cd.add((tuple(x_num), tuple(x_cat), label))
 
     def _numerical_kibl(self, numerical_features, labels, k=3, policy='most_voted', measure='euclidean'):
         for i in range(self.number_samples):
@@ -357,14 +379,20 @@ class IBL:
             label = labels[i]
 
             if not self.cd:
+                self.correct_samples += 1
+                self.saved_samples += 1
                 self.cd.add((tuple(x), label))
             else:
                 # Obtain a list with the sample distance to each point in the CD and save it together with the point
                 # class
                 distance_list, cd_labels = self.get_distance_num(x, measure)
 
-                ind = np.argpartition(distance_list, k)[:k]
-                if label == k_ibl_utils.vote(cd_labels[ind], policy):
+                if len(self.cd) <= k:
+                    cls = k_ibl_utils.vote(cd_labels, policy)
+                else:
+                    ind = np.argpartition(distance_list, k)[:k]
+                    cls = k_ibl_utils.vote([cd_labels[i] for i in ind], policy)
+                if label == cls:
                     self.correct_samples += 1
                 else:
                     self.incorrect_samples += 1
@@ -416,24 +444,24 @@ class IBL:
 
         return labels
 
-    def _run(self, training_set, k=3, policy='most_voted', measure='euclidean'):
+    def _run(self, training_set):
         numerical_features, cat_features, labels = preprocess(training_set)
-        if self.algorithm in {"ibl1", "ibl2", "ibl3"}:
-            if self.algorithm is "ibl1":
+        if self.algorithm in {"ibl1", "ibl2", "ibl3", "k-ibl"}:
+            if self.algorithm == "ibl1":
                 start = time.time()
                 self._ibl1(numerical_features, cat_features, labels)
                 self.execution_time = time.time() - start
-            elif self.algorithm is "ibl2":
+            elif self.algorithm == "ibl2":
                 start = time.time()
                 self._ibl2(numerical_features, cat_features, labels)
                 self.execution_time = time.time() - start
-            elif self.algorithm is "ibl3":
+            elif self.algorithm == "ibl3":
                 start = time.time()
                 self._ibl3()
                 self.execution_time = time.time() - start
-            elif self.algorithm is "k-ibl":
+            elif self.algorithm == "k-ibl":
                 start = time.time()
-                self._kibl(numerical_features, cat_features, labels, k, policy, measure)
+                self._kibl(numerical_features, cat_features, labels, self.k, self.policy, self.measure)
                 self.execution_time = time.time() - start
 
             self.accuracy = self.correct_samples / self.number_samples
@@ -462,7 +490,7 @@ class IBL:
 
         return labels
 
-    def kIBLAlgorithm(self, test_data, k=3, policy='most_voted', measure='euclidean'):
+    def kIBLAlgorithm(self, test_data, k=3, measure='euclidean', policy='most_voted'):
         self._reset_evaluation_metrics()
         self.number_samples = test_data.shape[0]
         numerical_features, cat_features, gs = preprocess(test_data)
