@@ -41,14 +41,16 @@ class IBLEval:
     def feed_folds(self, algorithm='ibl1', config='ibl1', k=None, measure=None, policy=None):
         file_names = sorted(os.listdir(self.dataset_path))
 
+        if algorithm == 'k-ibl':
+            self.acc_fold[config] = []
+            self.acc_mean[config] = []
+            self.time_fold[config] = []
+            self.time_mean[config] = []
+
         for fold in range(0, len(file_names), 2):
             if algorithm == 'k-ibl':
                 acc, time = self.feed_data(file_names[fold + 1], file_names[fold], algorithm, k=k, measure=measure,
                                            policy=policy)
-                self.acc_fold[config] = []
-                self.acc_mean[config] = []
-                self.time_fold[config] = []
-                self.time_mean[config] = []
             else:
                 acc, time = self.feed_data(file_names[fold + 1], file_names[fold], algorithm)
 
@@ -76,7 +78,7 @@ class IBLEval:
             algorithms = ['ibl1', 'ibl2', 'ibl3', 'k-ibl']
 
         with open(file, 'a') as f:
-            f.write('Dataset: {}'.format(self.dataset_path.rsplit('/', 1)[-1]))
+            f.write('Dataset: {}'.format(self.dataset_path.rsplit(os.path.sep, 1)[-1]))
             if 'ibl1' in algorithms:
                 f.write('\n--IBL1 results--\n')
                 f.write('Accuracy per fold: {}\n'.format(self.acc_fold['ibl1']))
@@ -112,9 +114,9 @@ class IBLEval:
 
     def print_results(self, algorithms=None):
         if algorithms is None:
-            algorithms = ['ibl1', 'ibl2', 'ibl3']
+            algorithms = ['ibl1', 'ibl2', 'ibl3', 'k-ibl']
 
-        print('Dataset: {}'.format(self.dataset_path.rsplit('/', 1)[-1]))
+        print('Dataset: {}'.format(self.dataset_path.rsplit(os.path.sep, 1)[-1]))
         if 'ibl1' in algorithms:
             print('\n--IBL1 results--')
             print('Accuracy per fold: {}'.format(self.acc_fold['ibl1']))

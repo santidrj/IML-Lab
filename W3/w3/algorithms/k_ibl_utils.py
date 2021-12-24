@@ -2,12 +2,6 @@ import numpy as np
 import pandas as pd
 from pandas import DataFrame
 
-"""
-----> self.sigma <---- = numerical_features.std().to_list()
-----> self.labels <---- = self.training_set.iloc[:, -1]
-numerical_features, ----> self.cat_features <---- = preprocess(self.training_set)
-"""
-cat_features = []  # Pandas Dataframe
 CLASSES = set()
 SIGMA = np.array([])
 COUNTS = {}
@@ -29,7 +23,7 @@ def init_hvdm(x_num, x_cat: DataFrame, labels):
         COUNTS[att].columns = columns
 
 
-def hvdm(x_num, x_cat, y_num, y_cat):
+def hvdm(x_num, x_cat: DataFrame, y_num, y_cat: DataFrame):
     """
     Computes the heterogeneous value difference between two samples.
     :param x_num: numerical values of x
@@ -172,29 +166,15 @@ def vote(votes, policy='most_voted', mp_k=1):
     the classes of its k neighbours
 
     :param votes: classes of the k nearest neighbours
-        ---REMOVE---
-        y_nearest = sorted(np.sum(similarity_list[:-1], axis=1))[:k]
-        votes = [y[-1] for y in y_nearest]
-        ---REMOVE---
     :param policy: Most Voted Solution, Modified Plurality or Borda Count
     :param mp_k: number of neighbours to remove in case of tie in the Modified Plurality policy
     :return: winner class
     """
 
     if policy == 'most_voted':
-        """
-        ---REMOVE---
-        Note to my dear partners:
-        In case of tie among classes, this policy returns the first occurrence 
-        of those classes in "votes", which corresponds to the nearest 
-        neighbour of that class because "votes" is sorted according to distance to
-        the sample
-        ---REMOVE---
-        """
         return max(votes, key=votes.count)
 
     if policy == 'mod_plurality':
-
         # Unique options sorted by decreasing number of votes
         options_srt = sorted(set(votes), key=votes.count, reverse=True)
         # Votes for each option
@@ -220,9 +200,4 @@ def vote(votes, policy='most_voted', mp_k=1):
             opt_points = [points[i] for i in np.where(np.array(votes) == opt)[0]]
             options[opt] = sum(opt_points)
 
-        """
-        ---REMOVE---
-        Same reasoning as "most_voted" in case of tie
-        ---REMOVE---
-        """
         return max(options, key=options.get)
