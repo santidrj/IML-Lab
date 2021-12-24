@@ -156,7 +156,9 @@ class IBL:
             y_num = np.asarray(y[0])
             y_cat = np.asarray(y[1])
             if metric == 'hvdm':
-                dist = k_ibl_utils.hvdm(x_num, pd.DataFrame(x_cat), y_num, pd.DataFrame(y_cat))
+                columns = [f'f{i}' for i in range(x_cat.shape[0])]
+                dist = k_ibl_utils.hvdm(x_num, pd.DataFrame(x_cat.reshape((1, 8)), columns=columns), y_num,
+                                        pd.DataFrame(y_cat.reshape((1, 8)), columns=columns))
             else:
                 dist = k_ibl_utils.distance(x_num, y_num, x_cat, y_cat, metric)
             distance_list.append(dist)
@@ -344,6 +346,9 @@ class IBL:
         pass
 
     def _kibl(self, numerical_features, cat_features, labels, k=3, policy='most_voted', measure='euclidean'):
+        k_ibl_utils.init_hvdm(numerical_features,
+                              pd.DataFrame(cat_features, columns=[f'f{i}' for i in range(cat_features.shape[1])]),
+                              labels)
         if cat_features.size == 0:
             self._numerical_kibl(numerical_features, labels, k, policy, measure)
         else:

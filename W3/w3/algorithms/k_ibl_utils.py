@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from pandas import DataFrame
 
 """
 ----> self.sigma <---- = numerical_features.std().to_list()
@@ -7,8 +8,25 @@ import pandas as pd
 numerical_features, ----> self.cat_features <---- = preprocess(self.training_set)
 """
 cat_features = []  # Pandas Dataframe
-labels = []
-sigma = []
+CLASSES = set()
+SIGMA = np.array([])
+COUNTS = {}
+
+
+def init_hvdm(x_num, x_cat: DataFrame, labels):
+    global SIGMA
+    global CLASSES
+    global COUNTS
+
+    SIGMA = np.std(x_num, axis=0)
+    CLASSES = set(labels)
+    for i, att in enumerate(x_cat.keys()):
+        att_class = x_cat[att].to_frame()
+        att_class['class'] = labels
+        COUNTS[att] = pd.DataFrame(att_class.value_counts(sort=False, dropna=False).reset_index().values)
+        columns = att_class.columns.to_list()
+        columns.append('Count')
+        COUNTS[att].columns = columns
 
 
 def hvdm(x_num, x_cat, y_num, y_cat):
@@ -21,38 +39,32 @@ def hvdm(x_num, x_cat, y_num, y_cat):
     :return: distance between x and y
     """
 
+    if not CLASSES:
+        raise ValueError("Please initialize hvdm parameter running init_hvdm before using hvdm.")
+
     het_dist = 0
 
-    for i in range(len(x_num)):
-        if x_num[i] is None or y_num[i] is None:
-            het_dist += 1
-        else:
-            het_dist += np.square(abs(x_num[i] - y_num[i]) / (4 * sigma[i]))
+    het_dist += np.nansum(np.square(abs(x_num - y_num) / (4 * SIGMA)))
 
     for i, att in enumerate(x_cat.keys()):
-        if x_cat[i] is None or y_cat[i] is None:
+        if x_cat.iloc[0, i] == '?' or y_cat.iloc[0, i] == '?':
             het_dist += 1
         else:
-            att_class = cat_features[att]
-            att_class['class'] = labels
-            counts = pd.DataFrame(att_class.value_counts(sort=False, dropna=False).reset_index().values)
-            counts.columns = att_class.columns.to_list().append('Count')
-
-            for c in att_class['class'].unique():
-
-                n_axc = counts['Count'][counts[att] == x_cat[i]][counts['class'] == c].item()
-                if n_axc.empty:
+            for c in CLASSES:
+                aux_df = COUNTS[att]
+                n_axc = aux_df[(aux_df[att] == x_cat.iloc[0, i]) & (aux_df['class'] == c)]['Count'].to_list()
+                if not n_axc:
                     p_axc = 0
                 else:
-                    n_ax = counts['Count'][counts[att] == x_cat[i]].sum()
-                    p_axc = n_axc / n_ax
+                    n_ax = aux_df[aux_df[att] == x_cat.iloc[0, i]]['Count'].sum()
+                    p_axc = n_axc[0] / n_ax
 
-                n_ayc = counts['Count'][counts[att] == y_cat[i]][counts['class'] == c].item()
-                if n_ayc.empty:
+                n_ayc = aux_df[(aux_df[att] == y_cat.iloc[0, i]) & (aux_df['class'] == c)]['Count'].to_list()
+                if not n_ayc:
                     p_ayc = 0
                 else:
-                    n_ay = counts['Count'][counts[att] == x_cat[i]].sum()
-                    p_ayc = n_ayc / n_ay
+                    n_ay = aux_df[aux_df[att] == y_cat.iloc[0, i]]['Count'].sum()
+                    p_ayc = n_ayc[0] / n_ay
 
                 het_dist += (p_axc - p_ayc) ** 2
 
