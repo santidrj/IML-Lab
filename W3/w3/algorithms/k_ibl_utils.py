@@ -101,10 +101,10 @@ def num_distance(x, y, metric='euclidean'):
         return 1 - sim
 
     if metric == 'clark':
-        return (np.square(x - y)/np.square(x + y)).sum()
+        return (np.square(x - y) / np.square(x + y)).sum()
 
     if metric == 'canberra':
-        return (abs(x - y)/abs(x + y)).sum()
+        return (abs(x - y) / abs(x + y)).sum()
 
 
 def distance(x_num, y_num, x_cat=None, y_cat=None, metric='euclidean'):
@@ -143,13 +143,15 @@ def distance(x_num, y_num, x_cat=None, y_cat=None, metric='euclidean'):
                  * np.sqrt((np.concatenate((y_num * y_num, cat_prod(y_cat, y_cat)))).sum()))
         return 1 - sim
 
+    # In the Clark and Canberra measures we use np.nansum since there might be divisions by zero.
     if metric == 'clark':
-        return (np.square(np.concatenate((x_num - y_num, cat_diff(x_cat, y_cat)))) / np.square(
-            np.concatenate((x_num + y_num, cat_sum(x_cat, y_cat))))).sum()
+        return np.nansum(np.square(np.concatenate((x_num - y_num, cat_diff(x_cat, y_cat)))) / np.square(
+            np.concatenate((x_num + y_num, cat_sum(x_cat, y_cat)))))
 
     if metric == 'canberra':
-        return (abs(np.concatenate((x_num - y_num, cat_diff(x_cat, y_cat)))) / abs(
-            np.concatenate((x_num + y_num, cat_sum(x_cat, y_cat))))).sum()
+        numerator = abs(np.concatenate((x_num - y_num, cat_diff(x_cat, y_cat))))
+        denominator = abs(np.concatenate((x_num + y_num, cat_sum(x_cat, y_cat))))
+        return np.nansum(numerator / denominator)
 
 
 def vote(votes, policy='most_voted', mp_k=1):
@@ -187,10 +189,11 @@ def vote(votes, policy='most_voted', mp_k=1):
         count_srt = [votes.count(x) for x in options_srt]
 
         # In case of tie, remove mp_k neighbours and repeat
-        if len(votes) > 1 and count_srt[0] == count_srt[1]:
-            if len(votes) <= mp_k:
-                mp_k = 1
-            return vote(votes[:-mp_k], policy='mod_plurality', mp_k=mp_k)
+        if len(options_srt) > 1:
+            if count_srt[0] == count_srt[1]:
+                if len(votes) <= mp_k:
+                    mp_k = 1
+                return vote(votes[:-mp_k], policy='mod_plurality', mp_k=mp_k)
         else:
             return options_srt[0]
 
