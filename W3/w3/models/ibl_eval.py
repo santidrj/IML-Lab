@@ -60,7 +60,7 @@ class IBLEval:
         self.acc_mean[config] = np.mean(self.acc_fold[config])
         self.time_mean[config] = np.mean(self.time_fold[config])
 
-    def run(self, algorithms=None):
+    def run(self, algorithms=None, output_file=None):
         if algorithms is None:
             algorithms = ['ibl1', 'ibl2', 'ibl3', 'k-ibl']
         for alg in algorithms:
@@ -68,10 +68,30 @@ class IBLEval:
                 for k in K:
                     for measure in measures:
                         for policy in policies:
-                            self.feed_folds(alg, config=f'kibl-{k}-{measure}-{policy}', k=k, measure=measure,
+                            config = f'kibl-{k}-{measure}-{policy}'
+                            self.feed_folds(alg, config=config, k=k, measure=measure,
                                             policy=policy)
+                            if output_file is not None:
+                                self.write_results(output_file, alg)
             else:
                 self.feed_folds(alg)
+                if output_file is not None:
+                    self.write_result(output_file, alg, alg)
+
+    def write_result(self, file, algorithm, config):
+        with open(file, 'a') as f:
+            f.write('Dataset: {}'.format(self.dataset_path.rsplit(os.path.sep, 1)[-1]))
+            f.write(f'\n--{algorithm.upper()} results--\n')
+            if algorithm == 'k-ibl':
+                params = config.split('-')
+                f.write(f'Configuration: k={params[1]}, measure={params[2]}, policy={params[3]}\n')
+            f.write('Accuracy per fold: {}\n'.format(self.acc_fold[config]))
+            f.write('Mean accuracy: {}\n'.format(self.acc_mean[config]))
+            f.write('Execution time per fold: {}\n'.format(self.time_fold[config]))
+            f.write('Mean execution time: {}\n'.format(self.time_mean[config]))
+            f.write('\n')
+            f.write('-' * 120)
+            f.write('\n')
 
     def write_results(self, file, algorithms=None):
         if algorithms is None:

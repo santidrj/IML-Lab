@@ -157,8 +157,8 @@ class IBL:
             y_cat = np.asarray(y[1])
             if metric == 'hvdm':
                 columns = [f'f{i}' for i in range(x_cat.shape[0])]
-                dist = k_ibl_utils.hvdm(x_num, pd.DataFrame(x_cat.reshape((1, 8)), columns=columns), y_num,
-                                        pd.DataFrame(y_cat.reshape((1, 8)), columns=columns))
+                dist = k_ibl_utils.hvdm(x_num, pd.DataFrame(x_cat.reshape((1, x_cat.shape[0])), columns=columns), y_num,
+                                        pd.DataFrame(y_cat.reshape((1, y_cat.shape[0])), columns=columns))
             else:
                 dist = k_ibl_utils.distance(x_num, y_num, x_cat, y_cat, metric)
             distance_list.append(dist)
