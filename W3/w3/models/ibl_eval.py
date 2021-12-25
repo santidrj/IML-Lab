@@ -7,7 +7,9 @@ from w3 import utils
 import numpy as np
 
 K = [3, 5, 7]
+# K = [5, 7]
 measures = ['euclidean', 'manhattan', 'canberra', 'hvdm']
+# measures = ['euclidean', 'manhattan', 'canberra']
 policies = ['most_voted', 'mod_plurality', 'borda_count']
 
 
@@ -79,10 +81,11 @@ class IBLEval:
                             config = f'kibl-{k}-{measure}-{policy}'
                             self.feed_folds(alg, config=config, k=k, measure=measure,
                                             policy=policy)
-                            self.ff, self.crit_val, self.which_diff, self.crit_dist = k_ibl_utils.friedman_nemenyi(np.array(self.kibl_acc))
                             if output_file is not None:
                                 self.write_result(output_file, alg, config)
-                                self.write_statistical_analysis(output_file, alg)
+                self.ff, self.crit_val, self.which_diff, self.crit_dist = k_ibl_utils.friedman_nemenyi(
+                    np.array(self.kibl_acc))
+                self.write_statistical_analysis(output_file, alg)
             else:
                 self.feed_folds(alg, config=alg)
                 if output_file is not None:

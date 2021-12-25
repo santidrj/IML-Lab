@@ -7,8 +7,8 @@ results_path = os.path.join('..', 'results')
 
 dataset = 'pen-based'
 ibl_eval = IBLEval(os.path.join(data_root_path, dataset))
-algorithms = ['ibl1', 'ibl2', 'k-ibl']
-# algorithms = ['k-ibl']
+# algorithms = ['ibl1', 'ibl2', 'k-ibl']
+algorithms = ['k-ibl']
 ibl_eval.run(algorithms=algorithms, output_file=os.path.join(results_path, f'{dataset}-results.txt'))
 # ibl_eval.write_results(os.path.join(results_path, f'{dataset}-results.txt'), algorithms=algorithms)
 ibl_eval.print_results(algorithms=algorithms)
