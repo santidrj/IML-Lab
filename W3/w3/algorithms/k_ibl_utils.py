@@ -229,10 +229,10 @@ def friedman_nemenyi(groups, alpha=0.05):
         diff_matrix = squareform(pair_diff)
         crit_dist = cd_nememyi(alpha)[str(k)]
         which_diff = diff_matrix > crit_dist
-        return ff, crit_val, which_diff
+        return ff, crit_val, which_diff, crit_dist
 
     else:
-        return ff, crit_val, False
+        return ff, crit_val, False, None
 
 
 def cd_nememyi(alpha):
