@@ -1,5 +1,6 @@
 import os
 
+from w3.algorithms import k_ibl_utils
 from w3.algorithms.ibl import IBL
 from w3 import utils
 
@@ -12,11 +13,16 @@ policies = ['most_voted', 'mod_plurality', 'borda_count']
 
 class IBLEval:
     def __init__(self, dataset_path):
+        self.dataset_path = dataset_path
         self.acc_fold = dict(ibl1=[], ibl2=[], ibl3=[])
         self.acc_mean = dict(ibl1=[], ibl2=[], ibl3=[])
         self.time_fold = dict(ibl1=[], ibl2=[], ibl3=[])
         self.time_mean = dict(ibl1=[], ibl2=[], ibl3=[])
-        self.dataset_path = dataset_path
+        self.kibl_acc = []
+        self.ff = None
+        self.crit_val = None
+        self.which_diff = None
+        self.crit_dist = None
 
     def feed_data(self, train_file_name, test_file_name, algorithm='ibl1', k=3, policy='most_voted',
                   measure='euclidean'):
@@ -48,9 +54,11 @@ class IBLEval:
             self.time_mean[config] = []
 
         for fold in range(0, len(file_names), 2):
+            print(f'Feeding fold number {int(fold // 2)}')
             if algorithm == 'k-ibl':
                 acc, time = self.feed_data(file_names[fold + 1], file_names[fold], algorithm, k=k, measure=measure,
                                            policy=policy)
+                self.kibl_acc.append(acc)
             else:
                 acc, time = self.feed_data(file_names[fold + 1], file_names[fold], algorithm)
 
@@ -71,8 +79,10 @@ class IBLEval:
                             config = f'kibl-{k}-{measure}-{policy}'
                             self.feed_folds(alg, config=config, k=k, measure=measure,
                                             policy=policy)
+                            self.ff, self.crit_val, self.which_diff, self.crit_dist = k_ibl_utils.friedman_nemenyi(np.array(self.kibl_acc))
                             if output_file is not None:
-                                self.write_results(output_file, alg)
+                                self.write_result(output_file, alg, config)
+                                self.write_statistical_analysis(output_file, alg)
             else:
                 self.feed_folds(alg, config=alg)
                 if output_file is not None:
@@ -92,6 +102,15 @@ class IBLEval:
             f.write('\n')
             f.write('-' * 120)
             f.write('\n')
+
+    def write_statistical_analysis(self, file, algorithm):
+        with open(file, 'a') as f:
+            f.write('Dataset: {}\n'.format(self.dataset_path.rsplit(os.path.sep, 1)[-1]))
+            f.write(f'--{algorithm.upper} statistical analysis results--\n')
+            f.write(f'FF value: {self.ff}')
+            f.write(f'Critical values: {self.crit_val}')
+            f.write(f'which_diff={self.which_diff}\n')
+            f.write(f'crit_dist={self.crit_dist}\n')
 
     def write_results(self, file, algorithms=None):
         if algorithms is None:
@@ -156,12 +175,18 @@ class IBLEval:
             print('Execution time per fold: {}'.format(self.time_fold['ibl3']))
             print('Mean execution time: {}'.format(self.time_mean['ibl3']))
         if 'k-ibl' in algorithms:
+            print('\n--K-IBL results--\n')
             for k in K:
                 for measure in measures:
                     for policy in policies:
-                        print('\n--K-IBL results--\n')
-                        print(f'Configuration: k={k}, measure={measure}, policy={policy}\n')
+                        print(f'Configuration: k={k}, measure={measure}, policy={policy}')
                         print('Accuracy per fold: {}\n'.format(self.acc_fold[f'kibl-{k}-{measure}-{policy}']))
                         print('Mean accuracy: {}\n'.format(self.acc_mean[f'kibl-{k}-{measure}-{policy}']))
                         print('Execution time per fold: {}\n'.format(self.time_fold[f'kibl-{k}-{measure}-{policy}']))
                         print('Mean execution time: {}\n'.format(self.time_mean[f'kibl-{k}-{measure}-{policy}']))
+                        print()
+            print('--K-IBL statistical analysis results--')
+            print(f'FF value: {self.ff}')
+            print(f'Critical values: {self.crit_val}')
+            print(f'which_diff={self.which_diff}')
+            print(f'crit_dist={self.crit_dist}')
