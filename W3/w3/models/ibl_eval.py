@@ -74,7 +74,7 @@ class IBLEval:
                             if output_file is not None:
                                 self.write_results(output_file, alg)
             else:
-                self.feed_folds(alg)
+                self.feed_folds(alg, config=alg)
                 if output_file is not None:
                     self.write_result(output_file, alg, alg)
 
