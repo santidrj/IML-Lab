@@ -13,7 +13,6 @@ def load_arff(path):
 def convert_byte_string_to_string(dataframe: DataFrame):
     for col in dataframe:
         if isinstance(dataframe[col][0], bytes):
-            print(col, "will be transformed from byte-string to string")
             dataframe[col] = dataframe[col].str.decode("utf8")  # or any other encoding
 
 

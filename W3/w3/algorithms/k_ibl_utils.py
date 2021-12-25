@@ -1,14 +1,13 @@
 import numpy as np
 import pandas as pd
 from pandas import DataFrame
-import scipy.stats
 from scipy.spatial.distance import pdist, squareform
+from scipy.stats import f
 import csv
 
 CLASSES = set()
 SIGMA = np.array([])
 COUNTS = {}
-
 
 
 def init_hvdm(x_num, x_cat: DataFrame, labels):
@@ -111,10 +110,10 @@ def num_distance(x, y, metric='euclidean'):
         return 1 - sim
 
     if metric == 'clark':
-        return (np.square(x - y) / np.square(x + y)).sum()
+        return np.nansum(np.square(x - y) / np.square(x + y))
 
     if metric == 'canberra':
-        return (abs(x - y) / abs(x + y)).sum()
+        return np.nansum(abs(x - y) / abs(x + y))
 
 
 def distance(x_num, y_num, x_cat=None, y_cat=None, metric='euclidean'):
@@ -220,9 +219,9 @@ def friedman_nemenyi(groups, alpha=0.05):
     ranks = groups.argsort(axis=0)
     ranks_mean = ranks.mean(axis=1)
 
-    xi_square = ( 12*n / ( k*(k+1) ) ) * ( sum(ranks_mean**2) - ( ( k*(k+1)**2 ) / 4 ) )
-    ff = ( (n-1)*xi_square ) / ( n*(k-1) - xi_square )
-    crit_val = scipy.stats.f.ppf(q=alpha, dfn=k-1, dfd=(k-1)(n-1))
+    xi_square = (12 * n / (k * (k + 1))) * (sum(ranks_mean ** 2) - ((k * (k + 1) ** 2) / 4))
+    ff = ((n - 1) * xi_square) / (n * (k - 1) - xi_square)
+    crit_val = f.ppf(q=alpha, dfn=k - 1, dfd=(k - 1)(n - 1))
 
     if ff > crit_val:
         pair_diff = pdist(ranks_mean[:, None], metric='minkowski')
@@ -240,4 +239,3 @@ def cd_nememyi(alpha):
         reader = csv.DictReader(file)
         dict_from_csv = {rows['models']: rows[f'Nemenyi {alpha}]'] for rows in reader}
     return dict_from_csv
-

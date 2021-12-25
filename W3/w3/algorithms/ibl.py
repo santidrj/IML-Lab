@@ -474,6 +474,7 @@ class IBL:
             raise ValueError("You selected a wrong Instance-Based Learning algorithm")
 
     def ib1Algorithm(self, test_data):
+        print('Starting IB1 algorithm')
         self._reset_evaluation_metrics()
         self.number_samples = test_data.shape[0]
         numerical_features, cat_features, gs = preprocess(test_data)
@@ -481,10 +482,14 @@ class IBL:
         labels = self._ibl1_predict(numerical_features, cat_features, gs)
         self.execution_time = time.time() - start
         self.accuracy = self.correct_samples / self.number_samples
+        self.accuracy = self.correct_samples / self.number_samples
+        self.print_results()
+        print('Finished IB1 algorithm')
 
         return labels
 
     def ib2Algorithm(self, test_data):
+        print('Starting IB2 algorithm')
         self._reset_evaluation_metrics()
         self.number_samples = test_data.shape[0]
         numerical_features, cat_features, gs = preprocess(test_data)
@@ -492,10 +497,14 @@ class IBL:
         labels = self._ibl2_predict(numerical_features, cat_features, gs)
         self.execution_time = time.time() - start
         self.accuracy = self.correct_samples / self.number_samples
+        self.accuracy = self.correct_samples / self.number_samples
+        self.print_results()
+        print('Finished IB2 algorithm')
 
         return labels
 
     def kIBLAlgorithm(self, test_data, k=3, measure='euclidean', policy='most_voted'):
+        print('Starting K-IBL algorithm')
         self._reset_evaluation_metrics()
         self.number_samples = test_data.shape[0]
         numerical_features, cat_features, gs = preprocess(test_data)
@@ -503,6 +512,8 @@ class IBL:
         labels = self._kibl_predict(numerical_features, cat_features, gs, k, policy, measure)
         self.execution_time = time.time() - start
         self.accuracy = self.correct_samples / self.number_samples
+        self.print_results()
+        print('Finished K-IBL algorithm')
 
         return labels
 
@@ -511,3 +522,4 @@ class IBL:
         print(f"Number of saved instances: {self.saved_samples}")
         print(f"Execution time: {self.execution_time} seconds")
         print(f"Accuracy: {self.accuracy}%")
+        print()
