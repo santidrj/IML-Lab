@@ -209,10 +209,10 @@ def vote(votes, policy='most_voted', mp_k=1):
 
 def friedman_nemenyi(groups, alpha=0.05):
     """
-    Friedman test followed by the Nemenyi and post-hoc test.
+    Friedman test followed by the Nemenyi post-hoc test.
     It finds whether k algorithms are significantly different
     based on n measures for each of them.
-    :param groups: k x N Numpy array of measures
+    :param groups: k x n Numpy array of measures
     :param alpha: significance level for the critical values
     :return:
     """
