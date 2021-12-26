@@ -6,10 +6,10 @@ from w3 import utils
 
 import numpy as np
 
-# K = [3, 5, 7]
-K = [5, 7]
-# measures = ['euclidean', 'manhattan', 'canberra', 'hvdm']
-measures = ['euclidean', 'manhattan', 'canberra']
+K = [3, 5, 7]
+# K = [5, 7]
+measures = ['euclidean', 'manhattan', 'canberra', 'hvdm']
+# measures = ['euclidean', 'manhattan', 'canberra']
 policies = ['most_voted', 'mod_plurality', 'borda_count']
 
 
@@ -68,7 +68,8 @@ class IBLEval:
             self.acc_fold[config].append(acc)
             self.time_fold[config].append(time)
 
-        self.kibl_acc.append(aux_acc)
+        if algorithm == 'k-ibl':
+            self.kibl_acc.append(aux_acc)
         self.acc_mean[config] = np.mean(self.acc_fold[config])
         self.time_mean[config] = np.mean(self.time_fold[config])
 

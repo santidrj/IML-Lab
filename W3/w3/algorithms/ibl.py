@@ -504,7 +504,7 @@ class IBL:
         return labels
 
     def kIBLAlgorithm(self, test_data, k=3, measure='euclidean', policy='most_voted'):
-        print('Starting K-IBL algorithm')
+        print(f'Starting K-IBL algorithm with k={k}, measure={measure}, policy={policy}')
         self._reset_evaluation_metrics()
         self.number_samples = test_data.shape[0]
         numerical_features, cat_features, gs = preprocess(test_data)
