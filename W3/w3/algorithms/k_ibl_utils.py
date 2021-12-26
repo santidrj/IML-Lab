@@ -221,7 +221,7 @@ def friedman_nemenyi(groups, alpha=0.05):
 
     xi_square = (12 * n / (k * (k + 1))) * (sum(ranks_mean ** 2) - ((k * (k + 1) ** 2) / 4))
     ff = ((n - 1) * xi_square) / (n * (k - 1) - xi_square)
-    crit_val = f.ppf(q=alpha, dfn=k - 1, dfd=(k - 1)(n - 1))
+    crit_val = f.ppf(q=alpha, dfn=k - 1, dfd=(k - 1)*(n - 1))
 
     if ff > crit_val:
         pair_diff = pdist(ranks_mean[:, None], metric='minkowski')

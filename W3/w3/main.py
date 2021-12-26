@@ -5,7 +5,7 @@ from models.ibl_eval import IBLEval
 data_root_path = os.path.join('..', 'datasets', 'datasets')
 results_path = os.path.join('..', 'results')
 
-dataset = 'pen-based'
+dataset = 'sick'
 ibl_eval = IBLEval(os.path.join(data_root_path, dataset))
 # algorithms = ['ibl1', 'ibl2', 'k-ibl']
 algorithms = ['k-ibl']

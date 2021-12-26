@@ -6,10 +6,10 @@ from w3 import utils
 
 import numpy as np
 
-K = [3, 5, 7]
-# K = [5, 7]
-measures = ['euclidean', 'manhattan', 'canberra', 'hvdm']
-# measures = ['euclidean', 'manhattan', 'canberra']
+# K = [3, 5, 7]
+K = [5, 7]
+# measures = ['euclidean', 'manhattan', 'canberra', 'hvdm']
+measures = ['euclidean', 'manhattan', 'canberra']
 policies = ['most_voted', 'mod_plurality', 'borda_count']
 
 
@@ -54,19 +54,21 @@ class IBLEval:
             self.acc_mean[config] = []
             self.time_fold[config] = []
             self.time_mean[config] = []
+            aux_acc = []
 
         for fold in range(0, len(file_names), 2):
             print(f'Feeding fold number {int(fold // 2)}')
             if algorithm == 'k-ibl':
                 acc, time = self.feed_data(file_names[fold + 1], file_names[fold], algorithm, k=k, measure=measure,
                                            policy=policy)
-                self.kibl_acc.append(acc)
+                aux_acc.append(acc)
             else:
                 acc, time = self.feed_data(file_names[fold + 1], file_names[fold], algorithm)
 
             self.acc_fold[config].append(acc)
             self.time_fold[config].append(time)
 
+        self.kibl_acc.append(aux_acc)
         self.acc_mean[config] = np.mean(self.acc_fold[config])
         self.time_mean[config] = np.mean(self.time_fold[config])
 
@@ -104,14 +106,14 @@ class IBLEval:
             f.write('Mean execution time: {}\n'.format(self.time_mean[config]))
             f.write('\n')
             f.write('-' * 120)
-            f.write('\n')
+            f.write('\n\n')
 
     def write_statistical_analysis(self, file, algorithm):
         with open(file, 'a') as f:
             f.write('Dataset: {}\n'.format(self.dataset_path.rsplit(os.path.sep, 1)[-1]))
-            f.write(f'--{algorithm.upper} statistical analysis results--\n')
-            f.write(f'FF value: {self.ff}')
-            f.write(f'Critical values: {self.crit_val}')
+            f.write(f'--{algorithm.upper()} statistical analysis results--\n')
+            f.write(f'FF value: {self.ff}\n')
+            f.write(f'Critical values: {self.crit_val}\n')
             f.write(f'which_diff={self.which_diff}\n')
             f.write(f'crit_dist={self.crit_dist}\n')
 
@@ -152,7 +154,7 @@ class IBLEval:
                             f.write('Mean execution time: {}\n'.format(self.time_mean[f'kibl-{k}-{measure}-{policy}']))
             f.write('\n')
             f.write('-' * 120)
-            f.write('\n')
+            f.write('\n\n')
 
     def print_results(self, algorithms=None):
         if algorithms is None:
