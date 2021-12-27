@@ -8,13 +8,17 @@ import csv
 CLASSES = set()
 SIGMA = np.array([])
 COUNTS = {}
+TRAIN_DATA = pd.DataFrame()
 
 
 def init_hvdm(x_num, x_cat: DataFrame, labels):
     global SIGMA
     global CLASSES
     global COUNTS
+    global TRAIN_DATA
 
+    TRAIN_DATA = x_cat
+    TRAIN_DATA['class'] = labels
     SIGMA = np.std(x_num, axis=0)
     CLASSES = set(labels)
     for i, att in enumerate(x_cat.keys()):
@@ -66,6 +70,40 @@ def hvdm(x_num, x_cat: DataFrame, y_num, y_cat: DataFrame):
                 het_dist += (p_axc - p_ayc) ** 2
 
     return np.sqrt(het_dist)
+
+
+def hvdm_v2(x_num, x_cat: DataFrame, y_num, y_cat: DataFrame):
+    """
+    Computes the heterogeneous value difference between two samples.
+    :param x_num: numerical values of x
+    :param y_num: numerical values of y
+    :param x_cat: categorical values of x.
+    :param y_cat: categorical values of y.
+    :return: distance between x and y
+    """
+
+    if not CLASSES:
+        raise ValueError("Please initialize hvdm parameter running init_hvdm before using hvdm.")
+
+    het_dist = 0
+
+    het_dist += np.nansum(np.square(abs(x_num - y_num) / (4 * SIGMA)))
+
+    for i, att in enumerate(x_cat.keys()):
+        if x_cat.iloc[0, i] == '?' or y_cat.iloc[0, i] == '?':
+            het_dist += 1
+        else:
+            n_axc = TRAIN_DATA[[att, 'class']][(TRAIN_DATA[att] == x_cat.iloc[0, i])].groupby('class').count()[att]
+            n_ax = n_axc.sum().item()
+
+            p_axc = n_axc / n_ax
+
+            n_ayc = TRAIN_DATA[[att, 'class']][(TRAIN_DATA[att] == y_cat.iloc[0, i])].groupby('class').count()[att]
+            n_ay = n_ayc.sum().item()
+
+            p_ayc = n_ayc / n_ay
+
+            het_dist += ((p_axc.sub(p_ayc, fill_value=0))**2).sum()
 
 
 def cat_diff(x, y):
@@ -221,7 +259,7 @@ def friedman_nemenyi(groups, alpha=0.05):
 
     xi_square = (12 * n / (k * (k + 1))) * (sum(ranks_mean ** 2) - ((k * (k + 1) ** 2) / 4))
     ff = ((n - 1) * xi_square) / (n * (k - 1) - xi_square)
-    crit_val = f.ppf(q=alpha, dfn=k - 1, dfd=(k - 1)*(n - 1))
+    crit_val = f.ppf(q=alpha, dfn=k - 1, dfd=(k - 1) * (n - 1))
 
     if ff > crit_val:
         pair_diff = pdist(ranks_mean[:, None], metric='minkowski')
