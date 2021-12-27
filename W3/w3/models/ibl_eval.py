@@ -84,8 +84,8 @@ class IBLEval:
 
         for alg in algorithms:
             if alg == 'k-ibl':
-                for k in ks:
-                    for measure in measures:
+                for measure in measures:
+                    for k in ks:
                         for policy in policies:
                             config = f'kibl-{k}-{measure}-{policy}'
                             self.feed_folds(alg, config=config, k=k, measure=measure,

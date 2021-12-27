@@ -89,23 +89,32 @@ def hvdm_v2(x_num, x_cat: DataFrame, y_num, y_cat: DataFrame):
 
     het_dist += np.nansum(np.square(abs(x_num - y_num) / (4 * SIGMA)))
 
-    for i, att in enumerate(x_cat.keys()):
-        if x_cat.iloc[0, i] == '?' or y_cat.iloc[0, i] == '?':
-            het_dist += 1
-        else:
-            n_axc = TRAIN_DATA[[att, 'class']][(TRAIN_DATA[att] == x_cat.iloc[0, i])].groupby('class').count()[att]
-            n_ax = n_axc.sum().item()
+    df = pd.concat([x_cat, y_cat])
 
-            p_axc = n_axc / n_ax
+    het_dist += df.apply(lambda x: cat_het_dist(x, x.name)).sum()
 
-            n_ayc = TRAIN_DATA[[att, 'class']][(TRAIN_DATA[att] == y_cat.iloc[0, i])].groupby('class').count()[att]
-            n_ay = n_ayc.sum().item()
-
-            p_ayc = n_ayc / n_ay
-
-            het_dist += ((p_axc.sub(p_ayc, fill_value=0))**2).sum()
+    # for i, att in enumerate(x_cat.keys()):
+    #     het_dist = cat_het_dist(att, het_dist, i, x_cat, y_cat)
 
     return np.sqrt(het_dist)
+
+
+def cat_het_dist(col, att):
+    if col.iloc[0] == '?' or col.iloc[1] == '?':
+        return 1
+    else:
+        n_axc = TRAIN_DATA[[att, 'class']][(TRAIN_DATA[att] == col.iloc[0])].groupby('class').count()[att]
+        n_ax = n_axc.sum().item()
+
+        p_axc = n_axc / n_ax
+
+        n_ayc = TRAIN_DATA[[att, 'class']][(TRAIN_DATA[att] == col.iloc[1])].groupby('class').count()[att]
+        n_ay = n_ayc.sum().item()
+
+        p_ayc = n_ayc / n_ay
+
+        dist = ((p_axc.sub(p_ayc, fill_value=0)) ** 2).sum()
+        return dist
 
 
 def cat_diff(x, y):
