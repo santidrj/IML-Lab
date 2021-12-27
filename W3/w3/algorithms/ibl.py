@@ -142,7 +142,7 @@ class IBL:
         for y in self.cd:
             y_num = np.asarray(y[0])
             if metric == 'hvdm':
-                dist = k_ibl_utils.hvdm(x, pd.DataFrame(), y_num, pd.DataFrame())
+                dist = k_ibl_utils.hvdm_v2(x, pd.DataFrame(), y_num, pd.DataFrame())
             else:
                 dist = k_ibl_utils.distance(x, np.asarray(y[0]), metric=metric)
             distance_list.append(dist)

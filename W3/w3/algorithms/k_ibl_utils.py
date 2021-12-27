@@ -89,9 +89,10 @@ def hvdm_v2(x_num, x_cat: DataFrame, y_num, y_cat: DataFrame):
 
     het_dist += np.nansum(np.square(abs(x_num - y_num) / (4 * SIGMA)))
 
-    df = pd.concat([x_cat, y_cat])
+    if not x_cat.empty or not y_cat.empty:
+        df = pd.concat([x_cat, y_cat])
 
-    het_dist += df.apply(lambda x: cat_het_dist(x, x.name)).sum()
+        het_dist += df.apply(lambda x: cat_het_dist(x, x.name)).sum()
 
     # for i, att in enumerate(x_cat.keys()):
     #     het_dist = cat_het_dist(att, het_dist, i, x_cat, y_cat)
