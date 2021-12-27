@@ -13,6 +13,7 @@ file = os.path.join(results_path, f'{dataset}-results.txt')
 with open(file, 'r') as f:
     lines = f.readlines()
 
+# Get accuracy per fold from the results file. We omit the first ones since they belong to the ib1, ib2 and ib3.
 lines = np.array([list(line[line.find('['):-1].strip('[]').split(', ')) for line in lines if
                   line.startswith('Accuracy per fold')][2:])
 ibl_eval = IBLEval(os.path.join(data_root_path, dataset))

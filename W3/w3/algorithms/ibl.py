@@ -435,7 +435,7 @@ class IBL:
             x = numerical_features[i]
 
             # Obtain a list with the sample distance to each point in the CD and save it together with the point class
-            distance_list, cd_labels = self.get_distance_mixed(x, measure)
+            distance_list, cd_labels = self.get_distance_num(x, measure)
             label = get_class(distance_list, cd_labels, 'voting', k, policy)
 
             if label == gs[i]:
