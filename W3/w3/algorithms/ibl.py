@@ -364,6 +364,7 @@ class IBL:
                 else:
                     # Obtain a list with the sample distance to each point in the CD and save it together with the point
                     # class
+                    print(f'Compute distance for sample {i}')
                     distance_list, cd_labels = self.get_distance_mixed(x_num, x_cat, measure)
 
                     if len(self.cd) <= k:

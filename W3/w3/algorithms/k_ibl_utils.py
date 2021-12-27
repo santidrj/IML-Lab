@@ -105,6 +105,8 @@ def hvdm_v2(x_num, x_cat: DataFrame, y_num, y_cat: DataFrame):
 
             het_dist += ((p_axc.sub(p_ayc, fill_value=0))**2).sum()
 
+    return np.sqrt(het_dist)
+
 
 def cat_diff(x, y):
     result = []
