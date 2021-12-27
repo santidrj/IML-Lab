@@ -6,11 +6,17 @@ from w3 import utils
 
 import numpy as np
 
-K = [3, 5, 7]
-# K = [5, 7]
-measures = ['euclidean', 'manhattan', 'canberra', 'hvdm']
-# measures = ['euclidean', 'manhattan', 'canberra']
-policies = ['most_voted', 'mod_plurality', 'borda_count']
+
+def set_default_params(algorithms, ks, measures, policies):
+    if algorithms is None:
+        algorithms = ['ibl1', 'ibl2', 'ibl3', 'k-ibl']
+    if measures is None:
+        measures = ['euclidean', 'manhattan', 'canberra', 'hvdm']
+    if ks is None:
+        ks = [3, 5, 7]
+    if policies is None:
+        policies = ['most_voted', 'mod_plurality', 'borda_count']
+    return algorithms, ks, measures, policies
 
 
 class IBLEval:
@@ -73,12 +79,12 @@ class IBLEval:
         self.acc_mean[config] = np.mean(self.acc_fold[config])
         self.time_mean[config] = np.mean(self.time_fold[config])
 
-    def run(self, algorithms=None, output_file=None):
-        if algorithms is None:
-            algorithms = ['ibl1', 'ibl2', 'ibl3', 'k-ibl']
+    def run(self, algorithms=None, ks=None, measures=None, policies=None, output_file=None):
+        algorithms, ks, measures, policies = set_default_params(algorithms, ks, measures, policies)
+
         for alg in algorithms:
             if alg == 'k-ibl':
-                for k in K:
+                for k in ks:
                     for measure in measures:
                         for policy in policies:
                             config = f'kibl-{k}-{measure}-{policy}'
@@ -118,9 +124,8 @@ class IBLEval:
             f.write(f'which_diff={self.which_diff}\n')
             f.write(f'crit_dist={self.crit_dist}\n')
 
-    def write_results(self, file, algorithms=None):
-        if algorithms is None:
-            algorithms = ['ibl1', 'ibl2', 'ibl3', 'k-ibl']
+    def write_results(self, file, algorithms=None, ks=None, measures=None, policies=None):
+        algorithms, ks, measures, policies = set_default_params(algorithms, ks, measures, policies)
 
         with open(file, 'a') as f:
             f.write('Dataset: {}'.format(self.dataset_path.rsplit(os.path.sep, 1)[-1]))
@@ -143,7 +148,7 @@ class IBLEval:
                 f.write('Execution time per fold: {}\n'.format(self.time_fold['ibl3']))
                 f.write('Mean execution time: {}\n'.format(self.time_mean['ibl3']))
             if 'k-ibl' in algorithms:
-                for k in K:
+                for k in ks:
                     for measure in measures:
                         for policy in policies:
                             f.write('\n--K-IBL results--\n')
@@ -157,9 +162,8 @@ class IBLEval:
             f.write('-' * 120)
             f.write('\n\n')
 
-    def print_results(self, algorithms=None):
-        if algorithms is None:
-            algorithms = ['ibl1', 'ibl2', 'ibl3', 'k-ibl']
+    def print_results(self, algorithms=None, ks=None, measures=None, policies=None):
+        algorithms, ks, measures, policies = set_default_params(algorithms, ks, measures, policies)
 
         print('Dataset: {}'.format(self.dataset_path.rsplit(os.path.sep, 1)[-1]))
         if 'ibl1' in algorithms:
@@ -182,7 +186,7 @@ class IBLEval:
             print('Mean execution time: {}'.format(self.time_mean['ibl3']))
         if 'k-ibl' in algorithms:
             print('\n--K-IBL results--\n')
-            for k in K:
+            for k in ks:
                 for measure in measures:
                     for policy in policies:
                         print(f'Configuration: k={k}, measure={measure}, policy={policy}')
