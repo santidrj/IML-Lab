@@ -49,8 +49,10 @@ class IBLEval:
                 ibl.ib1Algorithm(test_data)
             elif algorithm == 'ibl2':
                 ibl.ib2Algorithm(test_data)
-            # elif algorithm == 'ibl3':
-            #     ibl.ib3Algorithm(test_data)
+            elif algorithm == 'ibl3':
+                ibl.ib3Algorithm(test_data)
+            else:
+                raise ValueError('The selected algorithm is not supported.')
 
         return ibl.accuracy, ibl.execution_time
 
