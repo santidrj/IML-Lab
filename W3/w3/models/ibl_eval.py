@@ -125,8 +125,16 @@ class IBLEval:
             f.write(f'--{algorithm.upper()} statistical analysis results--\n')
             f.write(f'FF value: {self.ff}\n')
             f.write(f'Critical values: {self.crit_val}\n')
-            f.write(f'which_diff={self.which_diff}\n')
+            f.write(f'which_diff=\n{self.which_diff}\n')
             f.write(f'crit_dist={self.crit_dist}\n')
+
+    def print_statistical_analysis(self, algorithm):
+        print('Dataset: {}\n'.format(self.dataset_path.rsplit(os.path.sep, 1)[-1]))
+        print(f'--{algorithm.upper()} statistical analysis results--\n')
+        print(f'FF value: {self.ff}\n')
+        print(f'Critical values: {self.crit_val}\n')
+        print(f'which_diff=\n{self.which_diff}\n')
+        print(f'crit_dist={self.crit_dist}\n')
 
     def write_results(self, file, algorithms=None, ks=None, measures=None, policies=None):
         algorithms, ks, measures, policies = set_default_params(algorithms, ks, measures, policies)

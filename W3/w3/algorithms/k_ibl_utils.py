@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 import pandas as pd
 from pandas import DataFrame
@@ -277,7 +279,7 @@ def friedman_nemenyi(groups, alpha=0.05):
         pair_diff = pdist(ranks_mean[:, None], metric='minkowski')
         diff_matrix = squareform(pair_diff)
         crit_dist = cd_nememyi(alpha)[str(k)]
-        which_diff = diff_matrix > crit_dist
+        which_diff = np.transpose((diff_matrix > float(crit_dist)).nonzero())
         return ff, crit_val, which_diff, crit_dist
 
     else:
@@ -285,7 +287,7 @@ def friedman_nemenyi(groups, alpha=0.05):
 
 
 def cd_nememyi(alpha):
-    with open('cd_nemenyi.csv', mode='r') as file:
+    with open(os.path.join('algorithms', 'cd_nemenyi.csv'), mode='r') as file:
         reader = csv.DictReader(file)
-        dict_from_csv = {rows['models']: rows[f'Nemenyi {alpha}]'] for rows in reader}
+        dict_from_csv = {rows['models']: rows[f'Nemenyi {alpha}'] for rows in reader}
     return dict_from_csv
