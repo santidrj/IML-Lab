@@ -83,24 +83,31 @@ def get_class(distance_list, cd_labels, method='nn', k=3, policy='most_voted'):
     else:
         raise ValueError(f'The {method} method does not exist.')
 
-def get_bounds(p,z,n):
-  p /= n
-  left = p + z**2/(2*n)
-  right = z*np.sqrt((p*(1-p))/n + (z**2/(4*n**2)))
-  denominator = 1 + z**2/n
-  upper = (left + right)/denominator
-  lower = (left - right)/denominator
-  return upper, lower
+
+def get_bounds(p, z, n):
+    if (p * n) == 0:
+        return 0, 0
+
+    p /= n
+    left = p + z ** 2 / (2 * n)
+    right = z * np.sqrt((p * (1 - p)) / n + (z ** 2 / (4 * n ** 2)))
+    denominator = 1 + z ** 2 / n
+    upper = (left + right) / denominator
+    lower = (left - right) / denominator
+    return upper, lower
+
 
 def is_acceptable(p_accuracy, n_accuracy, p_frequency, n_frequency):
-  _, lower_accuracy = get_bounds(p_accuracy, 0.9, n_accuracy)
-  upper_frequency, _ = get_bounds(p_frequency, 0.9, n_frequency)
-  return lower_accuracy > upper_frequency
+    _, lower_accuracy = get_bounds(p_accuracy, 0.9, n_accuracy)
+    upper_frequency, _ = get_bounds(p_frequency, 0.9, n_frequency)
+    return lower_accuracy > upper_frequency
+
 
 def is_significantly_poor(p_accuracy, n_accuracy, p_frequency, n_frequency):
-  upper_accuracy, _ = get_bounds(p_accuracy, 0.7, n_accuracy)
-  _, lower_frequency = get_bounds(p_frequency, 0.7, n_frequency)
-  return upper_accuracy < lower_frequency
+    upper_accuracy, _ = get_bounds(p_accuracy, 0.7, n_accuracy)
+    _, lower_frequency = get_bounds(p_frequency, 0.7, n_frequency)
+    return upper_accuracy < lower_frequency
+
 
 """
 Performance dimensions:
@@ -365,7 +372,7 @@ class IBL:
         if cat_features.size == 0:
             self._numerical_ibl3(numerical_features, labels)
         else:
-            accuracy = [{} for _ in range(numerical_features.shape[0])]
+            accuracy = [{'count_at_least_as_close': 0, 'count_matched': 0} for _ in range(numerical_features.shape[0])]
             for i in range(self.number_samples):
                 # reading each sample and its label.
                 x_num = numerical_features[i]
@@ -382,21 +389,23 @@ class IBL:
                 else:
                     nearest_acceptable_index = None
                     nearest_distance = np.inf
-                    for s in self.cd_index_ibl3:
-                        if is_acceptable(p_accuracy=accuracy[s]['count_matched'],
-                                         n_accuracy=accuracy[s]['count_at_least_as_close'],
-                                         p_frequency=sum([1 for i in self.cd_index_ibl3 if labels[i] == labels[s]]),
-                                         n_frequency=i):
-                            s_dist = distance(x_num, numerical_features[s], x_cat, cat_features[s])
-                            if s_dist < nearest_distance:
-                                nearest_acceptable_index = s
-                                nearest_distance = s_dist
+                    distances = np.ones((len(self.cd),))
+                    for y in range(len(self.cd)):
+                        y_dist = distance(x_num, numerical_features[y], x_cat, cat_features[y])
+                        distances[y] = y_dist
+                        if is_acceptable(p_accuracy=accuracy[y]['count_matched'],
+                                         n_accuracy=accuracy[y]['count_at_least_as_close'],
+                                         p_frequency=sum([1 for i in range(len(self.cd)) if labels[i] == labels[y]]),
+                                         n_frequency=i) and y_dist < nearest_distance:
+                            nearest_acceptable_index = y
+                            nearest_distance = y_dist
 
-                    if not nearest_acceptable_index:
+                    if nearest_acceptable_index is None:
                         # get random
-                        nearest_acceptable_index = random.choice(self.cd_index_ibl3)
-                        nearest_distance = distance(x_num, numerical_features[nearest_acceptable_index], x_cat,
-                                                    cat_features[nearest_acceptable_index])
+                        nearest_acceptable_index = np.random.choice(distances.argsort(), 1)[0]
+                        nearest_distance = distances[nearest_acceptable_index]
+                        # nearest_distance = distance(x_num, numerical_features[nearest_acceptable_index], x_cat,
+                        #                             cat_features[nearest_acceptable_index])
 
                     if label == labels[nearest_acceptable_index]:
                         self.correct_samples += 1
@@ -404,32 +413,22 @@ class IBL:
                         self.incorrect_samples += 1
                         self.saved_samples += 1
                         self.cd.add((tuple(x_num), tuple(x_cat), label))
-                        self.cd_index_ibl3.append(nearest_acceptable_index)
 
                     # x_num, x_cat, ..., nearest_distance
-                    for s in self.cd_index_ibl3:
-                        s_num, s_cat, s_label = numerical_features[s], cat_features[s], labels[s]
-                        s_distance = distance(x_num, s_num, x_cat, s_cat)
-                        if s_distance <= nearest_distance:
-                            if s != i:
-                                accuracy[s]['count_at_least_as_close'] += 1
-                                if label == s_label:
-                                    accuracy[s]['count_matched'] += 1
+                    for j, y in enumerate(self.cd.copy()):
+                        y_num = np.asarray(y[0])
+                        y_cat = np.asarray(y[1])
+                        y_label = y[2]
+                        y_distance = distance(x_num, y_num, x_cat, y_cat)
+                        if y_distance <= nearest_distance:
+                            accuracy[j]['count_at_least_as_close'] += 1
+                            if label == y_label:
+                                accuracy[j]['count_matched'] += 1
 
-                            if is_significantly_poor(p_accuracy=accuracy[s]['count_matched'],
-                                                     n_accuracy=accuracy[s]['count_at_least_as_close'], p_frequency=sum(
-                                            [1 for i in self.cd_index_ibl3 if labels[i] == labels[s]]), n_frequency=i):
-                                self.cd_index_ibl3.remove(s)
-                                self.cd.remove((tuple(s_num), tuple(s_cat), s_label))
-
-            for s in self.cd_index_ibl3:
-                s_num, s_cat, s_label = numerical_features[s], cat_features[s], labels[s]
-                if is_significantly_poor(p_accuracy=accuracy[s]['count_matched'],
-                                         n_accuracy=accuracy[s]['count_at_least_as_close'],
-                                         p_frequency=sum([1 for i in self.cd_index_ibl3 if labels[i] == labels[s]]),
-                                         n_frequency=i):
-                    self.cd_index_ibl3.remove(s)
-                    self.cd.remove((tuple(s_num), tuple(s_cat), s_label))
+                            if is_significantly_poor(p_accuracy=accuracy[j]['count_matched'],
+                                                     n_accuracy=accuracy[j]['count_at_least_as_close'], p_frequency=sum(
+                                        [1 for s in range(len(self.cd)) if labels[s] == labels[j]]), n_frequency=i):
+                                self.cd.remove((tuple(y_num), tuple(y_cat), y_label))
 
     def _numerical_ibl3(self, numerical_features, labels):
         accuracy = [{} for _ in range(numerical_features.shape[0])]
@@ -481,7 +480,7 @@ class IBL:
 
                         if is_significantly_poor(p_accuracy=accuracy[s]['count_matched'],
                                                  n_accuracy=accuracy[s]['count_at_least_as_close'], p_frequency=sum(
-                                        [1 for i in self.cd_index_ibl3 if labels[i] == labels[s]]), n_frequency=i):
+                                    [1 for i in self.cd_index_ibl3 if labels[i] == labels[s]]), n_frequency=i):
                             self.cd_index_ibl3.remove(s)
                             self.cd.remove((tuple(s_num), s_label))
 
@@ -493,7 +492,6 @@ class IBL:
                                      n_frequency=i):
                 self.cd_index_ibl3.remove(s)
                 self.cd.remove((tuple(s_num), s_label))
-
 
     def _kibl(self, numerical_features, cat_features, labels, k=3, policy='most_voted', measure='euclidean'):
         k_ibl_utils.init_hvdm(numerical_features,
@@ -613,7 +611,7 @@ class IBL:
                 self.execution_time = time.time() - start
             elif self.algorithm == "ibl3":
                 start = time.time()
-                self._ibl3()
+                self._ibl3(numerical_features, cat_features, labels)
                 self.execution_time = time.time() - start
             elif self.algorithm == "k-ibl":
                 start = time.time()
