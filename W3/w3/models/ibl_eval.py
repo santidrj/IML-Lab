@@ -30,6 +30,7 @@ class IBLEval:
         self.ff = None
         self.crit_val = None
         self.which_diff = None
+        self.stat_diff_best = None
         self.crit_dist = None
 
     def feed_data(self, train_file_name, test_file_name, algorithm='ibl1', k=3, policy='most_voted',
@@ -125,7 +126,8 @@ class IBLEval:
             f.write(f'--{algorithm.upper()} statistical analysis results--\n')
             f.write(f'FF value: {self.ff}\n')
             f.write(f'Critical values: {self.crit_val}\n')
-            f.write(f'which_diff=\n{self.which_diff}\n')
+            #f.write(f'which_diff=\n{self.which_diff}\n')
+            f.write(f'stat_diff_best=\n{self.stat_diff_best}\n')
             f.write(f'crit_dist={self.crit_dist}\n')
 
     def print_statistical_analysis(self, algorithm):
@@ -133,7 +135,8 @@ class IBLEval:
         print(f'--{algorithm.upper()} statistical analysis results--\n')
         print(f'FF value: {self.ff}\n')
         print(f'Critical values: {self.crit_val}\n')
-        print(f'which_diff=\n{self.which_diff}\n')
+        #print(f'which_diff=\n{self.which_diff}\n')
+        print(f'stat_diff_best=\n{self.stat_diff_best}\n')
         print(f'crit_dist={self.crit_dist}\n')
 
     def write_results(self, file, algorithms=None, ks=None, measures=None, policies=None):
