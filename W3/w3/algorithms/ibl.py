@@ -466,8 +466,8 @@ class IBL:
                     y_dist = distance(x, y_num)
                     distances[idx] = y_dist
                     cd_labels.append(y_label)
-                    if is_acceptable(p_accuracy=y[4],
-                                     n_accuracy=y[3],
+                    if is_acceptable(p_accuracy=y[3],
+                                     n_accuracy=y[2],
                                      p_frequency=sum([1 for s in self.cd if s[1] == y_label]),
                                      n_frequency=len(self.cd)) and y_dist < nearest_distance:
                         nearest_acceptable_index = idx

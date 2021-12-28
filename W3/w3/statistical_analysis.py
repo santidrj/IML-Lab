@@ -7,7 +7,7 @@ from w3.algorithms import k_ibl_utils
 
 data_root_path = os.path.join('..', 'datasets', 'datasets')
 results_path = os.path.join('..', 'results')
-dataset = 'vowel'
+dataset = 'grid'
 
 file = os.path.join(results_path, f'{dataset}-results.txt')
 with open(file, 'r') as f:
