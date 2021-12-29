@@ -1,0 +1,7 @@
+Dataset: grid
+--K-IBL statistical analysis results--
+FF value: 1.1387793449011785
+Critical values: 1.342997996937301
+stat_diff_best=
+None
+crit_dist=None
