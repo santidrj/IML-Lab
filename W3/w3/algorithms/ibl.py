@@ -40,27 +40,6 @@ def preprocess(data: DataFrame):
     return normalized_num_features, categorical_features, labels
 
 
-def distance(x_numerical, y_numerical, x_categorical=None, y_categorical=None):
-    if x_categorical is None or y_categorical is None:
-        return np.sqrt(np.square(x_numerical - y_numerical).sum())
-
-    return np.sqrt(num_diff(x_numerical, y_numerical) + cat_diff(x_categorical, y_categorical))
-
-
-def num_diff(x, y):
-    return np.square(x - y).sum()
-
-
-def cat_diff(x, y):
-    dist = 0
-    for i in range(len(x)):
-        if x[i] == '?' and y[i] == '?':
-            dist += 1
-        else:
-            dist += (x[i] != y[i])
-    return dist
-
-
 def get_class(distance_list, cd_labels, method='nn', k=3, policy='most_voted'):
     """
     Compute the class of a sample using its distance to the points in the CD.
@@ -146,7 +125,6 @@ class IBL:
         self.accuracy = 0
         self.saved_samples = 0
         self.execution_time = 0
-        self.cd_index_ibl3 = None
         self.cd = set()
 
         print("\nStarting to add train samples to CD\n")
@@ -395,7 +373,7 @@ class IBL:
                         y_num = y[0]
                         y_cat = y[1]
                         y_label = y[2]
-                        y_dist = distance(x_num, y_num, x_cat, y_cat)
+                        y_dist = k_ibl_utils.distance(x_num, y_num, x_cat, y_cat)
                         distances[idx] = y_dist
                         cd_labels.append(y_label)
                         if is_acceptable(p_accuracy=y[4],  # count matched
@@ -428,7 +406,7 @@ class IBL:
                         y_label = y[2]
                         count_as_close = y[3]
                         count_matched = y[4]
-                        y_distance = distance(x_num, y_num, x_cat, y_cat)
+                        y_distance = k_ibl_utils.distance(x_num, y_num, x_cat, y_cat)
                         if y_distance <= nearest_distance:
                             self.cd.remove(y)
                             count_as_close += 1
@@ -463,7 +441,7 @@ class IBL:
                 for idx, y in enumerate(self.cd):
                     y_num = y[0]
                     y_label = y[1]
-                    y_dist = distance(x, y_num)
+                    y_dist = k_ibl_utils.distance(x, y_num)
                     distances[idx] = y_dist
                     cd_labels.append(y_label)
                     if is_acceptable(p_accuracy=y[3],
@@ -494,7 +472,7 @@ class IBL:
                     y_label = y[1]
                     count_as_close = y[2]
                     count_matched = y[3]
-                    y_distance = distance(x, y_num)
+                    y_distance = k_ibl_utils.distance(x, y_num)
                     if y_distance <= nearest_distance:
                         self.cd.remove(y)
                         count_as_close += 1
@@ -528,7 +506,7 @@ class IBL:
                     y_num = np.array(y[0])
                     y_cat = np.array(y[1])
                     cd_labels.append(y[2])
-                    y_dist = distance(x_num, y_num, x_cat, y_cat)
+                    y_dist = k_ibl_utils.distance(x_num, y_num, x_cat, y_cat)
                     distances[idx] = y_dist
                     if is_acceptable(p_accuracy=y[4],
                                      n_accuracy=y[3],
@@ -560,7 +538,7 @@ class IBL:
                     y_label = y[2]
                     count_as_close = y[3]
                     count_matched = y[4]
-                    y_distance = distance(x_num, y_num, x_cat, y_cat)
+                    y_distance = k_ibl_utils.distance(x_num, y_num, x_cat, y_cat)
                     if y_distance <= nearest_distance:
                         self.cd.remove(y)
                         count_as_close += 1
@@ -585,7 +563,7 @@ class IBL:
             for idx, y in enumerate(self.cd):
                 y_num = np.array(y[0])
                 cd_labels.append(y[1])
-                y_dist = distance(x_num, y_num)
+                y_dist = k_ibl_utils.distance(x_num, y_num)
                 distances[idx] = y_dist
                 if is_acceptable(p_accuracy=y[3],
                                  n_accuracy=y[2],
@@ -616,7 +594,7 @@ class IBL:
                 y_label = y[1]
                 count_as_close = y[2]
                 count_matched = y[3]
-                y_distance = distance(x_num, y_num)
+                y_distance = k_ibl_utils.distance(x_num, y_num)
                 if y_distance <= nearest_distance:
                     self.cd.remove(y)
                     count_as_close += 1
@@ -648,7 +626,6 @@ class IBL:
                 else:
                     # Obtain a list with the sample distance to each point in the CD and save it together with the point
                     # class
-                    print(f'Compute distance for sample {i}')
                     distance_list, cd_labels = self.get_distance_mixed(x_num, x_cat, measure)
 
                     if len(self.cd) <= k:
