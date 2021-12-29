@@ -18,5 +18,5 @@ measures = ['euclidean', 'manhattan', 'canberra']
 # policies = ['most_voted', 'mod_plurality', 'borda_count']
 policies = ['mod_plurality']
 ibl_eval.run(algorithms=algorithms, ks=K, measures=measures, policies=policies,
-             output_file=os.path.join(results_path, f'{dataset}-results-aux.txt'))
+             output_file=os.path.join(results_path, f'{dataset}-results.txt'))
 ibl_eval.print_results(algorithms, K, measures, policies)
