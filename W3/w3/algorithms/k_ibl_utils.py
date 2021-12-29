@@ -274,7 +274,7 @@ def friedman_nemenyi(groups, alpha=0.05):
     based on n measures for each of them.
     :param groups: k x n Numpy array of measures
     :param alpha: significance level for the critical values
-    :return:
+    :return: FF, critical value, matrix indicating which alg differ, critical distance
     """
     k, n = groups.shape
     ranks = groups.argsort(axis=0)
@@ -299,6 +299,11 @@ def friedman_nemenyi(groups, alpha=0.05):
 
 
 def cd_nememyi(alpha):
+    """
+    Reads from a table the critical value for the Nemenyi test
+    :param alpha: significance level for the critical values
+    :return: critical distance
+    """
     with open(os.path.join('algorithms', 'cd_nemenyi.csv'), mode='r') as file:
         reader = csv.DictReader(file)
         dict_from_csv = {rows['models']: rows[f'Nemenyi {alpha}'] for rows in reader}
@@ -307,10 +312,10 @@ def cd_nememyi(alpha):
 
 def readable_diff(which_diff, alg_idx):
     """
-    Determines whether a set of good algorithms are statistically different between them or not
+    Determines whether a set of algorithms are statistically different between them or not
     :param which_diff: matrix indicating statistical difference between all the algorithms tested
-    :param alg_idx: sorted indexes of the best algorithms we want to compare
-    :return: the best algorithms that are not statistically different from each of the other best ones
+    :param alg_idx: sorted indexes by accuracy of the algorithms
+    :return: for each algorithm, the other algorithms indexes that are not statistically different from it
     """
     a = {i: (which_diff[i] == False).nonzero()[0].tolist() for i in alg_idx}
     b = {k: [item for item in a[k] if item in alg_idx] for k, v in a.items()}
