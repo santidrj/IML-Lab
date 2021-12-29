@@ -47,7 +47,7 @@ class IBLEval:
             ibl = IBL(train_data, algorithm, k, measure, policy)
             ibl.kIBLAlgorithm(test_data, k, measure, policy)
         elif algorithm == 'selection-k-ibl':
-            ibl = IBL(test_data, algorithm, k, measure, policy, selection_method)
+            ibl = IBL(train_data, algorithm, k, measure, policy, selection_method)
             ibl.selectionkIBLAlgorithm(test_data, k, measure, policy)
         else:
             ibl = IBL(train_data, algorithm)
@@ -264,6 +264,8 @@ class IBLEval:
                 print(
                     'Mean execution time: {}\n'.format(self.time_mean[f'selection-kibl-{k}-{measure}-{policy}-{sel}']))
                 print()
+
+        if self.ff is not None:
             print('--K-IBL statistical analysis results--')
             print(f'FF value: {self.ff}')
             print(f'Critical values: {self.crit_val}')
