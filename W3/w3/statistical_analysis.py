@@ -32,5 +32,5 @@ configs = np.array([line[line.find('k'):].strip('\n') for line in lines if line.
 print(f'Best configurations:\n{dict(zip(configs[best_alg_idxs], alg_acc[best_alg_idxs]))}\n')
 if type(ibl_eval.which_diff) == np.ndarray:
     ibl_eval.stat_diff_best = k_ibl_utils.readable_diff(ibl_eval.which_diff, best_alg_idxs)
-# ibl_eval.write_statistical_analysis(file, 'k-ibl')
+# ibl_eval.write_statistical_analysis(os.path.join(results_path, f'{dataset}-kibl-analysis.txt'), 'k-ibl')
 ibl_eval.print_statistical_analysis('k-ibl')

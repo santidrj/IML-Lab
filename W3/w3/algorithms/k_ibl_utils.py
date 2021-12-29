@@ -199,8 +199,7 @@ def distance(x_num, y_num, x_cat=None, y_cat=None, metric='euclidean', scores = 
         return dist
 
     if metric == 'euclidean':
-        return np.sqrt((np.square(np.concatenate((x_num - y_num, cat_diff(x_cat, y_cat))))).sum())
-        # return np.sqrt((scores * np.square(np.concatenate((x_num - y_num, cat_diff(x_cat, y_cat))))).sum())
+        return np.sqrt((scores * np.square(np.concatenate((x_num - y_num, cat_diff(x_cat, y_cat))))).sum())
 
     if metric == 'manhattan':
         return abs(np.concatenate((x_num - y_num, cat_diff(x_cat, y_cat)))).sum()
