@@ -241,6 +241,8 @@ def vote(votes, policy='most_voted', mp_k=1):
                 if len(votes) <= mp_k:
                     mp_k = 1
                 return vote(votes[:-mp_k], policy='mod_plurality', mp_k=mp_k)
+            else:
+                return options_srt[0]
         else:
             return options_srt[0]
 
