@@ -241,6 +241,8 @@ def vote(votes, policy='most_voted', mp_k=1):
                 if len(votes) <= mp_k:
                     mp_k = 1
                 return vote(votes[:-mp_k], policy='mod_plurality', mp_k=mp_k)
+            else:
+                return options_srt[0]
         else:
             return options_srt[0]
 
@@ -272,11 +274,11 @@ def friedman_nemenyi(groups, alpha=0.05):
     ranks_mean = ranks.mean(axis=1)
 
     coef1 = 12 * n / (k * (k + 1))
-    coef2 = (k+1)/2
+    coef2 = (k + 1) / 2
 
-    xi_square = coef1*sum((ranks_mean-coef2)**2)
+    xi_square = coef1 * sum((ranks_mean - coef2) ** 2)
     ff = ((n - 1) * xi_square) / (n * (k - 1) - xi_square)
-    crit_val = f.ppf(q=1-alpha, dfn=k - 1, dfd=(k - 1) * (n - 1))
+    crit_val = f.ppf(q=1 - alpha, dfn=k - 1, dfd=(k - 1) * (n - 1))
 
     if ff > crit_val:
         pair_diff = pdist(ranks_mean[:, None], metric='minkowski')
@@ -295,12 +297,13 @@ def cd_nememyi(alpha):
         dict_from_csv = {rows['models']: rows[f'Nemenyi {alpha}'] for rows in reader}
     return dict_from_csv
 
+
 def readable_diff(which_diff, alg_idx):
     """
     Determines whether a set of good algorithms are statistically different between them or not
     :param which_diff: matrix indicating statistical difference between all the algorithms tested
     :param alg_idx: sorted indexes of the best algorithms we want to compare
-    :return: best algorithms that are not statistically different from each of the other best ones
+    :return: the best algorithms that are not statistically different from each of the other best ones
     """
     a = {i: (which_diff[i] == False).nonzero()[0].tolist() for i in alg_idx}
     b = {k: [item for item in a[k] if item in alg_idx] for k, v in a.items()}

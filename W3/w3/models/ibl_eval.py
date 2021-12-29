@@ -97,9 +97,12 @@ class IBLEval:
                                             policy=policy)
                             if output_file is not None:
                                 self.write_result(output_file, alg, config)
+
                 self.ff, self.crit_val, self.which_diff, self.crit_dist = k_ibl_utils.friedman_nemenyi(
                     np.array(self.kibl_acc))
-                self.write_statistical_analysis(output_file, alg)
+                if output_file is not None:
+                    self.write_statistical_analysis(output_file, alg)
+
             else:
                 self.feed_folds(alg, config=alg)
                 if output_file is not None:
@@ -126,7 +129,6 @@ class IBLEval:
             f.write(f'--{algorithm.upper()} statistical analysis results--\n')
             f.write(f'FF value: {self.ff}\n')
             f.write(f'Critical values: {self.crit_val}\n')
-            #f.write(f'which_diff=\n{self.which_diff}\n')
             f.write(f'stat_diff_best=\n{self.stat_diff_best}\n')
             f.write(f'crit_dist={self.crit_dist}\n')
 
