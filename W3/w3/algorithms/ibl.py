@@ -1,11 +1,13 @@
-import time
+import math
 import random
+import time
+
 import numpy as np
 import pandas as pd
 from pandas import DataFrame
+from sklearn.feature_selection import SelectKBest, VarianceThreshold, mutual_info_classif
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.feature_selection import SelectKBest, chi2, VarianceThreshold, mutual_info_classif
 
 from w3.algorithms import k_ibl_utils
 
@@ -49,7 +51,7 @@ def feature_selection(data, gs, method):
 
         return SelectKBest(mutual_info_classif, k=10).fit(data, gs).scores_
     elif method == 'variance':
-        return VarianceThreshold().fit(data, gs).get_support()
+        return VarianceThreshold(0.03).fit(data, gs).get_support()
 
 
 def get_class(distance_list, cd_labels, method='nn', k=3, policy='most_voted'):

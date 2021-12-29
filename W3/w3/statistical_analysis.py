@@ -21,8 +21,8 @@ data_root_path = os.path.join('..', 'datasets', 'datasets')
 results_path = os.path.join('..', 'results')
 
 # Select the dataset to which perform the statistical analysis.
-dataset = 'grid'
-# dataset = 'vowel'
+# dataset = 'grid'
+dataset = 'vowel'
 
 
 kibl_results_file = os.path.join(results_path, f'{dataset}-results.txt')
