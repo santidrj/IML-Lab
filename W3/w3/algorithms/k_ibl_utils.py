@@ -150,9 +150,12 @@ def cat_prod(x, y):
     return result
 
 
-def num_distance(x, y, metric='euclidean'):
+def num_distance(x, y, metric='euclidean', scores=None):
+    if scores is None:
+        scores = np.ones(x.shape)
+
     if metric == 'euclidean':
-        return np.sqrt(np.square(x - y).sum())
+        return np.sqrt((scores * np.square(x - y)).sum())
 
     if metric == 'manhattan':
         return abs(x - y).sum()
@@ -168,7 +171,7 @@ def num_distance(x, y, metric='euclidean'):
         return np.nansum(abs(x - y) / abs(x + y))
 
 
-def distance(x_num, y_num, x_cat=None, y_cat=None, metric='euclidean'):
+def distance(x_num, y_num, x_cat=None, y_cat=None, metric='euclidean', scores = None):
     """
     Calculates distance between two samples according to some metric.
     :param x_num: numerical features of the x samples
@@ -182,6 +185,9 @@ def distance(x_num, y_num, x_cat=None, y_cat=None, metric='euclidean'):
     if x_cat is None or y_cat is None:
         return num_distance(x_num, y_num, metric)
 
+    if scores is None:
+        scores = np.ones((x_num.shape[0] + x_cat.shape[0],))
+
     # Distance for categorical attributes
     if metric == 'hamming':
         dist = 0
@@ -193,7 +199,8 @@ def distance(x_num, y_num, x_cat=None, y_cat=None, metric='euclidean'):
         return dist
 
     if metric == 'euclidean':
-        return np.sqrt(np.square(np.concatenate((x_num - y_num, cat_diff(x_cat, y_cat)))).sum())
+        return np.sqrt((np.square(np.concatenate((x_num - y_num, cat_diff(x_cat, y_cat))))).sum())
+        # return np.sqrt((scores * np.square(np.concatenate((x_num - y_num, cat_diff(x_cat, y_cat))))).sum())
 
     if metric == 'manhattan':
         return abs(np.concatenate((x_num - y_num, cat_diff(x_cat, y_cat)))).sum()

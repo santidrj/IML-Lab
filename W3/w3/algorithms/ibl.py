@@ -5,6 +5,7 @@ import pandas as pd
 from pandas import DataFrame
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.feature_selection import SelectKBest, chi2, VarianceThreshold, mutual_info_classif
 
 from w3.algorithms import k_ibl_utils
 
@@ -38,6 +39,17 @@ def preprocess(data: DataFrame):
     categorical_features = data.iloc[:, :-1].select_dtypes(include="object").to_numpy()
 
     return normalized_num_features, categorical_features, labels
+
+
+def feature_selection(data, gs, method):
+    data = data.apply(lambda x: x.astype('category').cat.codes if x.dtype == 'object' else x)
+    if method == 'kbest':
+        if data.shape[1] < 10:
+            return SelectKBest(mutual_info_classif, k='all').fit(data, gs).scores_
+
+        return SelectKBest(mutual_info_classif, k=10).fit(data, gs).scores_
+    elif method == 'variance':
+        return VarianceThreshold().fit(data, gs).get_support()
 
 
 def get_class(distance_list, cd_labels, method='nn', k=3, policy='most_voted'):
@@ -114,12 +126,15 @@ class IBL:
     - algorithm: String which determine the IBL to execute. If the value is not pass, IBL1 is selected.
     """
 
-    def __init__(self, dataframe: DataFrame, algorithm="ibl1", k=3, measure='euclidean', policy='most_voted'):
+    def __init__(self, dataframe: DataFrame, algorithm="ibl1", k=3, measure='euclidean', policy='most_voted',
+                 selection_method='kbest'):
         self.number_samples = len(dataframe)
         self.algorithm = algorithm
         self.k = k
         self.measure = measure
         self.policy = policy
+        self.selection_method = selection_method
+        self.scores = None
         self.correct_samples = 0
         self.incorrect_samples = 0
         self.accuracy = 0
@@ -148,7 +163,7 @@ class IBL:
             if metric == 'hvdm':
                 dist = k_ibl_utils.hvdm_v2(x, pd.DataFrame(), y_num, pd.DataFrame())
             else:
-                dist = k_ibl_utils.distance(x, np.asarray(y[0]), metric=metric)
+                dist = k_ibl_utils.distance(x, np.asarray(y[0]), metric=metric, scores=self.scores)
             distance_list.append(dist)
             cd_labels.append(y[1])
         return distance_list, cd_labels
@@ -164,7 +179,7 @@ class IBL:
                 dist = k_ibl_utils.hvdm_v2(x_num, pd.DataFrame(x_cat.reshape((1, x_cat.shape[0])), columns=columns),
                                            y_num, pd.DataFrame(y_cat.reshape((1, y_cat.shape[0])), columns=columns))
             else:
-                dist = k_ibl_utils.distance(x_num, y_num, x_cat, y_cat, metric)
+                dist = k_ibl_utils.distance(x_num, y_num, x_cat, y_cat, metric, scores=self.scores)
             distance_list.append(dist)
             cd_labels.append(y[2])
         return distance_list, cd_labels
@@ -713,7 +728,7 @@ class IBL:
 
     def _run(self, training_set):
         numerical_features, cat_features, labels = preprocess(training_set)
-        if self.algorithm in {"ibl1", "ibl2", "ibl3", "k-ibl"}:
+        if self.algorithm in {"ibl1", "ibl2", "ibl3", "k-ibl", "selection-k-ibl"}:
             if self.algorithm == "ibl1":
                 start = time.time()
                 self._ibl1(numerical_features, cat_features, labels)
@@ -730,10 +745,17 @@ class IBL:
                 start = time.time()
                 self._kibl(numerical_features, cat_features, labels, self.k, self.policy, self.measure)
                 self.execution_time = time.time() - start
+            elif self.algorithm == "selection-k-ibl":
+                self.scores = feature_selection(
+                    pd.concat([pd.DataFrame(numerical_features), pd.DataFrame(cat_features)], axis=1), labels,
+                    self.selection_method)
+                start = time.time()
+                self._kibl(numerical_features, cat_features, labels, self.k, self.policy, self.measure)
+                self.execution_time = time.time() - start
 
-            self.accuracy = self.correct_samples / self.number_samples
-        else:
-            raise ValueError("You selected a wrong Instance-Based Learning algorithm")
+                self.accuracy = self.correct_samples / self.number_samples
+            else:
+                raise ValueError("You selected a wrong Instance-Based Learning algorithm")
 
     def ib1Algorithm(self, test_data):
         print('Starting IB1 algorithm')
@@ -778,8 +800,7 @@ class IBL:
         self.print_results()
         print('Finished IB3 algorithm')
 
-    def kIBLAlgorithm(self, test_data, k=3, measure='euclidean', policy='most_voted'):
-        print(f'Starting K-IBL algorithm with k={k}, measure={measure}, policy={policy}')
+    def _run_kibl_predict(self, k, measure, policy, test_data):
         self._reset_evaluation_metrics()
         self.number_samples = test_data.shape[0]
         numerical_features, cat_features, gs = preprocess(test_data)
@@ -788,7 +809,22 @@ class IBL:
         self.execution_time = time.time() - start
         self.accuracy = self.correct_samples / self.number_samples
         self.print_results()
+        return labels
+
+    def kIBLAlgorithm(self, test_data, k=3, measure='euclidean', policy='most_voted'):
+        print(f'Starting K-IBL algorithm with k={k}, measure={measure}, policy={policy}')
+        labels = self._run_kibl_predict(k, measure, policy, test_data)
         print('Finished K-IBL algorithm')
+
+        return labels
+
+    def selectionkIBLAlgorithm(self, test_data, k=3, measure='euclidean', policy='most_voted'):
+        if self.scores is None:
+            raise ValueError('You initialized the IBL instance with a method that is not selection-k-ibl')
+
+        print(f'Starting Selection K-IBL algorithm with k={k}, measure={measure}, policy={policy}')
+        labels = self._run_kibl_predict(k, measure, policy, test_data)
+        print('Finished Selection K-IBL algorithm')
 
         return labels
 
