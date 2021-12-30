@@ -289,7 +289,7 @@ def friedman_nemenyi(groups, alpha=0.05):
     if ff > crit_val:
         pair_diff = pdist(ranks_mean[:, None], metric='minkowski')
         diff_matrix = squareform(pair_diff)
-        crit_dist = cd_nememyi(alpha)[str(k)]
+        crit_dist = float(cd_nememyi(alpha)[str(k)])*np.sqrt(k*(k+1)/(6*n))
         which_diff = diff_matrix > float(crit_dist)
         return ff, crit_val, which_diff, crit_dist
 

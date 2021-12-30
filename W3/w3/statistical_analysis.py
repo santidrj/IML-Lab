@@ -48,7 +48,7 @@ print(f'Best 10 K-IBL configurations:\n{dict(zip(configs[best_alg_idxs], kibl_al
 
 if type(ibl_eval.which_diff) == np.ndarray:
     ibl_eval.stat_diff_best = k_ibl_utils.readable_diff(ibl_eval.which_diff, best_alg_idxs)
-# ibl_eval.write_statistical_analysis(os.path.join(results_path, f'{dataset}-kibl-analysis.txt'), 'k-ibl')
+ibl_eval.write_statistical_analysis(os.path.join(results_path, f'{dataset}-kibl-analysis.txt'), 'k-ibl')
 ibl_eval.print_statistical_analysis('k-ibl')
 
 # Perform a statistical analysis with the best K-IBL and its corresponding Selection K-IBL algorithms
@@ -57,11 +57,12 @@ with open(select_kibl_results_file, 'r') as f:
     f.close()
 
 sel_kibl_folds_acc, sel_kibl_alg_acc = extract_accuracies(lines)
+ibl_eval = IBLEval(os.path.join(data_root_path, dataset))
 ibl_eval.ff, ibl_eval.crit_val, ibl_eval.which_diff, ibl_eval.crit_dist = k_ibl_utils.friedman_nemenyi(
     np.concatenate((kibl_folds_acc[best_alg_idxs[0]].reshape(1, kibl_folds_acc.shape[1]), sel_kibl_folds_acc)),
     alpha=0.1)
 
 if type(ibl_eval.which_diff) == np.ndarray:
     ibl_eval.stat_diff_best = k_ibl_utils.readable_diff(ibl_eval.which_diff, best_alg_idxs)
-# ibl_eval.write_statistical_analysis(os.path.join(results_path, f'{dataset}-selection-kibl-analysis.txt'), 'k-ibl')
+ibl_eval.write_statistical_analysis(os.path.join(results_path, f'{dataset}-selection-kibl-analysis.txt'), 'k-ibl')
 ibl_eval.print_statistical_analysis('selection-k-ibl')
