@@ -40,9 +40,8 @@ class IBLEval:
 
     def feed_data(self, train_file_name, test_file_name, algorithm='ibl1', k=3, policy='most_voted',
                   measure='euclidean', selection_method='kbest'):
-        # TODO: Remove slicing
-        train_data = utils.load_arff(os.path.join(self.dataset_path, train_file_name))[:10]
-        test_data = utils.load_arff(os.path.join(self.dataset_path, test_file_name))[:10]
+        train_data = utils.load_arff(os.path.join(self.dataset_path, train_file_name))
+        test_data = utils.load_arff(os.path.join(self.dataset_path, test_file_name))
         utils.convert_byte_string_to_string(train_data)
         utils.convert_byte_string_to_string(test_data)
 
