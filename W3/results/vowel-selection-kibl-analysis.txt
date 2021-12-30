@@ -1,0 +1,7 @@
+Dataset: vowel
+--K-IBL statistical analysis results--
+FF value: -19.465116279069765
+Critical values: 2.623946985133954
+stat_diff_best=
+None
+crit_dist=None
