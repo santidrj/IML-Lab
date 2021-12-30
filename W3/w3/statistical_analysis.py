@@ -1,13 +1,9 @@
 import os
-import sys
-
-sys.path.append("..")
 
 import numpy as np
 
-from w3.models.ibl_eval import IBLEval
-
 from w3.algorithms import k_ibl_utils
+from w3.models.ibl_eval import IBLEval
 
 
 def extract_accuracies(lines, offset=0):
@@ -24,15 +20,13 @@ results_path = os.path.join('..', 'results')
 # dataset = 'grid'
 dataset = 'vowel'
 
-
 kibl_results_file = os.path.join(results_path, f'{dataset}-results.txt')
-select_kibl_results_file = os.path.join(results_path, f'{dataset}-select-kibl-results.txt')
-
 with open(kibl_results_file, 'r') as f:
     lines = f.readlines()
     f.close()
 
-# Get accuracy per fold from the results file. We omit the first ones since they belong to the ib1, ib2 and ib3.
+# Get accuracy per fold from the results file. We omit the three first ones since they belong to the ib1, ib2 and ib3.
+# If you have these results in a different file, please remove the offset parameter.
 kibl_folds_acc, kibl_alg_acc = extract_accuracies(lines, 3)
 
 # Perform a statistical analysis between the different K-IBL configurations.
@@ -48,10 +42,14 @@ print(f'Best 10 K-IBL configurations:\n{dict(zip(configs[best_alg_idxs], kibl_al
 
 if type(ibl_eval.which_diff) == np.ndarray:
     ibl_eval.stat_diff_best = k_ibl_utils.readable_diff(ibl_eval.which_diff, best_alg_idxs)
-ibl_eval.write_statistical_analysis(os.path.join(results_path, f'{dataset}-kibl-analysis.txt'), 'k-ibl')
+
+# You can use the line below to to run the algorithms.
+# The second function call will save the results in the output file.
 ibl_eval.print_statistical_analysis('k-ibl')
+# ibl_eval.write_statistical_analysis(os.path.join(results_path, f'{dataset}-kibl-analysis.txt'), 'k-ibl')
 
 # Perform a statistical analysis with the best K-IBL and its corresponding Selection K-IBL algorithms
+select_kibl_results_file = os.path.join(results_path, f'{dataset}-select-kibl-results.txt')
 with open(select_kibl_results_file, 'r') as f:
     lines = f.readlines()
     f.close()
@@ -64,5 +62,8 @@ ibl_eval.ff, ibl_eval.crit_val, ibl_eval.which_diff, ibl_eval.crit_dist = k_ibl_
 
 if type(ibl_eval.which_diff) == np.ndarray:
     ibl_eval.stat_diff_best = k_ibl_utils.readable_diff(ibl_eval.which_diff, best_alg_idxs)
-ibl_eval.write_statistical_analysis(os.path.join(results_path, f'{dataset}-selection-kibl-analysis.txt'), 'k-ibl')
+
+# You can use the line below to to run the algorithms.
+# The second function call will save the results in the output file.
 ibl_eval.print_statistical_analysis('selection-k-ibl')
+# ibl_eval.write_statistical_analysis(os.path.join(results_path, f'{dataset}-selection-kibl-analysis.txt'), 'k-ibl')

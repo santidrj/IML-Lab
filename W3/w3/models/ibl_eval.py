@@ -1,4 +1,7 @@
 import os
+import sys
+
+sys.path.append('..')
 
 from w3.algorithms import k_ibl_utils
 from w3.algorithms.ibl import IBL
@@ -37,9 +40,9 @@ class IBLEval:
 
     def feed_data(self, train_file_name, test_file_name, algorithm='ibl1', k=3, policy='most_voted',
                   measure='euclidean', selection_method='kbest'):
-        train_data = utils.load_arff(os.path.join(self.dataset_path, train_file_name))
-        test_data = utils.load_arff(os.path.join(self.dataset_path, test_file_name))
-
+        # TODO: Remove slicing
+        train_data = utils.load_arff(os.path.join(self.dataset_path, train_file_name))[:10]
+        test_data = utils.load_arff(os.path.join(self.dataset_path, test_file_name))[:10]
         utils.convert_byte_string_to_string(train_data)
         utils.convert_byte_string_to_string(test_data)
 
