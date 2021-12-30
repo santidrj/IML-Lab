@@ -1,4 +1,4 @@
-# Work 3: Instance-Based Algorithms
+# Work 3: Instance-Based Learning Algorithms
 
 Authors: Augusto Moran Calderon, Santiago del Rey Juárez, and Yazmina Zurita Martel
 
@@ -10,18 +10,15 @@ In addition, it contains all the available datasets in the `datasets` folder and
 
 ### Algorithms
 
-This folder contains the Python classes implementing the IBL algorithms.
+This folder contains the `IBL` class that implements all the IBL algorithms described in the report and  the auxiliary files required for its implementation.
 
 ### Models
 
-In the `models` folder we find the `IBLEval` class that is used to execute the different IBL implementations for each fold.
-
-In order to run all the data reduction scripts or the K-Means for all the datasets you need to access the `models` folder and execute one of the
-following scripts:
+In the `models` folder we find the `IBLEval` class that is used to read each dataset fold and execute the different IBL implementations with it.
 
 ## Running the algorithms
-There are four available Python scripts to run the different implemented algorithms.
-Please read the comments on the script to further configure their execution.
+There are four available Python scripts to run the different implemented algorithms in the `w3` folder.
+Please read the comments on the scripts to further configure their executions.
 
 ### IB1, IB2 and IB3
 To run the IB1, IB2 and IB3 algorithms you can execute the following commands:

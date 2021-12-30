@@ -2,8 +2,8 @@ import os
 
 import numpy as np
 
-from w3.algorithms import k_ibl_utils
-from w3.models.ibl_eval import IBLEval
+from algorithms import k_ibl_utils
+from models.ibl_eval import IBLEval
 
 
 def extract_accuracies(lines, offset=0):
