@@ -19,5 +19,5 @@ setuptools-scm==7.0.5
 six==1.16.0
 sklearn==0.0
 threadpoolctl==3.1.0
-tomli==1.2.2
+tomli==2.0.1
 wheel==0.38.4
